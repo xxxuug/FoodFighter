@@ -6,7 +6,7 @@ public class Food : MonoBehaviour
     public GameObject[] FoodBullet; // 음식 프리팹
     public GameObject ShootEffect; // 발사 이펙트 프리팹
 
-    private float spawnSeconds = 2f; // 생성 간격
+    private float spawnSeconds = 1f; // 생성 간격
     void Start()
     {
         StartCoroutine(CoStartFoodFly()); // 코루틴 시작
