@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 6729660869094478765}
   - component: {fileID: 1762707100699834103}
   - component: {fileID: 3291859947355820877}
-  - component: {fileID: 8611388546592943691}
   - component: {fileID: 6573479529150668892}
   - component: {fileID: 2903069037052186332}
+  - component: {fileID: 2594096077319014211}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -113,22 +113,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8611388546592943691
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7320758152550397459}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08ed858e5b4260341a699f574c5d9832, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FoodBullet:
-  - {fileID: 7104020854348450657, guid: 84db574e0f3d5524c8e5e45d13ea6f6d, type: 3}
-  - {fileID: 5726251333279430253, guid: 10a0bf8c8e309ab4f81f05433074f166, type: 3}
-  ShootEffect: {fileID: 7104020854348450657, guid: 84db574e0f3d5524c8e5e45d13ea6f6d, type: 3}
 --- !u!50 &6573479529150668892
 Rigidbody2D:
   serializedVersion: 5
@@ -192,3 +176,15 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.50000006
+--- !u!114 &2594096077319014211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7320758152550397459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebebc07911e3e1e40b1af6b33c82d6f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
