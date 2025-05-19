@@ -22,7 +22,6 @@ public class PoolManager : Singleton<PoolManager>
                     if (!_pooledObject[type][i].activeSelf)
                     {
                         _pooledObject[type][i].SetActive(true);
-
                         _pooledObject[type][i].transform.position = pos;
                         return _pooledObject[type][i].GetComponent<T>();
                     }
