@@ -11,7 +11,7 @@ public class ObjectManager : Singleton<ObjectManager>
     public HashSet<FoodBullet> Food { get; set; } = new HashSet<FoodBullet>();
 
     private GameObject _playerResource;
-    private GameObject _cactusResource;
+    private GameObject _foodResource;
 
     protected override void Initialize()
     {
@@ -26,7 +26,7 @@ public class ObjectManager : Singleton<ObjectManager>
     public void ResourceAllLoad()
     {
        _playerResource = Resources.Load<GameObject>(Define.Player);
-        _cactusResource = Resources.Load<GameObject>(Define.Bullet);
+        _foodResource = Resources.Load<GameObject>(Define.Bullet);
     }
 
     // 어디서든 생성 가능하도록
@@ -43,7 +43,7 @@ public class ObjectManager : Singleton<ObjectManager>
         }
         else if (type == typeof(FoodBullet))
         {
-            GameObject obj = Instantiate(_cactusResource, spawnPos, Quaternion.identity);
+            GameObject obj = Instantiate(_foodResource, spawnPos, Quaternion.identity);
             FoodBullet cactusController = obj.GetOrAddComponent<FoodBullet>();
             Food.Add(cactusController);
             return cactusController as T;
@@ -60,7 +60,6 @@ public class ObjectManager : Singleton<ObjectManager>
     {
         base.Clear();
         Food.Clear();
-       // Mushrooms.Clear();
         _player = null;
         Resources.UnloadUnusedAssets();
     }

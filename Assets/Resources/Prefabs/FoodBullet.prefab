@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8371577556618319617}
   - component: {fileID: 4169568521698240024}
   m_Layer: 0
-  m_Name: FoodBullet1
+  m_Name: FoodBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
