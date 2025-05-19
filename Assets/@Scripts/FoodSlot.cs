@@ -42,7 +42,7 @@ public class FoodSlot : MonoBehaviour
                 background.sprite = LockBackground;
 
                 // 잠금 슬롯의 아이콘 변환
-                Image icon = slot.transform.Find("Icon - Image").GetComponent<Image>();
+                Image icon = slot.transform.Find("SlotIcon").GetComponent<Image>();
                 icon.sprite = LockIcon;
 
                 if ((i == 2 || i == 3) && (j >= 1 && j <= 3))
