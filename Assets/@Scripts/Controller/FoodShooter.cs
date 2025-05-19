@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class FoodShooter : MonoBehaviour
+public class FoodShooter : BaseController
 {
     public float Seconds = 1f;
 
@@ -14,9 +14,14 @@ public class FoodShooter : MonoBehaviour
     {
         while (true)
         {
-            Vector3 spawnPos = new Vector3(transform.position.x, transform.position.y, 0f);
+            Vector3 spawnPos = transform.position;
             PoolManager.Instance.GetObject<FoodBullet>(spawnPos);
             yield return new WaitForSeconds(Seconds);
         }
+    }
+
+    protected override void Initialize()
+    {
+        
     }
 }

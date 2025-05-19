@@ -21,6 +21,8 @@ public class ObjectManager : Singleton<ObjectManager>
             _player = FindAnyObjectByType<PlayerController>();
 
        _playerResource = Resources.Load<GameObject>(Define.Player);
+
+        ResourceAllLoad();
     }
 
     public void ResourceAllLoad()
