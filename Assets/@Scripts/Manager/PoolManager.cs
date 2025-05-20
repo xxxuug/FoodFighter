@@ -15,7 +15,6 @@ public class PoolManager : Singleton<PoolManager>
 
         if (type.Equals(typeof(FoodBullet)))
         {
-            // 풀에 이미 있을 경우
             if (_pooledObject.ContainsKey(type))
             {
                 for (int i = 0; i < _pooledObject[type].Count; i++)
@@ -24,9 +23,12 @@ public class PoolManager : Singleton<PoolManager>
                     {
                         _pooledObject[type][i].SetActive(true);
                         _pooledObject[type][i].transform.position = pos;
+
                         return _pooledObject[type][i].GetComponent<T>();
                     }
                 }
+
+                //  return null;
 
                 var obj = ObjectManager.Instance.Spawn<T>(pos);
                 obj.transform.parent = _parentObject[type].transform;
@@ -34,7 +36,6 @@ public class PoolManager : Singleton<PoolManager>
                 return obj;
             }
 
-            // 아예 없는 경우 -> 한개만 생성되도록
             else
             {
                 if (!_parentObject.ContainsKey(type))

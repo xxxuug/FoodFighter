@@ -1,37 +1,48 @@
 using UnityEngine;
-using UnityEngine.UIElements;
+using System.Collections;
 
 public class FoodBullet : BaseController
 {
     public float speed = 5f;
-    public float Seconds = 3f;
+    public float Second = 1.5f;
 
-    private float timer = 0f;
-    
-    // ÃÊ±âÈ­
+    private Coroutine coroutine;
+
     protected override void Initialize() { }
 
     private void OnEnable()
     {
-        timer = 0f;
-        transform.localPosition = Vector3.zero;
-        transform.localRotation = Quaternion.identity;
+        if (coroutine != null)
+            StopCoroutine(coroutine);
+
+        coroutine = StartCoroutine(DisableTime());
     }
 
-    private void Update()
+    private IEnumerator DisableTime()
     {
-        transform.Translate(Vector3.right * speed * Time.deltaTime);
-        timer += Time.deltaTime;
-
-        if (timer >= Seconds)
+        float _Time = 0f;
+        while (_Time < Second)
         {
-            timer = 0f;
-            ObjectManager.Instance.Despawn(this);
+            transform.Translate(Vector3.right * speed * Time.deltaTime);
+            _Time += Time.deltaTime;
+            yield return null;
         }
+
+        coroutine = null;
+
+        ObjectManager.Instance.Despawn(this);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!collision.CompareTag(Define.EnemyTag)) return;
+
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+            coroutine = null;
+        }
+
         ObjectManager.Instance.Despawn(this);
     }
 }

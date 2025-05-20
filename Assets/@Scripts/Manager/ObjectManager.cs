@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ public class ObjectManager : Singleton<ObjectManager>
 
     private GameObject _playerResource;
     private GameObject _foodResource;
+   // private GameObject _effectResource;
 
     protected override void Initialize()
     {
@@ -20,15 +22,16 @@ public class ObjectManager : Singleton<ObjectManager>
         if (_player == null)
             _player = FindAnyObjectByType<PlayerController>();
 
-       _playerResource = Resources.Load<GameObject>(Define.Player);
+       _playerResource = Resources.Load<GameObject>(Define.PlayerPath);
 
         ResourceAllLoad();
     }
 
     public void ResourceAllLoad()
     {
-       _playerResource = Resources.Load<GameObject>(Define.Player);
-        _foodResource = Resources.Load<GameObject>(Define.Bullet);
+       _playerResource = Resources.Load<GameObject>(Define.PlayerPath);
+        _foodResource = Resources.Load<GameObject>(Define.BulletPath);
+      //  _effectResource = Resources.Load<GameObject>(Define.Effect);
     }
 
     // 어디서든 생성 가능하도록
@@ -50,6 +53,13 @@ public class ObjectManager : Singleton<ObjectManager>
             Food.Add(cactusController);
             return cactusController as T;
         }
+        //else if (type == typeof(FoodBullet))
+        //{
+        //    GameObject obj = Instantiate(_effectResource, spawnPos, Quaternion.identity);
+        //    FoodBullet effectController = obj.GetOrAddComponent<FoodBullet>();
+        //    Food.Add(effectController);
+        //    return effectController as T;
+        //}
         return null;
     }
 

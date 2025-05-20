@@ -15,11 +15,21 @@ public class FoodShooter : MonoBehaviour
         while (true)
         {
             Vector3 spawnPos = transform.position;
+            FoodBullet bullet = PoolManager.Instance.GetObject<FoodBullet>(spawnPos);
 
-            // 총알 생성 (오브젝트 풀링을 이용하여 총알 생성)
-            PoolManager.Instance.GetObject<FoodBullet>(spawnPos);
+            if (bullet != null)
+            {
+                yield return new WaitForSeconds(Seconds);
+            }
+            else
+            {
+                //Vector3 spawnPos = transform.position;
 
-            yield return new WaitForSeconds(Seconds);
+                //// 총알 생성 (오브젝트 풀링을 이용하여 총알 생성)
+                //PoolManager.Instance.GetObject<FoodBullet>(spawnPos);
+
+                yield return null;
+            }
         }
     }
 }
