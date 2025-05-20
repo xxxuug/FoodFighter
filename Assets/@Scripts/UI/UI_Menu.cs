@@ -8,13 +8,19 @@ public class UI_Menu : UI_Base
     public Button BossButton;
     public Button DungeonButton;
     public Button ShopButton;
-    // 버튼 눌렀을 때 뜨는 패널
+    // 버튼 눌렀을 때 뜨는 강조 패널
     public GameObject ClickPanel;
     public Button CloseButton;
 
+    [Header("각 버튼 기능 패널")]
+    public GameObject EnhanceUpgrade;
+
     private void Start()
     {
+        // 강조 패널 비활성화
         ClickPanel.SetActive(false);
+        // 강화 기능 패널 비활성화
+        EnhanceUpgrade.SetActive(false);
 
         // 강화버튼 클릭했을 때
         EnhanceButton.onClick.AddListener(OnClickEnhanceButton);
@@ -34,6 +40,7 @@ public class UI_Menu : UI_Base
         ClickPanel.SetActive(true);
         ClickPanel.GetComponent<RectTransform>().anchoredPosition = EnhanceButton.GetComponent<RectTransform>().anchoredPosition;
         // 강화 패널 열기
+        EnhanceUpgrade.SetActive(true);
     }
 
     void OnClickBossButton()
@@ -60,5 +67,10 @@ public class UI_Menu : UI_Base
     void OnClickCloseButton()
     {
         ClickPanel.SetActive(false);
+
+        if (EnhanceUpgrade.activeSelf)
+        {
+            EnhanceUpgrade.SetActive(false);
+        }
     }
 }
