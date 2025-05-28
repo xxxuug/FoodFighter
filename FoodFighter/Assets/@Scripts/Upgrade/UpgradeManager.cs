@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,6 +19,9 @@ public class UpgradeManager : MonoBehaviour
 
     [Header("잠금 연동")]
     public LockManager lockManager;
+
+    [Header("아이콘")]
+    public Image UpgradeIcon;
 
     private void Start()
     {
@@ -89,5 +93,12 @@ public class UpgradeManager : MonoBehaviour
         // 이름 & 설명 표시
         NameText.text = upgradeInfo[Mathf.Min(Level, upgradeInfo.Length - 1)].name;
         DescriptionText.text = $"{NameText.text}이 <color=red>{Total:F1}</color>배 증가합니다.";
+
+        // 강화 정보 가져오기
+        var Upgrade = upgradeInfo[Mathf.Min(Level, upgradeInfo.Length - 1)];
+
+        // 아이콘 설정
+        if (UpgradeIcon != null && Upgrade.Icon != null)
+            UpgradeIcon.sprite = Upgrade.Icon;
     }
 }

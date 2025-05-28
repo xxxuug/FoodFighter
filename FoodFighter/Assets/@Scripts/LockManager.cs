@@ -24,7 +24,7 @@ public class LockManager : MonoBehaviour
                     break;
             }
 
-            Locks.UnlockObject.SetActive(UnLock);
+           // Locks.UnlockObject.SetActive(UnLock);
             Locks.LockObject.SetActive(!UnLock);
         }
     }
