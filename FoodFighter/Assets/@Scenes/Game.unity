@@ -20869,7 +20869,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HpBar: {fileID: 1190546096}
-  HpText: {fileID: 0}
+  HpText: {fileID: 660810224}
 --- !u!1 &1590880839
 GameObject:
   m_ObjectHideFlags: 0
