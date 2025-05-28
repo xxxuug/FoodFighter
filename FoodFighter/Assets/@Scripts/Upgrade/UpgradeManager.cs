@@ -18,7 +18,7 @@ public class UpgradeManager : MonoBehaviour
     public UpgradeInfo[] upgradeInfo; // 인스펙터에서 설정
 
     [Header("잠금 연동")]
-    public LockManager lockManager;
+    public LockManager[] lockManager;
 
     [Header("아이콘")]
     public Image UpgradeIcon;
@@ -68,7 +68,17 @@ public class UpgradeManager : MonoBehaviour
             // LevelText.text = $"Level {Level.ToString("D2")}";
             Debug.Log($"{Upgrade.name} 강화 성공!");
 
-            if (lockManager != null) lockManager.SetAttackLevel(Level);
+            //  if (lockManager != null) lockManager.SetAttackLevel(Level);
+            if (lockManager != null && lockManager.Length > 0)
+            {
+                foreach (var lockManagers in lockManager)
+                {
+                    if (lockManagers != null)
+                        lockManagers.SetAttackLevel(Level);
+                }
+            }
+
+
 
             UpdateUI();
 
