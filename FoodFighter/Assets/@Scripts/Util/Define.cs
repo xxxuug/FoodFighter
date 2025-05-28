@@ -11,6 +11,7 @@ public class Define
 
     #region Tag
     public const string EnemyTag = "Enemy";
+    public const string PlayerTag = "Player";
     #endregion
 
     #region Animation

@@ -27,6 +27,12 @@ public class PlayerController : BaseController
         _animator.SetTrigger(Define.GetHit);
     }
 
+    // 죽음 애니메이션 실행 함수
+    void Die()
+    {
+        _animator.SetTrigger(Define.Die);
+    }
+
     protected override void Initialize()
     {
         _animator = GetComponent<Animator>();
@@ -75,9 +81,22 @@ public class PlayerController : BaseController
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.transform.CompareTag(Define.EnemyTag))
+        if (other.CompareTag(Define.EnemyTag))
+        {
+            GetHit();
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        GameManager.Instance[PlayerStat.CurrentHp] -= damage;
+        Debug.Log($"현재 플레이어 HP : {GameManager.Instance[PlayerStat.CurrentHp]}");
+
+        if (GameManager.Instance[PlayerStat.CurrentHp] <= 0)
+            Die();
+        else
         {
             GetHit();
         }

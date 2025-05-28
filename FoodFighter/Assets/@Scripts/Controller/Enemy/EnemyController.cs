@@ -3,11 +3,13 @@ using UnityEngine;
 public class EnemyController : BaseController
 {
     [SerializeField] Transform _player;
+    [SerializeField] AttackController _attackController;
     private Animator _animator;
     private float _speed = 0.3f;
 
     [Header("Status")]
-    private float _hp = 10;
+    private float _hp = 100;
+    public float _damage = 5;
 
     public bool IsAttacking
     {
@@ -56,7 +58,7 @@ public class EnemyController : BaseController
     public void TakeDamage(float damage)
     {
         _hp -= damage;
-        Debug.Log("잡몹 HP : " + _hp);
+        //Debug.Log("잡몹 HP : " + _hp);
 
         if (_hp <= 0)
             Die();
@@ -68,4 +70,9 @@ public class EnemyController : BaseController
     {
         ObjectManager.Instance.Despawn(this);
     }
+
+    // AttackRange 오브젝트 애니메이션 이벤트 호출
+    public void EnableAttack() => _attackController.EnableAttack();
+
+    public void DisableAttack() => _attackController.DisableAttack();
 }

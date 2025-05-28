@@ -41,7 +41,27 @@ public class GameData
 
 public class GameManager : Singleton<GameManager>
 {
+    #region Init
+    private void Awake()
+    {
+        InitPlayerState();
+    }
+
+    void InitPlayerState() // 플레이어 스탯 초기값
+    {
+        this[PlayerStat.Atk] = 0;
+        this[PlayerStat.CurrentHp] = 50;
+        this[PlayerStat.MaxHp] = this[PlayerStat.CurrentHp];
+        this[PlayerStat.CriticalProbability] = 0;
+        this[PlayerStat.CriticalDamage] = 0;
+        this[PlayerStat.SlotCount] = 6;
+        //this[PlayerStat.TotalAtk] = 데미지 합산 값
+    }
+    #endregion
+
     #region Player Stat
+    public event Action OnPlayerStatChanged;
+
     // 스탯 이름을 키, 수치를 값으로 저장하는 구조
     private Dictionary<PlayerStat, float> _stat = new();
 
