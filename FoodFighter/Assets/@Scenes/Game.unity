@@ -20515,6 +20515,7 @@ GameObject:
   - component: {fileID: 1584764413}
   - component: {fileID: 1584764412}
   - component: {fileID: 1584764416}
+  - component: {fileID: 1584764417}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -20628,6 +20629,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GoldText: {fileID: 4772891}
   DiamondText: {fileID: 1782109289}
+--- !u!114 &1584764417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1584764411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9354771be001c7648a63c5422c3c7e6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HpBar: {fileID: 1190546096}
 --- !u!1 &1590880839
 GameObject:
   m_ObjectHideFlags: 0
@@ -26135,7 +26149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9354771be001c7648a63c5422c3c7e6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HpSlider: {fileID: 0}
+  HpBar: {fileID: 0}
 --- !u!1 &2062262569
 GameObject:
   m_ObjectHideFlags: 0
