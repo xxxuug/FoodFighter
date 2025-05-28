@@ -71,7 +71,11 @@ public class GameManager : Singleton<GameManager>
         // _stat 딕셔너리에 stat 키가 있는지 확인 후 있으면 value, 없으면 기본값(0) 반환
         get => _stat.TryGetValue(stat, out var value) ? value : 0;
         // _stat 딕셔너리에 stat을 키로 value를 저장
-        set => _stat[stat] = value;
+        set
+        {
+            _stat[stat] = value;
+            OnPlayerStatChanged?.Invoke();
+        }
     }
     #endregion
 
