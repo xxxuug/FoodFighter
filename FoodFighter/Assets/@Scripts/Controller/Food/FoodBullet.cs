@@ -6,43 +6,35 @@ public class FoodBullet : BaseController
     public float speed = 5f;
     public float Second = 1.5f;
 
-    private Coroutine coroutine;
 
     protected override void Initialize() { }
 
     private void OnEnable()
     {
-        if (coroutine != null)
-            StopCoroutine(coroutine);
-
-        coroutine = StartCoroutine(DisableTime());
+        StartCoroutine(DisableTime());
     }
 
     private IEnumerator DisableTime()
     {
-        float _Time = 0f;
-        while (_Time < Second)
+        float time = 0f;
+        while (time < Second)
         {
-            transform.Translate(Vector3.right * speed * Time.deltaTime);
-            _Time += Time.deltaTime;
+            transform.Translate(Vector3.right * speed * Time.deltaTime, Space.World);
+            transform.Rotate(0, 0, 360 * speed * Time.deltaTime, Space.Self);
+            time += Time.deltaTime;
             yield return null;
         }
-
-        coroutine = null;
 
         ObjectManager.Instance.Despawn(this);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag(Define.EnemyTag)) return;
-
-        if (coroutine != null)
+        if (collision.CompareTag(Define.EnemyTag))
         {
-            StopCoroutine(coroutine);
-            coroutine = null;
+            ObjectManager.Instance.Despawn(this);
+            EnemyController enemy = collision.GetComponent<EnemyController>();
+            enemy.TakeDamage(2);
         }
-
-        ObjectManager.Instance.Despawn(this);
     }
 }

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4169568521698240024}
   m_Layer: 0
   m_Name: FoodBullet
-  m_TagString: Untagged
+  m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  Seconds: 3
+  Second: 1.5
 --- !u!50 &8371577556618319617
 Rigidbody2D:
   serializedVersion: 5
