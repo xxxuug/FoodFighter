@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public enum PlayerStat
@@ -42,9 +43,19 @@ public class GameData
 public class GameManager : Singleton<GameManager>
 {
     #region Init
+
+    [SerializeField] private TMP_Text GoldText;
+    [SerializeField] private TMP_Text DiamondText;
+
     private void Awake()
     {
         InitPlayerState();
+
+        GoldText = GameObject.Find("Gold Text - Text")?.GetComponent<TMP_Text>();
+        DiamondText = GameObject.Find("Diamond Text - Text")?.GetComponent<TMP_Text>();
+
+        OnPlayerInfoChanged += UpdateMoney;
+        UpdateMoney();
     }
 
     void InitPlayerState() // 플레이어 스탯 초기값
@@ -85,8 +96,8 @@ public class GameManager : Singleton<GameManager>
 
     private PlayerInfo _playerInfo = new PlayerInfo()
     {
-        Gold = 0,
-        Diamond = 0,
+        Gold = 1000,
+        Diamond = 50,
     };
 
     public PlayerInfo PlayerInfo
@@ -111,6 +122,34 @@ public class GameManager : Singleton<GameManager>
     {
         _playerInfo.Diamond += diamond;
         OnPlayerInfoChanged?.Invoke();
+    }
+
+    // 골드 감소 함수
+    public bool MinusGold(int amount)
+    {
+        if (_playerInfo.Gold < amount) return false;
+        _playerInfo.Gold -= amount;
+        OnPlayerInfoChanged?.Invoke();
+        return true;
+    }
+
+    public bool MinusDiamond(int amount)
+    {
+        if (_playerInfo.Diamond < amount) return false;
+        _playerInfo.Diamond -= amount;
+        OnPlayerInfoChanged?.Invoke();
+        return true;
+    }
+
+    void UpdateMoney()
+    {
+        //GoldText.text = $"{Gold}";
+        //DiamondText.text = $"{Diamond}";
+
+        if (GoldText != null)
+        GoldText.text = $"{GameManager.Instance.PlayerInfo.Gold}";
+        if (DiamondText != null)
+        DiamondText.text = $"{GameManager.Instance.PlayerInfo.Diamond}";
     }
     #endregion
 

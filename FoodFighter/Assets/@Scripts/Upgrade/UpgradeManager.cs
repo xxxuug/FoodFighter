@@ -14,7 +14,7 @@ public class UpgradeManager : MonoBehaviour
     public TMP_Text DescriptionText;
 
     [Header("강화 관련")]
-    public UI_Money uiMoney; // 골드/다이아 참조
+   // public UI_Money uiMoney; // 골드/다이아 참조
     public UpgradeInfo[] upgradeInfo; // 인스펙터에서 설정
 
     [Header("잠금 연동")]
@@ -50,10 +50,11 @@ public class UpgradeManager : MonoBehaviour
             switch (Upgrade.moneyType)
             {
                 case MoneyType.Gold:
-                    LevelUpSuccess = uiMoney.MinusGold(Upgrade.cost);
+                   // LevelUpSuccess = uiMoney.MinusGold(Upgrade.cost);
+                    LevelUpSuccess = GameManager.Instance.MinusGold(Upgrade.cost);
                     break;
                 case MoneyType.Diamond:
-                    LevelUpSuccess = uiMoney.MinusDiamond(Upgrade.cost);
+                    LevelUpSuccess = GameManager.Instance.MinusDiamond(Upgrade.cost);
                     break;
             }
 
