@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Define 
+public class Define
 {
     #region Path
     public const string BulletPath = "@Prefabs/FoodBullet";
@@ -19,4 +19,5 @@ public class Define
     public readonly static int GetHit = Animator.StringToHash("GetHit");
     public readonly static int Die = Animator.StringToHash("Die");
     #endregion
+
 }
