@@ -18035,7 +18035,7 @@ MonoBehaviour:
   DescriptionText: {fileID: 1181737174}
   UpgradeCostText: {fileID: 373053128}
   upgradeInfo:
-  - name: "\uBC29\uC5B4\uB825"
+  - name: "\uCCB4\uB825"
     cost: 1
     Increasecost: 1.5
     Icon: {fileID: 3332607800525362984, guid: 7237b3b6e8711cf479d302e7e82c0619, type: 3}

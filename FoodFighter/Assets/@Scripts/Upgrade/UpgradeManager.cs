@@ -24,6 +24,8 @@ public class UpgradeManager : MonoBehaviour
     [Header("아이콘")]
     public Image UpgradeIcon;
 
+    private int MAX_Level = 10;
+
     private void Start()
     {
         UpdateUI();
@@ -42,7 +44,7 @@ public class UpgradeManager : MonoBehaviour
 
     IEnumerator LevelUp()
     {
-        while (Level < 10)
+        while (Level < MAX_Level)
         {
             // var Upgrade = upgradeInfo[Level];
             var Upgrade = upgradeInfo[Mathf.Min(Level, upgradeInfo.Length - 1)];
@@ -81,7 +83,7 @@ public class UpgradeManager : MonoBehaviour
                     GameManager.Instance[PlayerStat.Atk] += increase;
                     break;
                 case PlayerStat.MaxHp:
-                    GameManager.Instance[PlayerStat.MaxHp] += increase;
+                    GameManager.Instance[PlayerStat.CurrentHp] += increase;
                     break;
 
                     // 그 외 스탯
@@ -125,6 +127,8 @@ public class UpgradeManager : MonoBehaviour
 
         // 현재 공격력
         Debug.Log($"현재 Atk: {GameManager.Instance[PlayerStat.Atk]}");
+        // 현재 체력
+        Debug.Log($"현재 MAxHP: {GameManager.Instance[PlayerStat.CurrentHp]}");
 
         // 이름 & 설명 표시
         NameText.text = upgradeInfo[Mathf.Min(Level, upgradeInfo.Length - 1)].name;
@@ -151,7 +155,7 @@ public class UpgradeManager : MonoBehaviour
     // 비용 텍스트
     void InitUpgradeCostText()
     {
-        if (Level >= 10)
+        if (Level >= MAX_Level)
         {
             UpgradeCostText.text = "최대 레벨";
             return;
