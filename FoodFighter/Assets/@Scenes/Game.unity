@@ -819,10 +819,11 @@ MonoBehaviour:
   LevelText: {fileID: 1676640401}
   NameText: {fileID: 639571165}
   DescriptionText: {fileID: 953376138}
+  UpgradeCostText: {fileID: 580711724}
   upgradeInfo:
   - name: "\uBBF8\uC0AC\uC77C"
     cost: 10
-    Increasecost: 10
+    Increasecost: 1.5
     Icon: {fileID: -2212892273849525649, guid: 887c7a2ea272f584192b341cf127f486, type: 3}
     IncreaseNum: 0.5
     moneyType: 0
@@ -970,8 +971,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Button
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d2db6123c93115c4fab282223b7ac625, type: 2}
+  m_sharedMaterial: {fileID: -6836507389773793172, guid: d2db6123c93115c4fab282223b7ac625, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1931,8 +1932,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Button
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d2db6123c93115c4fab282223b7ac625, type: 2}
+  m_sharedMaterial: {fileID: -6836507389773793172, guid: d2db6123c93115c4fab282223b7ac625, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3423,10 +3424,11 @@ MonoBehaviour:
   LevelText: {fileID: 1600114439}
   NameText: {fileID: 824556086}
   DescriptionText: {fileID: 199244797}
+  UpgradeCostText: {fileID: 363820898}
   upgradeInfo:
   - name: "\uBC29\uC5B4\uB825"
     cost: 10
-    Increasecost: 10
+    Increasecost: 1.5
     Icon: {fileID: -2983399801202950176, guid: 4f916775b0f137646aba96f318cc3b96, type: 3}
     IncreaseNum: 0.5
     moneyType: 1
@@ -4519,8 +4521,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Button
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d2db6123c93115c4fab282223b7ac625, type: 2}
+  m_sharedMaterial: {fileID: -6836507389773793172, guid: d2db6123c93115c4fab282223b7ac625, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4946,8 +4948,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Button
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d2db6123c93115c4fab282223b7ac625, type: 2}
+  m_sharedMaterial: {fileID: -6836507389773793172, guid: d2db6123c93115c4fab282223b7ac625, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7336,8 +7338,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Button
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d2db6123c93115c4fab282223b7ac625, type: 2}
+  m_sharedMaterial: {fileID: -6836507389773793172, guid: d2db6123c93115c4fab282223b7ac625, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -9487,10 +9489,11 @@ MonoBehaviour:
   LevelText: {fileID: 1523639155}
   NameText: {fileID: 1590880840}
   DescriptionText: {fileID: 1992831824}
+  UpgradeCostText: {fileID: 174181629}
   upgradeInfo:
   - name: "\uBC29\uC5B4\uB825"
     cost: 10
-    Increasecost: 0
+    Increasecost: 1.5
     Icon: {fileID: -5563443072547275478, guid: fb697ef47e864284484506235aff25b8, type: 3}
     IncreaseNum: 0.5
     moneyType: 1
@@ -10740,8 +10743,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Button
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d2db6123c93115c4fab282223b7ac625, type: 2}
+  m_sharedMaterial: {fileID: -6836507389773793172, guid: d2db6123c93115c4fab282223b7ac625, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -11514,10 +11517,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: 'Button
+
+'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d2db6123c93115c4fab282223b7ac625, type: 2}
+  m_sharedMaterial: {fileID: -6836507389773793172, guid: d2db6123c93115c4fab282223b7ac625, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -11541,13 +11546,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -12791,10 +12796,11 @@ MonoBehaviour:
   LevelText: {fileID: 663775383}
   NameText: {fileID: 116083006}
   DescriptionText: {fileID: 1612227299}
+  UpgradeCostText: {fileID: 834802447}
   upgradeInfo:
   - name: "\uBC29\uC5B4\uB825"
     cost: 10
-    Increasecost: 0
+    Increasecost: 1.5
     Icon: {fileID: 7530803305317791828, guid: 65f6f0aca86ea6c41992947e504a0c19, type: 3}
     IncreaseNum: 0.5
     moneyType: 1
@@ -18027,10 +18033,11 @@ MonoBehaviour:
   LevelText: {fileID: 815929902}
   NameText: {fileID: 1155333655}
   DescriptionText: {fileID: 1181737174}
+  UpgradeCostText: {fileID: 373053128}
   upgradeInfo:
   - name: "\uBC29\uC5B4\uB825"
     cost: 1
-    Increasecost: 1
+    Increasecost: 1.5
     Icon: {fileID: 3332607800525362984, guid: 7237b3b6e8711cf479d302e7e82c0619, type: 3}
     IncreaseNum: 0.5
     moneyType: 1
@@ -19960,10 +19967,11 @@ MonoBehaviour:
   LevelText: {fileID: 1465534437}
   NameText: {fileID: 1184662041}
   DescriptionText: {fileID: 1422503650}
+  UpgradeCostText: {fileID: 71475879}
   upgradeInfo:
   - name: "\uBC29\uC5B4\uB825"
     cost: 10
-    Increasecost: 0
+    Increasecost: 1.5
     Icon: {fileID: -2270122808832579914, guid: 7ee4b745498a3234cb80c74f3f4233ab, type: 3}
     IncreaseNum: 0.5
     moneyType: 1
@@ -24597,10 +24605,11 @@ MonoBehaviour:
   LevelText: {fileID: 1876403661}
   NameText: {fileID: 779406099}
   DescriptionText: {fileID: 459328023}
+  UpgradeCostText: {fileID: 879765569}
   upgradeInfo:
   - name: "\uACF5\uACA9\uB825"
     cost: 1
-    Increasecost: 1
+    Increasecost: 1.5
     Icon: {fileID: -2504949785951240361, guid: 644a4bef0a9b7074cbc2d1a7cf74b852, type: 3}
     IncreaseNum: 1
     moneyType: 0

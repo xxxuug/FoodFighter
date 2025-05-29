@@ -12,6 +12,7 @@ public class UpgradeManager : MonoBehaviour
     public TMP_Text LevelText;
     public TMP_Text NameText;
     public TMP_Text DescriptionText;
+    public TMP_Text UpgradeCostText;
 
     [Header("강화 관련")]
    // public UI_Money uiMoney; // 골드/다이아 참조
@@ -26,6 +27,7 @@ public class UpgradeManager : MonoBehaviour
     private void Start()
     {
         UpdateUI();
+        InitUpgradeCostText();
     }
 
     public void OnPointerDown()
@@ -46,6 +48,7 @@ public class UpgradeManager : MonoBehaviour
             var Upgrade = upgradeInfo[Mathf.Min(Level, upgradeInfo.Length - 1)];
 
             int CurrentCost = GetCurrentCost(Level, Upgrade);
+          //  UpgradeCostText.text = $"{CurrentCost} {Upgrade.moneyType}";
 
             bool LevelUpSuccess = false;
 
@@ -67,6 +70,7 @@ public class UpgradeManager : MonoBehaviour
             }
 
             Level++;
+            InitUpgradeCostText(); // 비용 텍스트
 
             // 해당 스탯 강화 적용
             float increase = Upgrade.IncreaseNum;
@@ -133,9 +137,28 @@ public class UpgradeManager : MonoBehaviour
         if (UpgradeIcon != null && Upgrade.Icon != null)
             UpgradeIcon.sprite = Upgrade.Icon;
     }
-
+    
+    // 강화 비용 비율
     private int GetCurrentCost(int Level, UpgradeInfo upgrade)
     {
+        // upgrade.cost: 기본 비용
+        // Pow(): 제곱
+        // upgrade.Increasecost: 비용 증가율
+        // Mathf.FloorToInt(x): 소수점 버리고 정수로
         return Mathf.FloorToInt(upgrade.cost * Mathf.Pow(upgrade.Increasecost, Level));
+    }
+
+    // 비용 텍스트
+    void InitUpgradeCostText()
+    {
+        if (Level >= 10)
+        {
+            UpgradeCostText.text = "최대 레벨";
+            return;
+        }
+
+        var upgrade = upgradeInfo[Mathf.Min(Level, upgradeInfo.Length - 1)];
+        int cost = GetCurrentCost(Level, upgrade);
+        UpgradeCostText.text = $"{cost} {upgrade.moneyType}";
     }
 }
