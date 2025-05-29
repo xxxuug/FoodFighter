@@ -45,16 +45,18 @@ public class UpgradeManager : MonoBehaviour
             // var Upgrade = upgradeInfo[Level];
             var Upgrade = upgradeInfo[Mathf.Min(Level, upgradeInfo.Length - 1)];
 
+            int CurrentCost = GetCurrentCost(Level, Upgrade);
+
             bool LevelUpSuccess = false;
 
             switch (Upgrade.moneyType)
             {
                 case MoneyType.Gold:
                    // LevelUpSuccess = uiMoney.MinusGold(Upgrade.cost);
-                    LevelUpSuccess = GameManager.Instance.MinusGold(Upgrade.cost);
+                    LevelUpSuccess = GameManager.Instance.MinusGold(CurrentCost);
                     break;
                 case MoneyType.Diamond:
-                    LevelUpSuccess = GameManager.Instance.MinusDiamond(Upgrade.cost);
+                    LevelUpSuccess = GameManager.Instance.MinusDiamond(CurrentCost);
                     break;
             }
 
@@ -130,5 +132,10 @@ public class UpgradeManager : MonoBehaviour
         // 아이콘 설정
         if (UpgradeIcon != null && Upgrade.Icon != null)
             UpgradeIcon.sprite = Upgrade.Icon;
+    }
+
+    private int GetCurrentCost(int Level, UpgradeInfo upgrade)
+    {
+        return Mathf.FloorToInt(upgrade.cost * Mathf.Pow(upgrade.Increasecost, Level));
     }
 }

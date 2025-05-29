@@ -821,7 +821,8 @@ MonoBehaviour:
   DescriptionText: {fileID: 953376138}
   upgradeInfo:
   - name: "\uBBF8\uC0AC\uC77C"
-    cost: 1
+    cost: 10
+    Increasecost: 10
     Icon: {fileID: -2212892273849525649, guid: 887c7a2ea272f584192b341cf127f486, type: 3}
     IncreaseNum: 0.5
     moneyType: 0
@@ -3425,6 +3426,7 @@ MonoBehaviour:
   upgradeInfo:
   - name: "\uBC29\uC5B4\uB825"
     cost: 10
+    Increasecost: 10
     Icon: {fileID: -2983399801202950176, guid: 4f916775b0f137646aba96f318cc3b96, type: 3}
     IncreaseNum: 0.5
     moneyType: 1
@@ -9488,6 +9490,7 @@ MonoBehaviour:
   upgradeInfo:
   - name: "\uBC29\uC5B4\uB825"
     cost: 10
+    Increasecost: 0
     Icon: {fileID: -5563443072547275478, guid: fb697ef47e864284484506235aff25b8, type: 3}
     IncreaseNum: 0.5
     moneyType: 1
@@ -12791,6 +12794,7 @@ MonoBehaviour:
   upgradeInfo:
   - name: "\uBC29\uC5B4\uB825"
     cost: 10
+    Increasecost: 0
     Icon: {fileID: 7530803305317791828, guid: 65f6f0aca86ea6c41992947e504a0c19, type: 3}
     IncreaseNum: 0.5
     moneyType: 1
@@ -17973,6 +17977,7 @@ MonoBehaviour:
   upgradeInfo:
   - name: "\uBC29\uC5B4\uB825"
     cost: 1
+    Increasecost: 1
     Icon: {fileID: 3332607800525362984, guid: 7237b3b6e8711cf479d302e7e82c0619, type: 3}
     IncreaseNum: 0.5
     moneyType: 1
@@ -19905,6 +19910,7 @@ MonoBehaviour:
   upgradeInfo:
   - name: "\uBC29\uC5B4\uB825"
     cost: 10
+    Increasecost: 0
     Icon: {fileID: -2270122808832579914, guid: 7ee4b745498a3234cb80c74f3f4233ab, type: 3}
     IncreaseNum: 0.5
     moneyType: 1
@@ -24558,6 +24564,7 @@ MonoBehaviour:
   upgradeInfo:
   - name: "\uACF5\uACA9\uB825"
     cost: 1
+    Increasecost: 1
     Icon: {fileID: -2504949785951240361, guid: 644a4bef0a9b7074cbc2d1a7cf74b852, type: 3}
     IncreaseNum: 1
     moneyType: 0
