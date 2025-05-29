@@ -11,19 +11,14 @@ public class UI_Status : MonoBehaviour
     [Header("Stage")]
     public TMP_Text StageText;
 
-    private void OnEnable()
+    private void Start()
     {
         GameManager.Instance.OnPlayerStatChanged += UpdateHpUI;
         StageManager.Instance.OnStageInfoChanged += UpdateStageUI;
-    }
 
-    private void OnDisable()
-    {
-        if (Singleton<GameManager>.IsInstance) // 인스턴스가 살아있을 때만 실행되도록
-        {
-            GameManager.Instance.OnPlayerStatChanged -= UpdateHpUI;
-            StageManager.Instance.OnStageInfoChanged -= UpdateStageUI;
-        }
+        // 시작할 때 실행해주기
+        UpdateHpUI();
+        UpdateStageUI();
     }
 
     void UpdateHpUI()
