@@ -29,10 +29,8 @@ public class SpawningPool : Singleton<SpawningPool>
             // ¸÷ »ý¼º
             EnemyController enemy = PoolManager.Instance.GetObject<EnemyController>(_enemySpawn);
 
-            Vector3 enemySpawnPos = transform.position;
-
-            enemy.transform.position = enemySpawnPos;
             _spawnEnemy.Add(enemy);
+            StageManager.Instance.AddEnemy(enemy);
         }
     }
 
@@ -52,9 +50,7 @@ public class SpawningPool : Singleton<SpawningPool>
 
         foreach (var enemy in _deadEnemy)
         {
-            Vector3 enemySpawnPos = transform.position;
-
-            enemy.transform.position = enemySpawnPos;
+            enemy.transform.position = _enemySpawn;
             enemy.gameObject.SetActive(true);
         }
 

@@ -20,17 +20,6 @@ public class PlayerInfo
     public int Diamond;
 }
 
-public class StageInfo
-{
-    public int MainStage;
-    public int SubStage;
-
-    public string GetDisplayStage()
-    {
-        return $"{MainStage} - {SubStage}";
-    }
-}
-
 // 게임 세이브/로드
 [Serializable]
 public class GameData
@@ -147,29 +136,9 @@ public class GameManager : Singleton<GameManager>
         //DiamondText.text = $"{Diamond}";
 
         if (GoldText != null)
-        GoldText.text = $"{GameManager.Instance.PlayerInfo.Gold}";
+        GoldText.text = $"{PlayerInfo.Gold}";
         if (DiamondText != null)
-        DiamondText.text = $"{GameManager.Instance.PlayerInfo.Diamond}";
-    }
-    #endregion
-
-    #region Stage Info
-    public event Action OnStageInfoChanged;
-
-    private StageInfo _stageInfo = new StageInfo()
-    {
-        MainStage = 1,
-        SubStage = 1,
-    };
-
-    public StageInfo StageInfo
-    {
-        get { return _stageInfo; }
-        set
-        {
-            _stageInfo = value;
-            OnStageInfoChanged?.Invoke();
-        }
+        DiamondText.text = $"{PlayerInfo.Diamond}";
     }
     #endregion
 }

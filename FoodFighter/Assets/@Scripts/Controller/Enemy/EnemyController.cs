@@ -8,7 +8,7 @@ public class EnemyController : BaseController
     private float _speed = 0.3f;
 
     [Header("Status")]
-    private float _hp = 100;
+    private float _hp = 10;
     public float _damage = 5;
 
     public bool IsAttacking

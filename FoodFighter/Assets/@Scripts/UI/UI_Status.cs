@@ -8,15 +8,23 @@ public class UI_Status : MonoBehaviour
     public Image HpBar;
     public TMP_Text HpText;
 
+    [Header("Stage")]
+    public TMP_Text MainStageText;
+    public TMP_Text SubStageText;
+
     private void OnEnable()
     {
         GameManager.Instance.OnPlayerStatChanged += UpdateHpUI;
+        StageManager.Instance.OnStageInfoChanged += UpdateStageUI;
     }
 
     private void OnDisable()
     {
         if (Singleton<GameManager>.IsInstance) // 인스턴스가 살아있을 때만 실행되도록
+        {
             GameManager.Instance.OnPlayerStatChanged -= UpdateHpUI;
+            StageManager.Instance.OnStageInfoChanged -= UpdateStageUI;
+        }
     }
 
     void UpdateHpUI()
@@ -31,5 +39,13 @@ public class UI_Status : MonoBehaviour
             HpBar.fillAmount = currentHp / maxHp;
             HpText.text = $"{currentHp}";
         }
+    }
+
+    void UpdateStageUI()
+    {
+        if (GameManager.Instance == null) return;
+
+        MainStageText.text = $"{StageManager.Instance.StageInfo.MainStage} - ";
+        SubStageText.text = $"{StageManager.Instance.StageInfo.SubStage}";
     }
 }
