@@ -65,6 +65,22 @@ public class UpgradeManager : MonoBehaviour
             }
 
             Level++;
+
+            // 해당 스탯 강화 적용
+            float increase = Upgrade.IncreaseNum;
+            switch(Upgrade.stateType)
+            {
+                case PlayerStat.Atk:
+                    //GameManager.Instance[this, PlayerStat.Atk] += increase;
+                    GameManager.Instance[PlayerStat.Atk] += increase;
+                    break;
+                case PlayerStat.MaxHp:
+                    GameManager.Instance[PlayerStat.MaxHp] += increase;
+                    break;
+
+                    // 그 외 스탯
+            }
+
             // LevelText.text = $"Level {Level.ToString("D2")}";
             Debug.Log($"{Upgrade.name} 강화 성공!");
 
@@ -100,6 +116,9 @@ public class UpgradeManager : MonoBehaviour
         {
             Total += upgradeInfo[i].IncreaseNum;
         }
+
+        // 현재 공격력
+        Debug.Log($"현재 Atk: {GameManager.Instance[PlayerStat.Atk]}");
 
         // 이름 & 설명 표시
         NameText.text = upgradeInfo[Mathf.Min(Level, upgradeInfo.Length - 1)].name;
