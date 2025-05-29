@@ -36,6 +36,12 @@ public class EnemyController : BaseController
 
     }
 
+    private void OnEnable()
+    {
+        _hp = 10;
+        Debug.Log("府胶迄 棱各 泅犁 HP : " + _hp);
+    }
+
     void Update()
     {
         if (_player == null) return;
@@ -58,7 +64,7 @@ public class EnemyController : BaseController
     public void TakeDamage(float damage)
     {
         _hp -= damage;
-        //Debug.Log("棱各 HP : " + _hp);
+        Debug.Log("棱各 HP : " + _hp);
 
         if (_hp <= 0)
             Die();

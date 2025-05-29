@@ -9,7 +9,7 @@ public class StageInfo
 
     public string GetDisplayStage()
     {
-        return $"{MainStage} - {SubStage}";
+        return $"STAGE {MainStage}-{SubStage}";
     }
 }
 
@@ -65,6 +65,12 @@ public class StageManager : Singleton<StageManager>
             StageInfo.SubStage++;
 
         OnStageInfoChanged?.Invoke();
-        Debug.Log($"다음 스테이지 : {StageInfo.GetDisplayStage()}");
+        //Debug.Log($"다음 스테이지 : {StageInfo.GetDisplayStage()}");
+        Invoke(nameof(EnemyRespawn), 1f);
+    }
+
+    void EnemyRespawn()
+    {
+        SpawningPool.Instance.NextStageEnemyRespawn();
     }
 }
