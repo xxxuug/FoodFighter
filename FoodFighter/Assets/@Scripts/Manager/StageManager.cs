@@ -40,7 +40,10 @@ public class StageManager : Singleton<StageManager>
     public void AddEnemy(EnemyController enemy)
     {
         if (!_aliveEnemy.Contains(enemy))
+        {
             _aliveEnemy.Add(enemy);
+            Debug.Log("Enemy 적 추가");
+        }
     }
 
     public void RemoveEnemy(EnemyController enemy)
@@ -62,6 +65,6 @@ public class StageManager : Singleton<StageManager>
             StageInfo.SubStage++;
 
         OnStageInfoChanged?.Invoke();
-
+        Debug.Log($"다음 스테이지 : {StageInfo.GetDisplayStage()}");
     }
 }

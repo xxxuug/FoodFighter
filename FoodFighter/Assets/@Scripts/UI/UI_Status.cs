@@ -9,8 +9,7 @@ public class UI_Status : MonoBehaviour
     public TMP_Text HpText;
 
     [Header("Stage")]
-    public TMP_Text MainStageText;
-    public TMP_Text SubStageText;
+    public TMP_Text StageText;
 
     private void OnEnable()
     {
@@ -45,7 +44,6 @@ public class UI_Status : MonoBehaviour
     {
         if (GameManager.Instance == null) return;
 
-        MainStageText.text = $"{StageManager.Instance.StageInfo.MainStage} - ";
-        SubStageText.text = $"{StageManager.Instance.StageInfo.SubStage}";
+        StageText.text = StageManager.Instance.StageInfo.GetDisplayStage();
     }
 }

@@ -85,6 +85,11 @@ public class ObjectManager : Singleton<ObjectManager>
     public void Despawn<T>(T obj) where T : BaseController
     {
         obj.gameObject.SetActive(false);
+
+        EnemyController enemy = obj as EnemyController;
+
+        if (enemy != null)
+            StageManager.Instance.RemoveEnemy(enemy);
     }
 
     protected override void Clear()
