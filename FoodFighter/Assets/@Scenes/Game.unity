@@ -825,6 +825,7 @@ MonoBehaviour:
     Icon: {fileID: -2212892273849525649, guid: 887c7a2ea272f584192b341cf127f486, type: 3}
     IncreaseNum: 0.5
     moneyType: 0
+    stateType: 0
   lockManager: []
   UpgradeIcon: {fileID: 837509958}
 --- !u!114 &60434820
@@ -3427,6 +3428,7 @@ MonoBehaviour:
     Icon: {fileID: -2983399801202950176, guid: 4f916775b0f137646aba96f318cc3b96, type: 3}
     IncreaseNum: 0.5
     moneyType: 1
+    stateType: 0
   lockManager: []
   UpgradeIcon: {fileID: 876734078}
 --- !u!114 &273643354
@@ -9489,6 +9491,7 @@ MonoBehaviour:
     Icon: {fileID: -5563443072547275478, guid: fb697ef47e864284484506235aff25b8, type: 3}
     IncreaseNum: 0.5
     moneyType: 1
+    stateType: 0
   lockManager: []
   UpgradeIcon: {fileID: 2062479322}
 --- !u!114 &772915709
@@ -12791,6 +12794,7 @@ MonoBehaviour:
     Icon: {fileID: 7530803305317791828, guid: 65f6f0aca86ea6c41992947e504a0c19, type: 3}
     IncreaseNum: 0.5
     moneyType: 1
+    stateType: 0
   lockManager: []
   UpgradeIcon: {fileID: 1941272212}
 --- !u!114 &946701217
@@ -17972,6 +17976,7 @@ MonoBehaviour:
     Icon: {fileID: 3332607800525362984, guid: 7237b3b6e8711cf479d302e7e82c0619, type: 3}
     IncreaseNum: 0.5
     moneyType: 1
+    stateType: 2
   lockManager: []
   UpgradeIcon: {fileID: 365461299}
 --- !u!114 &1370397752
@@ -19903,6 +19908,7 @@ MonoBehaviour:
     Icon: {fileID: -2270122808832579914, guid: 7ee4b745498a3234cb80c74f3f4233ab, type: 3}
     IncreaseNum: 0.5
     moneyType: 1
+    stateType: 0
   lockManager: []
   UpgradeIcon: {fileID: 782672459}
 --- !u!114 &1507068464
@@ -24554,6 +24560,7 @@ MonoBehaviour:
     Icon: {fileID: -2504949785951240361, guid: 644a4bef0a9b7074cbc2d1a7cf74b852, type: 3}
     IncreaseNum: 1
     moneyType: 0
+    stateType: 0
   lockManager:
   - {fileID: 739789849}
   - {fileID: 326520809}
