@@ -66,7 +66,7 @@ public class StageManager : Singleton<StageManager>
 
         OnStageInfoChanged?.Invoke();
         //Debug.Log($"다음 스테이지 : {StageInfo.GetDisplayStage()}");
-        Invoke(nameof(EnemyRespawn), 1f);
+        Invoke(nameof(EnemyRespawn), 2f);
     }
 
     void EnemyRespawn()
