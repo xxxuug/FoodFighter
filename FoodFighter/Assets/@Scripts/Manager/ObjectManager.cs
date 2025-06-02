@@ -11,9 +11,10 @@ public class ObjectManager : Singleton<ObjectManager>
     public HashSet<FoodBullet> Foods { get; set; } = new HashSet<FoodBullet>();
     public HashSet<EnemyController> Enemies { get; set; } = new HashSet<EnemyController>();
 
+    public List<GameObject> EnemyPrefabs = new List<GameObject>();
+
     private GameObject _playerResource;
     private GameObject _foodResource;
-    private List<GameObject> _enemyResource = new List<GameObject>();
 
     protected override void Initialize()
     {
@@ -22,7 +23,7 @@ public class ObjectManager : Singleton<ObjectManager>
         if (_player == null)
             _player = FindAnyObjectByType<PlayerController>();
 
-        _playerResource = Resources.Load<GameObject>(Define.PlayerPath);
+        //_playerResource = Resources.Load<GameObject>(Define.PlayerPath);
 
         ResourceAllLoad();
     }
@@ -33,14 +34,14 @@ public class ObjectManager : Singleton<ObjectManager>
         _foodResource = Resources.Load<GameObject>(Define.BulletPath);
 
         // enemy 폴더 프리팹 로드
-        _enemyResource.Clear();
+        EnemyPrefabs.Clear();
         GameObject[] allPrefabs = Resources.LoadAll<GameObject>(Define.AllEnemyPath);
 
         foreach (var prefab in allPrefabs)
         {
             if (prefab.GetComponent<EnemyController>() != null)
             {
-                _enemyResource.Add(prefab);
+                EnemyPrefabs.Add(prefab);
             }
         }
     }
@@ -68,7 +69,7 @@ public class ObjectManager : Singleton<ObjectManager>
         }
         else if (typeof(EnemyController).IsAssignableFrom(type))
         {
-            foreach (var prefab in _enemyResource)
+            foreach (var prefab in EnemyPrefabs)
             {
                 if (prefab.GetComponent(type))
                 {

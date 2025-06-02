@@ -56,7 +56,7 @@ public class StageManager : Singleton<StageManager>
 
     void NextStage()
     {
-        if (StageInfo.SubStage >= 6)
+        if (StageInfo.SubStage >= 5)
         {
             StageInfo.MainStage++;
             StageInfo.SubStage = 1;
@@ -65,7 +65,7 @@ public class StageManager : Singleton<StageManager>
             StageInfo.SubStage++;
 
         OnStageInfoChanged?.Invoke();
-        //Debug.Log($"다음 스테이지 : {StageInfo.GetDisplayStage()}");
+        Debug.Log($"다음 스테이지 : {StageInfo.GetDisplayStage()}");
         Invoke(nameof(EnemyRespawn), 2f);
     }
 

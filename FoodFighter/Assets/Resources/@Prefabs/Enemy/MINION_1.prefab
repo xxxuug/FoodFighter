@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 893496396167598436}
   - component: {fileID: 8496134306605902436}
   - component: {fileID: 1416459389480802095}
-  - component: {fileID: 7724536313537697233}
   - component: {fileID: 2219896663110494425}
+  - component: {fileID: 4169935668319419919}
   m_Layer: 0
   m_Name: MINION_1
   m_TagString: Enemy
@@ -141,7 +141,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!70 &7724536313537697233
+--- !u!114 &2219896663110494425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2889567084772485141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5261611bcf6661e43948db6acda16742, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _player: {fileID: 0}
+  _attackController: {fileID: 8348357661166507669}
+  _damage: 5
+--- !u!70 &4169935668319419919
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -175,24 +190,9 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.15, y: 0.19}
+  m_Offset: {x: 0, y: -0.04}
+  m_Size: {x: 0.15, y: 0.22}
   m_Direction: 0
---- !u!114 &2219896663110494425
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2889567084772485141}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5261611bcf6661e43948db6acda16742, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _player: {fileID: 0}
-  _attackController: {fileID: 8348357661166507669}
-  _damage: 5
 --- !u!1 &7862293625556288870
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,7 +260,7 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.05, y: 0}
+  m_Offset: {x: 0.05, y: -0.04}
   m_Radius: 0.05
 --- !u!114 &8348357661166507669
 MonoBehaviour:

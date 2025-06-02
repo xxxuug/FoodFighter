@@ -50,7 +50,7 @@ public class GameManager : Singleton<GameManager>
     void InitPlayerState() // 플레이어 스탯 초기값
     {
         this[PlayerStat.Atk] = 0;
-        this[PlayerStat.CurrentHp] = 50;
+        this[PlayerStat.CurrentHp] = 500;
         this[PlayerStat.MaxHp] = this[PlayerStat.CurrentHp];
         this[PlayerStat.CriticalProbability] = 0;
         this[PlayerStat.CriticalDamage] = 0;

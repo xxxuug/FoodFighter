@@ -4,6 +4,11 @@ public class AttackController : MonoBehaviour
 {
     private bool _isTakeDamage = false; // 데미지를 맞췄는지 여부
 
+    private void Start()
+    {
+        GetComponent<Collider2D>().enabled = false;
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (_isTakeDamage) return; // 이미 맞췄으면 무시
@@ -13,7 +18,7 @@ public class AttackController : MonoBehaviour
             PlayerController playerController = other.GetComponent<PlayerController>();
             EnemyController enemyController = GetComponentInParent<EnemyController>();
             playerController.TakeDamage(enemyController._damage);
-        }
+        }                    
     }
 
     // 애니메이션 이벤트

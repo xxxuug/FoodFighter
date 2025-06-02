@@ -5,9 +5,13 @@ public class PoolManager : Singleton<PoolManager>
 {
     // 오브젝트 풀 관리용
     Dictionary<System.Type, List<GameObject>> _pooledObject = new Dictionary<System.Type, List<GameObject>>();
-
     // 정리용 오브젝트
     Dictionary<System.Type, GameObject> _parentObject = new Dictionary<System.Type, GameObject>();
+
+    // 몬스터 프리팹 풀 관리용
+    Dictionary<GameObject, List<GameObject>> _pooledPrefabs = new Dictionary<GameObject, List<GameObject>>();
+    // 정리용
+    Dictionary<GameObject, GameObject> _parentPrefabs = new Dictionary<GameObject, GameObject>();
 
     public T GetObject<T>(Vector3 pos) where T : BaseController
     {
@@ -58,6 +62,38 @@ public class PoolManager : Singleton<PoolManager>
             }
         }
         return null;
+    }
+
+    public BaseController GetObject(GameObject prefab, Vector3 pos)
+    {
+        if (_pooledPrefabs.ContainsKey(prefab))
+        {
+            foreach (var obj in _pooledPrefabs[prefab])
+            {
+                if (!obj.activeSelf)
+                {
+                    obj.transform.position = pos;
+                    obj.SetActive(true);
+                    return obj.GetComponent<BaseController>();
+                }
+            }
+        }
+        else
+        {
+            _pooledPrefabs[prefab] = new List<GameObject>();
+
+            if (!_parentPrefabs.ContainsKey(prefab))
+            {
+                GameObject go = new GameObject(prefab.name);
+                _parentPrefabs[prefab] = go;
+            }
+        }
+
+        GameObject newObj = GameObject.Instantiate(prefab, pos, Quaternion.identity);
+        newObj.transform.parent = _parentPrefabs[prefab].transform;
+        _pooledPrefabs[prefab].Add(newObj);
+
+        return newObj.GetComponent<BaseController>();
     }
 
     protected override void Clear()

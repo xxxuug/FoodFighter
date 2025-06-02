@@ -64,7 +64,7 @@ public class EnemyController : BaseController
     public void TakeDamage(float damage)
     {
         _hp -= damage;
-        Debug.Log("説光 HP : " + _hp);
+        //Debug.Log("説光 HP : " + _hp);
 
         if (_hp <= 0)
             Die();
