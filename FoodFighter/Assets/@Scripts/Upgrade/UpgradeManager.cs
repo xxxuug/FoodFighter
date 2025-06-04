@@ -126,9 +126,9 @@ public class UpgradeManager : MonoBehaviour
         }
 
         // 현재 공격력
-        Debug.Log($"현재 Atk: {GameManager.Instance[PlayerStat.Atk]}");
+        //Debug.Log($"현재 Atk: {GameManager.Instance[PlayerStat.Atk]}");
         // 현재 체력
-        Debug.Log($"현재 MAxHP: {GameManager.Instance[PlayerStat.CurrentHp]}");
+        //Debug.Log($"현재 MAxHP: {GameManager.Instance[PlayerStat.CurrentHp]}");
 
         // 이름 & 설명 표시
         NameText.text = upgradeInfo[Mathf.Min(Level, upgradeInfo.Length - 1)].name;

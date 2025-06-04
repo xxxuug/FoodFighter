@@ -25,6 +25,8 @@ public class EnemyController : BaseController
     public void Die()
     {
         _animator.SetTrigger(Define.Die);
+        DropGold();
+
         Invoke(nameof(Despawn), 0.5f);
     }
 
@@ -39,7 +41,7 @@ public class EnemyController : BaseController
     private void OnEnable()
     {
         _hp = 10;
-        Debug.Log("리스폰 잡몹 현재 HP : " + _hp);
+        //Debug.Log("리스폰 잡몹 현재 HP : " + _hp);
     }
 
     void Update()
@@ -75,6 +77,15 @@ public class EnemyController : BaseController
     void Despawn()
     {
         ObjectManager.Instance.Despawn(this);
+    }
+
+    void DropGold()
+    {
+        int rndGoldCount = Random.Range(4, 8);
+        for (int i = 0; i < rndGoldCount; i++)
+        {
+            PoolManager.Instance.GetObject<GoldController>(transform.position);
+        }
     }
 
     // AttackRange 오브젝트 애니메이션 이벤트 호출

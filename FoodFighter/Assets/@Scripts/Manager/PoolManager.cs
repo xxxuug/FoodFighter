@@ -17,7 +17,7 @@ public class PoolManager : Singleton<PoolManager>
     {
         System.Type type = typeof(T);
 
-        if (type.Equals(typeof(FoodBullet)) || type.Equals(typeof(EnemyController)))
+        if (type.Equals(typeof(FoodBullet)) || type.Equals(typeof(EnemyController)) || type.Equals(typeof(GoldController)))
         {
             if (_pooledObject.ContainsKey(type))
             {
@@ -64,6 +64,7 @@ public class PoolManager : Singleton<PoolManager>
         return null;
     }
 
+    // 몬스터 프리팹용 함수
     public BaseController GetObject(GameObject prefab, Vector3 pos)
     {
         if (_pooledPrefabs.ContainsKey(prefab))

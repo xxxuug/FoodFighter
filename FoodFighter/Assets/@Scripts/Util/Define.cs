@@ -7,6 +7,7 @@ public class Define
     public const string PlayerPath = "@Prefabs/Player";
     public const string EffectPath = "@Prefabs/Effect";
     public const string AllEnemyPath = "@Prefabs/Enemy";
+    public const string GoldPath = "@Prefabs/Gold";
     #endregion
 
     #region Tag

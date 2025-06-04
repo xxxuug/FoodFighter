@@ -6,7 +6,7 @@ public class PlayerController : BaseController
     private Animator _animator;
 
     [Header("플레이어와 적 거리")]
-    private float _range = 3.5f;
+    private float _range = 4.5f;
 
     public float Speed
     {
@@ -59,7 +59,7 @@ public class PlayerController : BaseController
         foreach (GameObject enemy in enemies)
         {
             // 플레이어와 적 사이 거리 구하기
-            float distance = Distance.GetDistance(transform, enemy.transform);
+            float distance = Vector3.Distance(transform.position, enemy.transform.position);
             //Debug.Log($"플레이어와 적 사이 거리 : {distance}");
             if (distance <= _range)
             {

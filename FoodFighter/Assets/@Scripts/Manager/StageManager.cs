@@ -42,7 +42,7 @@ public class StageManager : Singleton<StageManager>
         if (!_aliveEnemy.Contains(enemy))
         {
             _aliveEnemy.Add(enemy);
-            Debug.Log("Enemy 적 추가");
+            //Debug.Log("Enemy 적 추가");
         }
     }
 
@@ -65,7 +65,7 @@ public class StageManager : Singleton<StageManager>
             StageInfo.SubStage++;
 
         OnStageInfoChanged?.Invoke();
-        Debug.Log($"다음 스테이지 : {StageInfo.GetDisplayStage()}");
+        //Debug.Log($"다음 스테이지 : {StageInfo.GetDisplayStage()}");
         Invoke(nameof(EnemyRespawn), 2f);
     }
 

@@ -9,12 +9,17 @@ public class ObjectManager : Singleton<ObjectManager>
     public PlayerController Player { get => _player; }
 
     public HashSet<FoodBullet> Foods { get; set; } = new HashSet<FoodBullet>();
+    // "게임 씬 위에 현재 활성화되어 존재하는 몬스터 인스턴스들"을 실시간으로 관리하는 컬렉션
     public HashSet<EnemyController> Enemies { get; set; } = new HashSet<EnemyController>();
+    public HashSet<GoldController> Golds { get; set; } = new HashSet<GoldController>();
 
+    // 스폰할 수 있는 몬스터 프리팹 목록
     public List<GameObject> EnemyPrefabs = new List<GameObject>();
+    public List<GameObject> GoldPrefabs = new List<GameObject>();
 
     private GameObject _playerResource;
     private GameObject _foodResource;
+    private GameObject _goldResource;
 
     protected override void Initialize()
     {
@@ -23,8 +28,6 @@ public class ObjectManager : Singleton<ObjectManager>
         if (_player == null)
             _player = FindAnyObjectByType<PlayerController>();
 
-        //_playerResource = Resources.Load<GameObject>(Define.PlayerPath);
-
         ResourceAllLoad();
     }
 
@@ -32,6 +35,7 @@ public class ObjectManager : Singleton<ObjectManager>
     {
         _playerResource = Resources.Load<GameObject>(Define.PlayerPath);
         _foodResource = Resources.Load<GameObject>(Define.BulletPath);
+        _goldResource = Resources.Load<GameObject>(Define.GoldPath);
 
         // enemy 폴더 프리팹 로드
         EnemyPrefabs.Clear();
@@ -67,7 +71,7 @@ public class ObjectManager : Singleton<ObjectManager>
             Foods.Add(foodBullet);
             return foodBullet as T;
         }
-        else if (typeof(EnemyController).IsAssignableFrom(type))
+        else if (type == typeof(EnemyController))
         {
             foreach (var prefab in EnemyPrefabs)
             {
@@ -79,6 +83,13 @@ public class ObjectManager : Singleton<ObjectManager>
                     return enemy as T;
                 }
             }
+        }
+        else if (type == typeof(GoldController))
+        {
+            GameObject obj = Instantiate(_goldResource, spawnPos, Quaternion.identity);
+            GoldController goldController = obj.GetOrAddComponent<GoldController>();
+            Golds.Add(goldController);
+            return goldController as T;
         }
         return null;
     }
