@@ -3,8 +3,8 @@ using System;
 
 public enum LockType
 {
-    PlayerLevel,
-    AttackLevel
+    AttackLevel,
+    Stage,
 }
 
 [Serializable]
