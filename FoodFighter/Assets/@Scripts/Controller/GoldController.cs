@@ -42,6 +42,7 @@ public class GoldController : BaseController
             int randGold = Random.Range(300, 500);
             GameManager.Instance.AddGold(randGold);
             ObjectManager.Instance.Despawn(this);
+            _isMoving = false;
         }
     }
 
