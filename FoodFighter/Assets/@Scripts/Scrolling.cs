@@ -5,7 +5,7 @@ public class Scrolling : MonoBehaviour
     private PlayerController _player;
     private SpriteRenderer _spriteRenderer;
     private float _offset;
-    private float _speed = 0.5f;
+    private float _speed = 0.3f;
 
     void Start()
     {

@@ -8,7 +8,8 @@ public class EnemyController : BaseController
     private float _speed = 0.3f;
 
     [Header("Status")]
-    private float _hp = 10;
+    private float _initHp = 10;
+    private float _currentHp;
     public float _damage = 5;
 
     public bool IsAttacking
@@ -40,7 +41,7 @@ public class EnemyController : BaseController
 
     private void OnEnable()
     {
-        _hp = 10;
+        _currentHp = _initHp;
         //Debug.Log("리스폰 잡몹 현재 HP : " + _hp);
     }
 
@@ -65,10 +66,10 @@ public class EnemyController : BaseController
 
     public void TakeDamage(float damage)
     {
-        _hp -= damage;
+        _currentHp -= damage;
         //Debug.Log("잡몹 HP : " + _hp);
 
-        if (_hp <= 0)
+        if (_currentHp <= 0)
             Die();
         else
             GetHit();
@@ -86,6 +87,11 @@ public class EnemyController : BaseController
         {
             PoolManager.Instance.GetObject<GoldController>(transform.position);
         }
+    }
+
+    public void MultipleHp(float amount)
+    {
+        _initHp *= amount;
     }
 
     // AttackRange 오브젝트 애니메이션 이벤트 호출
