@@ -1,10 +1,11 @@
+using NUnit.Framework.Internal.Commands;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class LockManager : MonoBehaviour
 {
-    public int PlayerLevel = 0; // 플레이어의 레벨
-    public int AttackLevel = 0; // 공격력 레벨
+    private int AttackLevel = 0; // 공격력 레벨
+    private int StageLevel = 0;
 
     public LockInfo[] lockInfo;
 
@@ -16,11 +17,11 @@ public class LockManager : MonoBehaviour
 
             switch (Locks.lockType)
             {
-                case LockType.PlayerLevel:
-                    UnLock = PlayerLevel >= Locks.Level;
-                    break;
                 case LockType.AttackLevel:
                     UnLock = AttackLevel >= Locks.Level;
+                    break;
+                case LockType.Stage:
+                    UnLock = StageLevel >= Locks.Level;
                     break;
             }
 
@@ -29,9 +30,10 @@ public class LockManager : MonoBehaviour
         }
     }
 
-    public void SetPlayerLevel(int Level)
+    public void SetStage(int Level)
     {
-        PlayerLevel = Level;
+        StageLevel = Level;
+
         RefreshUnlock();
     }
 
