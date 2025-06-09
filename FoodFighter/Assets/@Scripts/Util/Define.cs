@@ -22,4 +22,8 @@ public class Define
     public readonly static int Die = Animator.StringToHash("Die");
     #endregion
 
+    #region Other String
+    public const string GameScene = "Game";
+    #endregion
+
 }
