@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,6 +27,12 @@ public class FoodSlot : MonoBehaviour
     [Header("레벨 별 슬롯 이미지 변환")]
     [SerializeField] private List<ItemSprite> _spriteList;
 
+    [Header("음식 생성 버튼")]
+    public Button FoodCreateButton;
+    public TMP_Text FoodCreateCountText;
+    private int _currentCount;
+    private int _maxCount = 10;
+
     void Start()
     {
         _slots = new GameObject[_hCount, _vCount];
@@ -49,6 +56,30 @@ public class FoodSlot : MonoBehaviour
                 {
                     background.sprite = UnlockBackground;
                     icon.sprite = null;
+                }
+            }
+        }
+
+        _currentCount = _maxCount;
+        FoodCreateButton.onClick.AddListener(SpawnFood);
+    }
+
+    void SpawnFood()
+    {
+        for (int i = 0; i < _hCount; i++)
+        {
+            for (int j = 0; j < _vCount; j++)
+            {
+                GameObject slot = _slots[i, j];
+                Image background = slot.GetComponent<Image>();
+                Image icon = slot.transform.Find("SlotIcon").GetComponent<Image>();
+
+                if (background.sprite == UnlockBackground && icon.sprite == null)
+                {
+                    icon.sprite = _spriteList[0].ItemIcon;
+                    _currentCount--;
+                    FoodCreateCountText.text = $"{_maxCount}/{_currentCount}";
+                    return;
                 }
             }
         }
