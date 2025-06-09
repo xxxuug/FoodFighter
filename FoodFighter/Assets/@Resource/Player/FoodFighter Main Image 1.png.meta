@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      FoodFighter Main Image 1_0: 2477653795584365378
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

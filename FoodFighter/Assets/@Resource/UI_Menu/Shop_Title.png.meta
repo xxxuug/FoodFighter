@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d1a22e2eae4586d4f8abc1bd12b6606f
+guid: b2a56f2bf97b3a9459ff8399b3003cc0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7141199060417800719
-    second: UI_Boss_0
+      213: -1690025178272848111
+    second: Shop_Title_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UI_Boss_0
+      name: Shop_Title_0
       rect:
         serializedVersion: 2
-        x: 12
-        y: 2205
-        width: 1155
-        height: 217
+        x: 3
+        y: 2189
+        width: 1170
+        height: 284
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1f5917d4a4d55ec90800000000000000
-      internalID: -7141199060417800719
+      spriteID: 117a493fd03db88e0800000000000000
+      internalID: -1690025178272848111
       vertices: []
       indices: 
       edges: []
@@ -147,8 +147,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      UI_Boss_0: -7141199060417800719
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
