@@ -10,7 +10,7 @@ public class ItemSprite
     public Sprite ItemIcon;
 }
 
-public class FoodSlot : MonoBehaviour
+public class SlotController : BaseController
 {
     [Header("슬롯 그리드 생성, 좌표 부여")]
     [SerializeField] GameObject _slotPrefab;
@@ -22,7 +22,7 @@ public class FoodSlot : MonoBehaviour
     [Header("슬롯 잠금 / 잠금해제")]
     [SerializeField] Sprite LockBackground;
     [SerializeField] Sprite LockIcon;
-    [SerializeField] Sprite UnlockBackground;
+    public Sprite UnlockBackground;
 
     [Header("레벨 별 슬롯 이미지 변환")]
     [SerializeField] private List<ItemSprite> _spriteList;
@@ -32,6 +32,9 @@ public class FoodSlot : MonoBehaviour
     public TMP_Text FoodCreateCountText;
     private int _currentCount;
     private int _maxCount = 10;
+
+
+    protected override void Initialize() { }
 
     void Start()
     {
@@ -43,13 +46,17 @@ public class FoodSlot : MonoBehaviour
             {
                 GameObject slot = Instantiate(_slotPrefab, transform);
                 _slots[i, j] = slot;
+                // FoodSlot에 컨트롤러 넘겨주기
+                FoodSlot foodSlot = slot.GetComponent<FoodSlot>();
+                if (foodSlot != null)
+                    foodSlot.SetSlotController(this);
 
                 // 잠금 슬롯의 배경 변환
                 Image background = slot.GetComponent<Image>();
                 background.sprite = LockBackground;
 
                 // 잠금 슬롯의 아이콘 변환
-                Image icon = slot.transform.Find("SlotIcon").GetComponent<Image>();
+                Image icon = slot.transform.Find(Define.SlotIcon).GetComponent<Image>();
                 icon.sprite = LockIcon;
 
                 if ((i == 2 || i == 3) && (j >= 1 && j <= 3))
@@ -72,13 +79,13 @@ public class FoodSlot : MonoBehaviour
             {
                 GameObject slot = _slots[i, j];
                 Image background = slot.GetComponent<Image>();
-                Image icon = slot.transform.Find("SlotIcon").GetComponent<Image>();
+                Image icon = slot.transform.Find(Define.SlotIcon).GetComponent<Image>();
 
                 if (background.sprite == UnlockBackground && icon.sprite == null)
                 {
                     icon.sprite = _spriteList[0].ItemIcon;
                     _currentCount--;
-                    FoodCreateCountText.text = $"{_maxCount}/{_currentCount}";
+                    FoodCreateCountText.text = $"{_currentCount}/{_maxCount}";
                     return;
                 }
             }

@@ -103,7 +103,7 @@ public class GameManager : Singleton<GameManager>
     public void AddGold(int gold)
     {
         _playerInfo.Gold += gold;
-        Debug.Log("ÇöÀç °ñµå : " + _playerInfo.Gold);
+        //Debug.Log("ÇöÀç °ñµå : " + _playerInfo.Gold);
         OnPlayerInfoChanged?.Invoke();
     }
 
