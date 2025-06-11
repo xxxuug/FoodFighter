@@ -15,7 +15,7 @@ public class FoodSlot : BaseController, IBeginDragHandler, IEndDragHandler, IDra
     private Vector3 _startScale; // 기존 스케일 
     private Transform _startParent; // 기존 부모 오브젝트
     private Transform _topParent; // 상단으로 이동시킬 부모 오브젝트
-    private int _currentLevel = 1;
+    private int _startLevel;
 
     protected override void Initialize() { }
 
@@ -76,11 +76,32 @@ public class FoodSlot : BaseController, IBeginDragHandler, IEndDragHandler, IDra
             {
                 if (targetSlot._icon != null && targetSlot._icon.sprite == _icon.sprite) // 아이콘이 같다면
                 {
-                    _currentLevel++;
-                    Debug.Log("다음 레벨로 전환");
+                    int currentLevel = 0;
+
+                    // 다음 레벨 이미지로 교체
+                    foreach (var item in _slotController._spriteLists)
+                    {
+                        if (item.ItemIcon == targetSlot._icon.sprite) // 아이콘 같은지 확인하고
+                        {
+                            currentLevel = item.ItemLevel; // 같으면 해당 아이콘 아이템 레벨을 넣어주기
+                            break;
+                        }
+                    }
+
+                    int nextLevel = currentLevel + 1; // 다음 레벨은 현재 레벨 +1
+
+                    // 복구
                     _icon.rectTransform.position = _startPos; // icon 원래 위치 복구
                     _icon.rectTransform.localScale = _startScale; // icon 원래 스케일 복구
                     _icon.sprite = null;
+
+                    foreach (var item in _slotController._spriteLists)
+                    {
+                        if (item.ItemLevel == nextLevel) // 아이템레벨이 다음 레벨이라면
+                        {
+                            targetSlot._icon.sprite = item.ItemIcon; // 해당 레벨 아이콘으로 바꿔주기
+                        }
+                    }
                     return;
                 }
             }

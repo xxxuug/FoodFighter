@@ -25,7 +25,7 @@ public class SlotController : BaseController
     public Sprite UnlockBackground;
 
     [Header("레벨 별 슬롯 이미지 변환")]
-    [SerializeField] private List<ItemSprite> _spriteList;
+    public List<ItemSprite> _spriteLists;
 
     [Header("음식 생성 버튼")]
     public Button FoodCreateButton;
@@ -58,11 +58,13 @@ public class SlotController : BaseController
                 // 잠금 슬롯의 아이콘 변환
                 Image icon = slot.transform.Find(Define.SlotIcon).GetComponent<Image>();
                 icon.sprite = LockIcon;
+                icon.color = new Color(0.435f, 0.435f, 0.435f);
 
                 if ((i == 2 || i == 3) && (j >= 1 && j <= 3))
                 {
                     background.sprite = UnlockBackground;
                     icon.sprite = null;
+                    icon.color = Color.white;
                 }
             }
         }
@@ -83,7 +85,7 @@ public class SlotController : BaseController
 
                 if (background.sprite == UnlockBackground && icon.sprite == null)
                 {
-                    icon.sprite = _spriteList[0].ItemIcon;
+                    icon.sprite = _spriteLists[0].ItemIcon;
                     _currentCount--;
                     FoodCreateCountText.text = $"{_currentCount}/{_maxCount}";
                     return;
