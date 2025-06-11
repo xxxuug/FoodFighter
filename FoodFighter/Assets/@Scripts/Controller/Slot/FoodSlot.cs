@@ -15,7 +15,6 @@ public class FoodSlot : BaseController, IBeginDragHandler, IEndDragHandler, IDra
     private Vector3 _startScale; // 기존 스케일 
     private Transform _startParent; // 기존 부모 오브젝트
     private Transform _topParent; // 상단으로 이동시킬 부모 오브젝트
-    private int _startLevel;
 
     protected override void Initialize() { }
 
@@ -42,7 +41,7 @@ public class FoodSlot : BaseController, IBeginDragHandler, IEndDragHandler, IDra
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (_background.sprite == _slotController.UnlockBackground)
+        if (_background.sprite == _slotController.UnlockBackground && _icon.sprite != null)
         {
             // 기존 정보 저장
             _startPos = _icon.rectTransform.position; // iocn의 원래 위치 저장
@@ -59,55 +58,60 @@ public class FoodSlot : BaseController, IBeginDragHandler, IEndDragHandler, IDra
 
     public void OnDrag(PointerEventData eventData)
     {
-        _icon.rectTransform.position = eventData.position;
+        if (_icon.sprite != null)
+            _icon.rectTransform.position = eventData.position;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        _icon.rectTransform.SetParent(_startParent, false); // icon 원래 부모 오브젝트 복구
+        if (_icon.sprite != null)
+        { 
+            _icon.rectTransform.SetParent(_startParent, false); // icon 원래 부모 오브젝트 복구
 
-        List<RaycastResult> results = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(eventData, results);
+            List<RaycastResult> results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(eventData, results);
 
-        foreach (var result in results)
-        {
-            var targetSlot = result.gameObject.GetComponent<FoodSlot>();
-            if (targetSlot != null && targetSlot != this) // 다른 슬롯이라면
+            foreach (var result in results)
             {
-                if (targetSlot._icon != null && targetSlot._icon.sprite == _icon.sprite) // 아이콘이 같다면
+                var targetSlot = result.gameObject.GetComponent<FoodSlot>();
+                if (targetSlot != null && targetSlot != this) // 다른 슬롯이라면
                 {
-                    int currentLevel = 0;
-
-                    // 다음 레벨 이미지로 교체
-                    foreach (var item in _slotController._spriteLists)
+                    if (targetSlot._icon != null && targetSlot._icon.sprite == _icon.sprite) // 아이콘이 같다면
                     {
-                        if (item.ItemIcon == targetSlot._icon.sprite) // 아이콘 같은지 확인하고
+                        int currentLevel = 0;
+
+                        // 다음 레벨 이미지로 교체
+                        foreach (var item in _slotController._spriteLists)
                         {
-                            currentLevel = item.ItemLevel; // 같으면 해당 아이콘 아이템 레벨을 넣어주기
-                            break;
+                            if (item.ItemIcon == targetSlot._icon.sprite) // 아이콘 같은지 확인하고
+                            {
+                                currentLevel = item.ItemLevel; // 같으면 해당 아이콘 아이템 레벨을 넣어주기
+                                break;
+                            }
                         }
-                    }
 
-                    int nextLevel = currentLevel + 1; // 다음 레벨은 현재 레벨 +1
+                        int nextLevel = currentLevel + 1; // 다음 레벨은 현재 레벨 +1
 
-                    // 복구
-                    _icon.rectTransform.position = _startPos; // icon 원래 위치 복구
-                    _icon.rectTransform.localScale = _startScale; // icon 원래 스케일 복구
-                    _icon.sprite = null;
+                        // 복구
+                        _icon.rectTransform.position = _startPos; // icon 원래 위치 복구
+                        _icon.rectTransform.localScale = _startScale; // icon 원래 스케일 복구
+                        _icon.sprite = null;
+                        _icon.color = new Color(1f, 1f, 1f, 0f);
 
-                    foreach (var item in _slotController._spriteLists)
-                    {
-                        if (item.ItemLevel == nextLevel) // 아이템레벨이 다음 레벨이라면
+                        foreach (var item in _slotController._spriteLists)
                         {
-                            targetSlot._icon.sprite = item.ItemIcon; // 해당 레벨 아이콘으로 바꿔주기
+                            if (item.ItemLevel == nextLevel) // 아이템레벨이 다음 레벨이라면
+                            {
+                                targetSlot._icon.sprite = item.ItemIcon; // 해당 레벨 아이콘으로 바꿔주기
+                            }
                         }
+                        return;
                     }
-                    return;
                 }
             }
-        }
 
-        _icon.rectTransform.position = _startPos; // icon 원래 위치 복구
-        _icon.rectTransform.localScale = _startScale; // icon 원래 스케일 복구
+            _icon.rectTransform.position = _startPos; // icon 원래 위치 복구
+            _icon.rectTransform.localScale = _startScale; // icon 원래 스케일 복구
+        }
     }
 }

@@ -64,7 +64,7 @@ public class SlotController : BaseController
                 {
                     background.sprite = UnlockBackground;
                     icon.sprite = null;
-                    icon.color = Color.white;
+                    icon.color = new Color(1f, 1f, 1f, 0f);
                 }
             }
         }
@@ -85,6 +85,7 @@ public class SlotController : BaseController
 
                 if (background.sprite == UnlockBackground && icon.sprite == null)
                 {
+                    icon.color = new Color(1f, 1f, 1f, 1f);
                     icon.sprite = _spriteLists[0].ItemIcon;
                     _currentCount--;
                     FoodCreateCountText.text = $"{_currentCount}/{_maxCount}";
