@@ -6,8 +6,13 @@ public class FoodBullet : BaseController
     public float speed = 5f;
     public float Second = 1.5f;
 
+    private SpriteRenderer _spriteRederer;
 
-    protected override void Initialize() { }
+
+    protected override void Initialize() 
+    {
+        _spriteRederer = GetComponent<SpriteRenderer>();
+    }
 
     private void OnEnable()
     {
@@ -36,5 +41,13 @@ public class FoodBullet : BaseController
             EnemyController enemy = collision.GetComponent<EnemyController>();
             enemy.TakeDamage(2);
         }
+    }
+
+    public void SetFoodSprite(Sprite sprite)
+    {
+        if (_spriteRederer == null)
+            _spriteRederer = GetComponent<SpriteRenderer>();
+
+        _spriteRederer.sprite = sprite;
     }
 }

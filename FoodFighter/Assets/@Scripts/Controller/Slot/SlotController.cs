@@ -10,8 +10,10 @@ public class ItemSprite
     public Sprite ItemIcon;
 }
 
-public class SlotController : BaseController
+public class SlotController : Singleton<SlotController>
 {
+    public FoodBullet foodbullet;
+
     [Header("슬롯 그리드 생성, 좌표 부여")]
     [SerializeField] GameObject _slotPrefab;
     [SerializeField] int _hCount = 6;
@@ -48,8 +50,6 @@ public class SlotController : BaseController
                 _slots[i, j] = slot;
                 // FoodSlot에 컨트롤러 넘겨주기
                 FoodSlot foodSlot = slot.GetComponent<FoodSlot>();
-                if (foodSlot != null)
-                    foodSlot.SetSlotController(this);
 
                 // 잠금 슬롯의 배경 변환
                 Image background = slot.GetComponent<Image>();
@@ -93,5 +93,32 @@ public class SlotController : BaseController
                 }
             }
         }
+    }
+
+    public void FindMaxFoodBullet(int nextLevel)
+    {
+        int maxLevel = -1; // 초기 값을 -1로 줘서 아직 찾지 못한 초기 값임을 나타냄
+        Sprite maxSprite = null; // 최고 레벨 이미지 null
+
+        foreach (var slot in _slots)
+        {
+            Image icon = slot.transform.Find(Define.SlotIcon).GetComponent<Image>();
+
+            if (icon.sprite == null) continue;
+
+            if (_spriteLists[nextLevel].ItemIcon == icon.sprite) // 받아온 nextLevel이 i와 같다면
+            {
+                if (nextLevel > maxLevel) // 그 레벨이 현재 최대 레벨보다 높다면
+                {
+                    maxLevel = nextLevel; // 최대 레벨을 이 레벨로 지정
+                    maxSprite = icon.sprite; // 아이콘도 최대 레벨 아이콘으로 지정
+                    foodbullet.SetFoodSprite(maxSprite); // 푸드불렛의 실질적 아이콘도 변경
+                }
+                break;
+            }
+
+        }
+        Debug.Log("현재 최고 레벨 : " + maxLevel);
+        Debug.Log("현재 최고 레벨 아이템 : " + maxSprite);
     }
 }

@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class FoodSlot : BaseController, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    private SlotController _slotController; // SlotController 참조
-
     private Image _background; // 슬롯 배경
     private Image _icon; // 슬롯 아이콘
 
@@ -34,14 +32,9 @@ public class FoodSlot : BaseController, IBeginDragHandler, IEndDragHandler, IDra
         _topParent = _icon.transform.root.Find(Define.SlotBackground);
     }
 
-    public void SetSlotController(SlotController controller)
-    {
-        _slotController = controller;
-    }
-
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (_background.sprite == _slotController.UnlockBackground && _icon.sprite != null)
+        if (_background.sprite == SlotController.Instance.UnlockBackground && _icon.sprite != null)
         {
             // 기존 정보 저장
             _startPos = _icon.rectTransform.position; // iocn의 원래 위치 저장
@@ -81,7 +74,7 @@ public class FoodSlot : BaseController, IBeginDragHandler, IEndDragHandler, IDra
                         int currentLevel = 0;
 
                         // 다음 레벨 이미지로 교체
-                        foreach (var item in _slotController._spriteLists)
+                        foreach (var item in SlotController.Instance._spriteLists)
                         {
                             if (item.ItemIcon == targetSlot._icon.sprite) // 아이콘 같은지 확인하고
                             {
@@ -98,11 +91,12 @@ public class FoodSlot : BaseController, IBeginDragHandler, IEndDragHandler, IDra
                         _icon.sprite = null;
                         _icon.color = new Color(1f, 1f, 1f, 0f);
 
-                        foreach (var item in _slotController._spriteLists)
+                        foreach (var item in SlotController.Instance._spriteLists)
                         {
                             if (item.ItemLevel == nextLevel) // 아이템레벨이 다음 레벨이라면
                             {
                                 targetSlot._icon.sprite = item.ItemIcon; // 해당 레벨 아이콘으로 바꿔주기
+                                SlotController.Instance.FindMaxFoodBullet(nextLevel); // 바꿔줄 때마다 여기서 현재 존재하는 가장 최고 레벨 아이콘이 뭔지 찾기
                             }
                         }
                         return;

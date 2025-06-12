@@ -16108,6 +16108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f654f3ccc3d49b54bb4df8877aecf5a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  foodbullet: {fileID: 5943430482998367373, guid: 10a0bf8c8e309ab4f81f05433074f166, type: 3}
   _slotPrefab: {fileID: 5686500887598059584, guid: 77a15e3ed21e8ae46a1b76c6e9891fd0, type: 3}
   _hCount: 6
   _vCount: 5
