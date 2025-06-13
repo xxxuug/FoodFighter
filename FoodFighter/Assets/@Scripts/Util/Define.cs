@@ -5,7 +5,7 @@ public class Define
     #region Path
     public const string BulletPath = "@Prefabs/FoodBullet";
     public const string PlayerPath = "@Prefabs/Player";
-    public const string EffectPath = "@Prefabs/Effect";
+    public const string HitEffectPath = "@Prefabs/Enemy/HitEffect.prefab";
     public const string AllEnemyPath = "@Prefabs/Enemy";
     public const string GoldPath = "@Prefabs/Gold";
     #endregion

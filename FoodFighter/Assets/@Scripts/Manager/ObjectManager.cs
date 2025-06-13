@@ -16,10 +16,12 @@ public class ObjectManager : Singleton<ObjectManager>
     // 스폰할 수 있는 몬스터 프리팹 목록
     public List<GameObject> EnemyPrefabs = new List<GameObject>();
     public List<GameObject> GoldPrefabs = new List<GameObject>();
+    public List<GameObject> HitEffectPrefabs = new List<GameObject>();
 
     private GameObject _playerResource;
     private GameObject _foodResource;
     private GameObject _goldResource;
+    private GameObject _hitEffectResource;
 
     protected override void Initialize()
     {
@@ -36,6 +38,7 @@ public class ObjectManager : Singleton<ObjectManager>
         _playerResource = Resources.Load<GameObject>(Define.PlayerPath);
         _foodResource = Resources.Load<GameObject>(Define.BulletPath);
         _goldResource = Resources.Load<GameObject>(Define.GoldPath);
+        _hitEffectResource = Resources.Load<GameObject>(Define.HitEffectPath);
 
         // enemy 폴더 프리팹 로드
         EnemyPrefabs.Clear();
@@ -60,7 +63,7 @@ public class ObjectManager : Singleton<ObjectManager>
             GameObject obj = Instantiate(_playerResource, spawnPos, Quaternion.identity);
             PlayerController playerController = obj.GetOrAddComponent<PlayerController>();
             _player = playerController;
-            FindAnyObjectByType<Scrolling>()?.SetPlayer(playerController);
+            FindAnyObjectByType<Scrolling>()?.SetPlayer(playerController); // 코드 개선 필요
 
             return playerController as T;
         }
@@ -94,6 +97,12 @@ public class ObjectManager : Singleton<ObjectManager>
         return null;
     }
 
+    // 게임 오브젝트 스폰 함수
+    public GameObject Spawn(GameObject prefab)
+    {
+        return null;
+    }
+
     public void Despawn<T>(T obj) where T : BaseController
     {
         obj.gameObject.SetActive(false);
@@ -102,6 +111,12 @@ public class ObjectManager : Singleton<ObjectManager>
 
         if (enemy != null)
             StageManager.Instance.RemoveEnemy(enemy);
+    }
+
+    // 게임오브젝트 despawn
+    public void Despawn(GameObject obj)
+    {
+        obj.SetActive(false);
     }
 
     protected override void Clear()

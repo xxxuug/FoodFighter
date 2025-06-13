@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class FoodBullet : BaseController
 {
+    public GameObject HitEffect;
+
     public float speed = 5f;
     public float Second = 1.5f;
 
@@ -39,6 +41,8 @@ public class FoodBullet : BaseController
         if (collision.CompareTag(Define.EnemyTag))
         {
             ObjectManager.Instance.Despawn(this);
+            StartCoroutine(PlayHitEffect(HitEffect));
+
             EnemyController enemy = collision.GetComponent<EnemyController>();
             enemy.TakeDamage(2);
         }
@@ -53,5 +57,12 @@ public class FoodBullet : BaseController
 
         Debug.Log("무기 스프라이트 변경됨: " + maxSprite.name);
         // 추후 공격력 증가 함수 참조
+    }
+
+    IEnumerator PlayHitEffect(GameObject effect)
+    {
+        Instantiate(HitEffect, transform.position, Quaternion.identity);
+        yield return new WaitForSeconds(0.3f);
+        ObjectManager.Instance.Despawn(effect);
     }
 }
