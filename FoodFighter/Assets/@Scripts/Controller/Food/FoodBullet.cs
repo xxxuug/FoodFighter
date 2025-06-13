@@ -1,5 +1,5 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
 public class FoodBullet : BaseController
 {
@@ -12,6 +12,7 @@ public class FoodBullet : BaseController
     protected override void Initialize() 
     {
         _spriteRederer = GetComponent<SpriteRenderer>();
+        SlotController.Instance.FindFoodBullet(this);
     }
 
     private void OnEnable()
@@ -43,11 +44,14 @@ public class FoodBullet : BaseController
         }
     }
 
-    public void SetFoodSprite(Sprite sprite)
+    public void SetFoodSprite(Sprite maxSprite) // 현재 최대 레벨 음식의 아이콘으로 변경해주는 함수
     {
         if (_spriteRederer == null)
             _spriteRederer = GetComponent<SpriteRenderer>();
 
-        _spriteRederer.sprite = sprite;
+        _spriteRederer.sprite = maxSprite;
+
+        Debug.Log("무기 스프라이트 변경됨: " + maxSprite.name);
+        // 추후 공격력 증가 함수 참조
     }
 }

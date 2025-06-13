@@ -96,7 +96,7 @@ public class FoodSlot : BaseController, IBeginDragHandler, IEndDragHandler, IDra
                             if (item.ItemLevel == nextLevel) // 아이템레벨이 다음 레벨이라면
                             {
                                 targetSlot._icon.sprite = item.ItemIcon; // 해당 레벨 아이콘으로 바꿔주기
-                                SlotController.Instance.FindMaxFoodBullet(nextLevel); // 바꿔줄 때마다 여기서 현재 존재하는 가장 최고 레벨 아이콘이 뭔지 찾기
+                                SlotController.Instance.FindMaxFoodBullet(); // 바꿔줄 때마다 여기서 현재 존재하는 가장 최고 레벨 아이콘이 뭔지 찾기
                             }
                         }
                         return;

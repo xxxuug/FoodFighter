@@ -1488,7 +1488,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5630ea1b77542d345a16e0bfc25a988d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boss: []
+  lockManager: []
 --- !u!1 &69278393
 GameObject:
   m_ObjectHideFlags: 0
@@ -2694,9 +2694,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5630ea1b77542d345a16e0bfc25a988d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boss:
-  - StageButton: {fileID: 141293445}
-    LockIcon: {fileID: 633927189}
+  lockManager: []
 --- !u!1 &152520603
 GameObject:
   m_ObjectHideFlags: 0
@@ -5262,7 +5260,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06b6cfc11b088844697d83ad233524aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StageLevel: 0
   lockInfo:
   - lockType: 0
     Level: 5
@@ -10479,7 +10476,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06b6cfc11b088844697d83ad233524aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StageLevel: 0
   lockInfo:
   - lockType: 0
     Level: 3
@@ -14869,7 +14865,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06b6cfc11b088844697d83ad233524aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StageLevel: 0
   lockInfo:
   - lockType: 1
     Level: 1
@@ -15675,9 +15670,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5630ea1b77542d345a16e0bfc25a988d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boss:
-  - StageButton: {fileID: 1079047325}
-    LockIcon: {fileID: 1089031821}
+  lockManager: []
 --- !u!1 &1089031821
 GameObject:
   m_ObjectHideFlags: 0
@@ -16122,7 +16115,15 @@ MonoBehaviour:
   LockBackground: {fileID: 21300000, guid: 5d9ecff74e9d9a94cae4b86801f18b18, type: 2}
   LockIcon: {fileID: 3262124323769656087, guid: 712c1735ec4c6fe4eaa3aa2f3eadfbeb, type: 3}
   UnlockBackground: {fileID: 21300000, guid: 1b2d56055f60f664083353afa55536eb, type: 2}
-  _spriteLists: []
+  _spriteLists:
+  - ItemLevel: 1
+    ItemIcon: {fileID: -7851055758016463430, guid: 7f63d19e6bbae5f459d44bc7fe7de136, type: 3}
+  - ItemLevel: 2
+    ItemIcon: {fileID: 6533115755915052667, guid: af223357aa9645c4da01723af16cc6f8, type: 3}
+  - ItemLevel: 3
+    ItemIcon: {fileID: -3181534952648006660, guid: 38b4ad5cc8b7c6849940a5c74e86b8dc, type: 3}
+  - ItemLevel: 4
+    ItemIcon: {fileID: 229595504817540955, guid: 4f98aa8ff33d7db488dc3cc87cc2e730, type: 3}
   FoodCreateButton: {fileID: 1496713999}
   FoodCreateCountText: {fileID: 717885609}
 --- !u!1 &1118068288
@@ -19199,7 +19200,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06b6cfc11b088844697d83ad233524aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StageLevel: 0
   lockInfo:
   - lockType: 1
     Level: 1
@@ -20207,9 +20207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5630ea1b77542d345a16e0bfc25a988d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boss:
-  - StageButton: {fileID: 1340370249}
-    LockIcon: {fileID: 794009765}
+  lockManager: []
 --- !u!1 &1349813188
 GameObject:
   m_ObjectHideFlags: 0
@@ -27582,9 +27580,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5630ea1b77542d345a16e0bfc25a988d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boss:
-  - StageButton: {fileID: 1820535994}
-    LockIcon: {fileID: 0}
+  lockManager: []
 --- !u!1 &1822475675
 GameObject:
   m_ObjectHideFlags: 0
@@ -29758,7 +29754,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06b6cfc11b088844697d83ad233524aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StageLevel: 0
   lockInfo:
   - lockType: 1
     Level: 1

@@ -12,7 +12,7 @@ public class ItemSprite
 
 public class SlotController : Singleton<SlotController>
 {
-    public FoodBullet foodbullet;
+    private FoodBullet _foodbullet;
 
     [Header("슬롯 그리드 생성, 좌표 부여")]
     [SerializeField] GameObject _slotPrefab;
@@ -70,6 +70,7 @@ public class SlotController : Singleton<SlotController>
         }
 
         _currentCount = _maxCount;
+        SpawnFood(); // 처음 시작할 때 슬롯 첫칸에 기본 음식 놓이게끔
         FoodCreateButton.onClick.AddListener(SpawnFood);
     }
 
@@ -81,7 +82,7 @@ public class SlotController : Singleton<SlotController>
             {
                 GameObject slot = _slots[i, j];
                 Image background = slot.GetComponent<Image>();
-                Image icon = slot.transform.Find(Define.SlotIcon).GetComponent<Image>();
+                Image icon = slot.transform.Find(Define.SlotIcon).GetComponent<Image>(); // Find 함수 개선 필요
 
                 if (background.sprite == UnlockBackground && icon.sprite == null)
                 {
@@ -95,7 +96,15 @@ public class SlotController : Singleton<SlotController>
         }
     }
 
-    public void FindMaxFoodBullet(int nextLevel)
+    // FoodBullet 찾아오는 함수
+    public void FindFoodBullet(FoodBullet bullet)
+    {
+        _foodbullet = bullet;
+        FindMaxFoodBullet();
+    }
+
+    // 현재 unlock 슬롯에 존재하는 최고 레벨의 Food 찾는 함수
+    public void FindMaxFoodBullet()
     {
         int maxLevel = -1; // 초기 값을 -1로 줘서 아직 찾지 못한 초기 값임을 나타냄
         Sprite maxSprite = null; // 최고 레벨 이미지 null
@@ -106,17 +115,19 @@ public class SlotController : Singleton<SlotController>
 
             if (icon.sprite == null) continue;
 
-            if (_spriteLists[nextLevel].ItemIcon == icon.sprite) // 받아온 nextLevel이 i와 같다면
+            foreach (var item in _spriteLists)
             {
-                if (nextLevel > maxLevel) // 그 레벨이 현재 최대 레벨보다 높다면
+                if (item.ItemIcon == icon.sprite) // 
                 {
-                    maxLevel = nextLevel; // 최대 레벨을 이 레벨로 지정
-                    maxSprite = icon.sprite; // 아이콘도 최대 레벨 아이콘으로 지정
-                    foodbullet.SetFoodSprite(maxSprite); // 푸드불렛의 실질적 아이콘도 변경
+                    if (item.ItemLevel > maxLevel) // 그 레벨이 현재 최대 레벨보다 높다면
+                    {
+                        maxLevel = item.ItemLevel; // 최대 레벨을 이 레벨로 지정
+                        maxSprite = icon.sprite; // 아이콘도 최대 레벨 아이콘으로 지정
+                        _foodbullet.SetFoodSprite(maxSprite); // 푸드불렛의 실질적 아이콘도 변경
+                    }
+                    break;
                 }
-                break;
             }
-
         }
         Debug.Log("현재 최고 레벨 : " + maxLevel);
         Debug.Log("현재 최고 레벨 아이템 : " + maxSprite);
