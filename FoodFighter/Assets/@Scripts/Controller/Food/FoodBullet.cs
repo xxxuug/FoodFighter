@@ -7,6 +7,7 @@ public class FoodBullet : BaseController
 
     public float speed = 5f;
     public float Second = 1.5f;
+    private float atk; 
 
     private SpriteRenderer _spriteRederer;
 
@@ -19,6 +20,9 @@ public class FoodBullet : BaseController
 
     private void OnEnable()
     {
+        // 공격력 가져오기
+        atk = GameManager.Instance[PlayerStat.Atk];
+
         StartCoroutine(DisableTime());
     }
 
@@ -43,7 +47,8 @@ public class FoodBullet : BaseController
             StartCoroutine(PlayHitEffect(HitEffect));
 
             EnemyController enemy = collision.GetComponent<EnemyController>();
-            enemy.TakeDamage(2);
+            enemy.TakeDamage(atk);
+            Debug.Log($"몬스터에게 {atk} 데미지 입힘");
         }
     }
 

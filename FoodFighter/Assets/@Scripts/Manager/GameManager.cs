@@ -38,6 +38,8 @@ public class GameManager : Singleton<GameManager>
 
     private void Awake()
     {
+        DontDestroyOnLoad(this.gameObject);
+
         InitPlayerState();
 
         GoldText = GameObject.Find("Gold Text - Text")?.GetComponent<TMP_Text>();
@@ -49,7 +51,7 @@ public class GameManager : Singleton<GameManager>
 
     void InitPlayerState() // 플레이어 스탯 초기값
     {
-        this[PlayerStat.Atk] = 0;
+        this[PlayerStat.Atk] = 1;
         this[PlayerStat.CurrentHp] = 500;
         this[PlayerStat.MaxHp] = this[PlayerStat.CurrentHp];
         this[PlayerStat.CriticalProbability] = 0;
@@ -141,5 +143,36 @@ public class GameManager : Singleton<GameManager>
         if (DiamondText != null)
         DiamondText.text = $"{PlayerInfo.Diamond}";
     }
+    #endregion
+
+    #region StageLavel
+    public int ClearedStageLevel = 0; // 마지막으로 클리어한 스테이지
+    public int StageUnlock = 0; // 도전 버튼 누른 보스 번호
+
+    public bool isStageUnlocked(int stageIndex)
+    {
+        return ClearedStageLevel >= stageIndex;
+    }
+
+    // 클리어
+    public void ClearStage(int stageIndex)
+    {
+        if (stageIndex > ClearedStageLevel)
+        {
+            ClearedStageLevel = stageIndex;
+        }
+    }
+
+    //public List<bool> StageLocked;
+
+    //public void UnlockStage(int stageIndex)
+    //{
+    //    StageLocked[stageIndex] = false;
+    //}
+
+    //public bool IsStageLocked(int stageIndex)
+    //{
+    //    return StageLocked[stageIndex];
+    //}
     #endregion
 }
