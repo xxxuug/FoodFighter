@@ -97,6 +97,38 @@ public class PoolManager : Singleton<PoolManager>
         return newObj.GetComponent<BaseController>();
     }
 
+    public GameObject GetEffectObject(GameObject prefab, Vector3 pos)
+    {
+        if (_pooledPrefabs.ContainsKey(prefab))
+        {
+            foreach (var obj in _pooledPrefabs[prefab])
+            {
+                if (!obj.activeSelf)
+                {
+                    obj.transform.position = pos;
+                    obj.SetActive(true);
+                    return obj;
+                }
+            }
+        }
+        else
+        {
+            _pooledPrefabs[prefab] = new List<GameObject>();
+
+            if (!_parentPrefabs.ContainsKey(prefab))
+            {
+                GameObject go = new GameObject(prefab.name);
+                _parentPrefabs[prefab] = go;
+            }
+        }
+
+        GameObject newObj = GameObject.Instantiate(prefab, pos, Quaternion.identity);
+        newObj.transform.parent = _parentPrefabs[prefab].transform;
+        _pooledPrefabs[prefab].Add(newObj);
+
+        return newObj;
+    }
+
     protected override void Clear()
     {
         base.Clear();

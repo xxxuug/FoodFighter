@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -117,6 +118,7 @@ public class ObjectManager : Singleton<ObjectManager>
     public void Despawn(GameObject obj)
     {
         obj.SetActive(false);
+        Debug.Log("Despawn ½ÇÇà");
     }
 
     protected override void Clear()

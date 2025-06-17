@@ -40,7 +40,6 @@ public class FoodBullet : BaseController
     {
         if (collision.CompareTag(Define.EnemyTag))
         {
-            ObjectManager.Instance.Despawn(this);
             StartCoroutine(PlayHitEffect(HitEffect));
 
             EnemyController enemy = collision.GetComponent<EnemyController>();
@@ -61,8 +60,13 @@ public class FoodBullet : BaseController
 
     IEnumerator PlayHitEffect(GameObject effect)
     {
-        Instantiate(HitEffect, transform.position, Quaternion.identity);
+        GameObject hitEffect = PoolManager.Instance.GetEffectObject(effect, transform.position);
+        Debug.Log("¿Ã∆Â∆Æ ª˝º∫");
         yield return new WaitForSeconds(0.3f);
-        ObjectManager.Instance.Despawn(effect);
+
+        Debug.Log($"¿Ã∆Â∆Æ ªÁ∂Û¡¸ √≥∏Æ: {hitEffect.name}");
+        ObjectManager.Instance.Despawn(hitEffect); // ¿Ã∆Â∆Æ false
+        yield return new WaitForSeconds(0.3f);
+        ObjectManager.Instance.Despawn(this); // ¿ΩΩƒ false
     }
 }
