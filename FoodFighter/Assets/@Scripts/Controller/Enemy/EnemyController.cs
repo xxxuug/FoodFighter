@@ -5,7 +5,7 @@ public class EnemyController : BaseController
     [SerializeField] Transform _player;
     [SerializeField] AttackController _attackController;
     private Animator _animator;
-    private float _speed = 0.3f;
+    private float _speed = 0.5f;
 
     [Header("Status")]
     private float _initHp = 10;
