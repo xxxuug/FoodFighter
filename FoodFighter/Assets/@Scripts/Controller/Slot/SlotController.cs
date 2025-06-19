@@ -35,6 +35,41 @@ public class SlotController : Singleton<SlotController>
     private int _currentCount;
     private int _maxCount = 10;
 
+    private List<Vector2Int> _slotUnlockOrder = new List<Vector2Int>()
+{
+    new Vector2Int(2, 1),
+    new Vector2Int(3, 1),
+    new Vector2Int(2, 2),
+    new Vector2Int(3, 2),
+    new Vector2Int(2, 3),
+    new Vector2Int(3, 3),
+
+    new Vector2Int(1, 1),
+    new Vector2Int(4, 1),
+    new Vector2Int(1, 2),
+    new Vector2Int(4, 2),
+    new Vector2Int(1, 3),
+    new Vector2Int(4, 3),
+
+    new Vector2Int(0, 1),
+    new Vector2Int(0, 2),
+    new Vector2Int(0, 3),
+    new Vector2Int(2, 0),
+    new Vector2Int(3, 0),
+    new Vector2Int(1, 0),
+    new Vector2Int(4, 0),
+    new Vector2Int(2, 4),
+    new Vector2Int(3, 4),
+    new Vector2Int(1, 4),
+    new Vector2Int(4, 4),
+    new Vector2Int(0, 0),
+    new Vector2Int(0, 4),
+    new Vector2Int(5, 0),
+    new Vector2Int(5, 1),
+    new Vector2Int(5, 2),
+    new Vector2Int(5, 3),
+    new Vector2Int(5, 4),
+};
 
     protected override void Initialize() { }
 
@@ -48,30 +83,45 @@ public class SlotController : Singleton<SlotController>
             {
                 GameObject slot = Instantiate(_slotPrefab, transform);
                 _slots[i, j] = slot;
-                // FoodSlot에 컨트롤러 넘겨주기
-                FoodSlot foodSlot = slot.GetComponent<FoodSlot>();
-
-                // 잠금 슬롯의 배경 변환
-                Image background = slot.GetComponent<Image>();
-                background.sprite = LockBackground;
-
-                // 잠금 슬롯의 아이콘 변환
-                Image icon = slot.transform.Find(Define.SlotIcon).GetComponent<Image>();
-                icon.sprite = LockIcon;
-                icon.color = new Color(0.435f, 0.435f, 0.435f);
-
-                if ((i == 2 || i == 3) && (j >= 1 && j <= 3))
-                {
-                    background.sprite = UnlockBackground;
-                    icon.sprite = null;
-                    icon.color = new Color(1f, 1f, 1f, 0f);
-                }
             }
         }
 
+        UpdateSlotUnlock();
+
         _currentCount = _maxCount;
-        SpawnFood(); // 처음 시작할 때 슬롯 첫칸에 기본 음식 놓이게끔
+        SpawnFood();
         FoodCreateButton.onClick.AddListener(SpawnFood);
+    }
+
+    public void UpdateSlotUnlock()
+    {
+        int unlockCount = Mathf.FloorToInt(GameManager.Instance[PlayerStat.SlotCount]);
+
+        for (int index = 0; index < _slotUnlockOrder.Count; index++)
+        {
+            Vector2Int pos = _slotUnlockOrder[index];
+            int i = pos.x;
+            int j = pos.y;
+
+            if (i < 0 || i >= _hCount || j < 0 || j >= _vCount) continue;
+
+            GameObject slot = _slots[i, j];
+            Image background = slot.GetComponent<Image>();
+            Image icon = slot.transform.Find(Define.SlotIcon).GetComponent<Image>();
+
+            if (index < unlockCount)
+            {
+                background.sprite = UnlockBackground;
+                icon.sprite = null;
+                icon.color = new Color(1f, 1f, 1f, 0f);
+            }
+            else
+            {
+                background.sprite = LockBackground;
+                icon.sprite = LockIcon;
+                icon.color = new Color(0.435f, 0.435f, 0.435f);
+            }
+        }
     }
 
     void SpawnFood()
@@ -82,7 +132,7 @@ public class SlotController : Singleton<SlotController>
             {
                 GameObject slot = _slots[i, j];
                 Image background = slot.GetComponent<Image>();
-                Image icon = slot.transform.Find(Define.SlotIcon).GetComponent<Image>(); // Find 함수 개선 필요
+                Image icon = slot.transform.Find(Define.SlotIcon).GetComponent<Image>();
 
                 if (background.sprite == UnlockBackground && icon.sprite == null)
                 {
@@ -96,18 +146,16 @@ public class SlotController : Singleton<SlotController>
         }
     }
 
-    // FoodBullet 찾아오는 함수
     public void FindFoodBullet(FoodBullet bullet)
     {
         _foodbullet = bullet;
         FindMaxFoodBullet();
     }
 
-    // 현재 unlock 슬롯에 존재하는 최고 레벨의 Food 찾는 함수
     public void FindMaxFoodBullet()
     {
-        int maxLevel = -1; // 초기 값을 -1로 줘서 아직 찾지 못한 초기 값임을 나타냄
-        Sprite maxSprite = null; // 최고 레벨 이미지 null
+        int maxLevel = -1;
+        Sprite maxSprite = null;
 
         foreach (var slot in _slots)
         {
@@ -117,19 +165,20 @@ public class SlotController : Singleton<SlotController>
 
             foreach (var item in _spriteLists)
             {
-                if (item.ItemIcon == icon.sprite) // 
+                if (item.ItemIcon == icon.sprite)
                 {
-                    if (item.ItemLevel > maxLevel) // 그 레벨이 현재 최대 레벨보다 높다면
+                    if (item.ItemLevel > maxLevel)
                     {
-                        maxLevel = item.ItemLevel; // 최대 레벨을 이 레벨로 지정
-                        maxSprite = icon.sprite; // 아이콘도 최대 레벨 아이콘으로 지정
-                        _foodbullet.SetFoodSprite(maxSprite); // 푸드불렛의 실질적 아이콘도 변경
+                        maxLevel = item.ItemLevel;
+                        maxSprite = icon.sprite;
+                        _foodbullet.SetFoodSprite(maxSprite);
                     }
                     break;
                 }
             }
         }
-        Debug.Log("현재 최고 레벨 : " + maxLevel);
-        Debug.Log("현재 최고 레벨 아이템 : " + maxSprite);
+
+        // Debug.Log("현재 최고 레벨 : " + maxLevel);
+        // Debug.Log("현재 최고 레벨 아이템 : " + maxSprite);
     }
 }

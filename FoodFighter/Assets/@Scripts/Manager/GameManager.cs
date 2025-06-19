@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 public enum PlayerStat
@@ -38,14 +39,23 @@ public class GameManager : Singleton<GameManager>
 
     private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
+        //DontDestroyOnLoad(this.gameObject);
 
         InitPlayerState();
 
-        GoldText = GameObject.Find("Gold Text - Text")?.GetComponent<TMP_Text>();
-        DiamondText = GameObject.Find("Diamond Text - Text")?.GetComponent<TMP_Text>();
+        // GoldText = GameObject.Find("Gold Text - Text")?.GetComponent<TMP_Text>();
+        // DiamondText = GameObject.Find("Diamond Text - Text")?.GetComponent<TMP_Text>();
+        GoldText = GameObject.Find(Define.GoldText)?.GetComponent<TMP_Text>();
+        DiamondText = GameObject.Find(Define.DiamondText)?.GetComponent<TMP_Text>();
 
         OnPlayerInfoChanged += UpdateMoney;
+        UpdateMoney();
+    }
+
+    protected override void Clear()
+    {
+        base.Clear();
+
         UpdateMoney();
     }
 
@@ -105,7 +115,6 @@ public class GameManager : Singleton<GameManager>
     public void AddGold(int gold)
     {
         _playerInfo.Gold += gold;
-        //Debug.Log("현재 골드 : " + _playerInfo.Gold);
         OnPlayerInfoChanged?.Invoke();
     }
 
@@ -125,6 +134,7 @@ public class GameManager : Singleton<GameManager>
         return true;
     }
 
+    // 다이아몬드 감소 함수
     public bool MinusDiamond(int amount)
     {
         if (_playerInfo.Diamond < amount) return false;
@@ -139,9 +149,10 @@ public class GameManager : Singleton<GameManager>
         //DiamondText.text = $"{Diamond}";
 
         if (GoldText != null)
-        GoldText.text = $"{PlayerInfo.Gold}";
+        //GoldText.text = $"{PlayerInfo.Gold}";
+        GoldText.text = $"{_playerInfo.Gold}";
         if (DiamondText != null)
-        DiamondText.text = $"{PlayerInfo.Diamond}";
+        DiamondText.text = $"{_playerInfo.Diamond}";
     }
     #endregion
 

@@ -15,9 +15,8 @@ public class UpgradeManager : MonoBehaviour
     public TMP_Text UpgradeCostText;
 
     [Header("강화 관련")]
-   // public UI_Money uiMoney; // 골드/다이아 참조
+    // public UI_Money uiMoney; // 골드/다이아 참조
     public UpgradeInfo[] upgradeInfo; // 인스펙터에서 설정
-    // 혹시 지금 메이플스토리를 즐기시지 않는 지인분들이 계시다면 얘네가 여름에 뭔가 큰걸 하려고 하는거같은데
 
     [Header("잠금 연동")]
     public LockManager[] lockManager;
@@ -25,7 +24,7 @@ public class UpgradeManager : MonoBehaviour
     [Header("아이콘")]
     public Image UpgradeIcon;
 
-    private int MAX_Level = 10;
+    private int MAX_Level = 30;
 
     private void Start()
     {
@@ -45,20 +44,20 @@ public class UpgradeManager : MonoBehaviour
 
     IEnumerator LevelUp()
     {
-        while (Level < MAX_Level)
+        while (Level < MAX_Level && GameManager.Instance[PlayerStat.SlotCount] < 30)
         {
             // var Upgrade = upgradeInfo[Level];
             var Upgrade = upgradeInfo[Mathf.Min(Level, upgradeInfo.Length - 1)];
 
             int CurrentCost = GetCurrentCost(Level, Upgrade);
-          //  UpgradeCostText.text = $"{CurrentCost} {Upgrade.moneyType}";
+            //  UpgradeCostText.text = $"{CurrentCost} {Upgrade.moneyType}";
 
             bool LevelUpSuccess = false;
 
             switch (Upgrade.moneyType)
             {
                 case MoneyType.Gold:
-                   // LevelUpSuccess = uiMoney.MinusGold(Upgrade.cost);
+                    // LevelUpSuccess = uiMoney.MinusGold(Upgrade.cost);
                     LevelUpSuccess = GameManager.Instance.MinusGold(CurrentCost);
                     break;
                 case MoneyType.Diamond:
@@ -77,13 +76,21 @@ public class UpgradeManager : MonoBehaviour
 
             // 해당 스탯 강화 적용
             float increase = Upgrade.IncreaseNum;
-            switch(Upgrade.stateType)
+            switch (Upgrade.stateType)
             {
                 case PlayerStat.Atk:
+                    //GameManager.Instance[this, PlayerStat.Atk] += increase;
                     GameManager.Instance[PlayerStat.Atk] += increase;
                     break;
                 case PlayerStat.MaxHp:
                     GameManager.Instance[PlayerStat.CurrentHp] += increase;
+                    break;
+                case PlayerStat.SlotCount:
+                    GameManager.Instance[PlayerStat.SlotCount] += 1;
+                    Debug.Log($"{GameManager.Instance[PlayerStat.SlotCount]} 강화됨");
+
+                    if (SlotController.Instance != null)
+                        SlotController.Instance.UpdateSlotUnlock();
                     break;
 
                     // 그 외 스탯
@@ -125,6 +132,11 @@ public class UpgradeManager : MonoBehaviour
             Total += upgradeInfo[i].IncreaseNum;
         }
 
+        // 현재 공격력
+        //Debug.Log($"현재 Atk: {GameManager.Instance[PlayerStat.Atk]}");
+        // 현재 체력
+        //Debug.Log($"현재 MAxHP: {GameManager.Instance[PlayerStat.CurrentHp]}");
+
         // 이름 & 설명 표시
         NameText.text = upgradeInfo[Mathf.Min(Level, upgradeInfo.Length - 1)].name;
         DescriptionText.text = $"{NameText.text}이 <color=red>{Total:F1}</color>배 증가합니다.";
@@ -136,17 +148,21 @@ public class UpgradeManager : MonoBehaviour
         if (UpgradeIcon != null && Upgrade.Icon != null)
             UpgradeIcon.sprite = Upgrade.Icon;
     }
-    
+
     // 강화 비용 비율
     private int GetCurrentCost(int Level, UpgradeInfo upgrade)
     {
+        // upgrade.cost: 기본 비용
+        // Pow(): 제곱
+        // upgrade.Increasecost: 비용 증가율
+        // Mathf.FloorToInt(x): 소수점 버리고 정수로
         return Mathf.FloorToInt(upgrade.cost * Mathf.Pow(upgrade.Increasecost, Level));
     }
 
     // 비용 텍스트
     void InitUpgradeCostText()
     {
-        if (Level >= MAX_Level)
+        if (Level >= MAX_Level || GameManager.Instance[PlayerStat.SlotCount] >= 29)
         {
             UpgradeCostText.text = "최대 레벨";
             return;
