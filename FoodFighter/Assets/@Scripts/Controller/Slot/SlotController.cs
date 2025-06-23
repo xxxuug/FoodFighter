@@ -36,40 +36,40 @@ public class SlotController : Singleton<SlotController>
     private int _maxCount = 10;
 
     private List<Vector2Int> _slotUnlockOrder = new List<Vector2Int>()
-{
-    new Vector2Int(2, 1),
-    new Vector2Int(3, 1),
-    new Vector2Int(2, 2),
-    new Vector2Int(3, 2),
-    new Vector2Int(2, 3),
-    new Vector2Int(3, 3),
+    {
+            new Vector2Int(2, 1),
+            new Vector2Int(3, 1),
+            new Vector2Int(2, 2),
+            new Vector2Int(3, 2),
+            new Vector2Int(2, 3),
+            new Vector2Int(3, 3),
 
-    new Vector2Int(1, 1),
-    new Vector2Int(4, 1),
-    new Vector2Int(1, 2),
-    new Vector2Int(4, 2),
-    new Vector2Int(1, 3),
-    new Vector2Int(4, 3),
+            new Vector2Int(1, 1),
+            new Vector2Int(4, 1),
+            new Vector2Int(1, 2),
+            new Vector2Int(4, 2),
+            new Vector2Int(1, 3),
+            new Vector2Int(4, 3),
 
-    new Vector2Int(0, 1),
-    new Vector2Int(0, 2),
-    new Vector2Int(0, 3),
-    new Vector2Int(2, 0),
-    new Vector2Int(3, 0),
-    new Vector2Int(1, 0),
-    new Vector2Int(4, 0),
-    new Vector2Int(2, 4),
-    new Vector2Int(3, 4),
-    new Vector2Int(1, 4),
-    new Vector2Int(4, 4),
-    new Vector2Int(0, 0),
-    new Vector2Int(0, 4),
-    new Vector2Int(5, 0),
-    new Vector2Int(5, 1),
-    new Vector2Int(5, 2),
-    new Vector2Int(5, 3),
-    new Vector2Int(5, 4),
-};
+            new Vector2Int(0, 1),
+            new Vector2Int(0, 2),
+            new Vector2Int(0, 3),
+            new Vector2Int(2, 0),
+            new Vector2Int(3, 0),
+            new Vector2Int(1, 0),
+            new Vector2Int(4, 0),
+            new Vector2Int(2, 4),
+            new Vector2Int(3, 4),
+            new Vector2Int(1, 4),
+            new Vector2Int(4, 4),
+            new Vector2Int(0, 0),
+            new Vector2Int(0, 4),
+            new Vector2Int(5, 0),
+            new Vector2Int(5, 1),
+            new Vector2Int(5, 2),
+            new Vector2Int(5, 3),
+            new Vector2Int(5, 4),
+    };
 
     protected override void Initialize() { }
 
@@ -112,14 +112,24 @@ public class SlotController : Singleton<SlotController>
             if (index < unlockCount)
             {
                 background.sprite = UnlockBackground;
-                icon.sprite = null;
-                icon.color = new Color(1f, 1f, 1f, 0f);
+
+                // 이미 음식이 들어있다면 건드리지 않도록
+                if (icon.sprite == LockIcon)
+                {
+                    icon.sprite = null;
+                    icon.color = new Color(1f, 1f, 1f, 0f);
+                }
             }
             else
             {
                 background.sprite = LockBackground;
-                icon.sprite = LockIcon;
-                icon.color = new Color(0.435f, 0.435f, 0.435f);
+
+                // 잠금 상태일 때만 아이콘 초기화 
+                if (icon.sprite == null)
+                {
+                    icon.sprite = LockIcon;
+                    icon.color = new Color(0.435f, 0.435f, 0.435f);
+                }
             }
         }
     }
@@ -132,7 +142,7 @@ public class SlotController : Singleton<SlotController>
             {
                 GameObject slot = _slots[i, j];
                 Image background = slot.GetComponent<Image>();
-                Image icon = slot.transform.Find(Define.SlotIcon).GetComponent<Image>();
+                Image icon = slot.transform.Find(Define.SlotIcon).GetComponent<Image>(); // Find 함수 개선 필요
 
                 if (background.sprite == UnlockBackground && icon.sprite == null)
                 {
@@ -146,16 +156,18 @@ public class SlotController : Singleton<SlotController>
         }
     }
 
+    // FoodBullet 찾아오는 함수
     public void FindFoodBullet(FoodBullet bullet)
     {
         _foodbullet = bullet;
         FindMaxFoodBullet();
     }
 
+    // 현재 unlock 슬롯에 존재하는 최고 레벨의 Food 찾는 함수
     public void FindMaxFoodBullet()
     {
-        int maxLevel = -1;
-        Sprite maxSprite = null;
+        int maxLevel = -1; // 초기 값을 -1로 줘서 아직 찾지 못한 초기 값임을 나타냄
+        Sprite maxSprite = null; // 최고 레벨 이미지 null
 
         foreach (var slot in _slots)
         {
@@ -165,20 +177,19 @@ public class SlotController : Singleton<SlotController>
 
             foreach (var item in _spriteLists)
             {
-                if (item.ItemIcon == icon.sprite)
+                if (item.ItemIcon == icon.sprite) // 
                 {
-                    if (item.ItemLevel > maxLevel)
+                    if (item.ItemLevel > maxLevel) // 그 레벨이 현재 최대 레벨보다 높다면
                     {
-                        maxLevel = item.ItemLevel;
-                        maxSprite = icon.sprite;
-                        _foodbullet.SetFoodSprite(maxSprite);
+                        maxLevel = item.ItemLevel; // 최대 레벨을 이 레벨로 지정
+                        maxSprite = icon.sprite; // 아이콘도 최대 레벨 아이콘으로 지정
+                        _foodbullet.SetFoodSprite(maxSprite); // 푸드불렛의 실질적 아이콘도 변경
                     }
                     break;
                 }
             }
         }
-
-        // Debug.Log("현재 최고 레벨 : " + maxLevel);
-        // Debug.Log("현재 최고 레벨 아이템 : " + maxSprite);
+        Debug.Log("현재 최고 레벨 : " + maxLevel);
+        Debug.Log("현재 최고 레벨 아이템 : " + maxSprite);
     }
 }
