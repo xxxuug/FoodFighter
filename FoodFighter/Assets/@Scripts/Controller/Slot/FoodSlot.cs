@@ -34,6 +34,8 @@ public class FoodSlot : BaseController, IBeginDragHandler, IEndDragHandler, IDra
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (_icon.sprite == SlotController.Instance.LockIcon) return;
+
         if (_background.sprite == SlotController.Instance.UnlockBackground && _icon.sprite != null)
         {
             // 기존 정보 저장
@@ -51,12 +53,16 @@ public class FoodSlot : BaseController, IBeginDragHandler, IEndDragHandler, IDra
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (_icon.sprite == SlotController.Instance.LockIcon) return;
+
         if (_icon.sprite != null)
             _icon.rectTransform.position = eventData.position;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (_icon.sprite == SlotController.Instance.LockIcon) return;
+
         if (_icon.sprite != null)
         { 
             _icon.rectTransform.SetParent(_startParent, false); // icon 원래 부모 오브젝트 복구

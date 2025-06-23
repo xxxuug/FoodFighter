@@ -23,7 +23,7 @@ public class SlotController : Singleton<SlotController>
 
     [Header("슬롯 잠금 / 잠금해제")]
     [SerializeField] Sprite LockBackground;
-    [SerializeField] Sprite LockIcon;
+    public Sprite LockIcon;
     public Sprite UnlockBackground;
 
     [Header("레벨 별 슬롯 이미지 변환")]
