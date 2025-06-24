@@ -119,28 +119,5 @@ public class UI_Menu : UI_Base
             OpenPanel.ClosePanel();
             OpenPanel = null;
         }
-
-        //if (OpenPanel != null)
-        //{
-        //    OpenPanel.ClosePanel();
-        //    OpenPanel = null;   
-        //}
-
-        //if (EnhanceUpgrade.activeSelf)
-        //{
-        //    EnhanceUpgrade.SetActive(false);
-        //}
-        //if (Boss.activeSelf)
-        //{
-        //    Boss.SetActive(false);
-        //}
-        //if (Dungeon.activeSelf)
-        //{
-        //    Dungeon.SetActive(false);
-        //}
-        //if (Shop.activeSelf)
-        //{
-        //    Shop.SetActive(false);
-        //}
     }
 }

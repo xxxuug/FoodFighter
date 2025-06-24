@@ -16,15 +16,15 @@ public class UpgradeManager : MonoBehaviour
 
     [Header("강화 관련")]
     // public UI_Money uiMoney; // 골드/다이아 참조
-    public UpgradeInfo[] upgradeInfo; // 인스펙터에서 설정
+    public UpgradeInfo[] UpgradeInfo; // 인스펙터에서 설정
 
     [Header("잠금 연동")]
-    public LockManager[] lockManager;
+    public LockManager[] LockManager;
 
     [Header("아이콘")]
     public Image UpgradeIcon;
 
-    private int MAX_Level = 30;
+    private const int MAX_LEVEL = 30;
 
     private void Start()
     {
@@ -44,28 +44,28 @@ public class UpgradeManager : MonoBehaviour
 
     IEnumerator LevelUp()
     {
-        while (Level < MAX_Level && GameManager.Instance[PlayerStat.SlotCount] < 30)
+        while (Level < MAX_LEVEL && GameManager.Instance[PlayerStat.SlotCount] < 30)
         {
             // var Upgrade = upgradeInfo[Level];
-            var Upgrade = upgradeInfo[Mathf.Min(Level, upgradeInfo.Length - 1)];
+            var upgrade = UpgradeInfo[Mathf.Min(Level, UpgradeInfo.Length - 1)];
 
-            int CurrentCost = GetCurrentCost(Level, Upgrade);
+            int currentCost = GetCurrentCost(Level, upgrade);
             //  UpgradeCostText.text = $"{CurrentCost} {Upgrade.moneyType}";
 
-            bool LevelUpSuccess = false;
+            bool levelUpSuccess = false;
 
-            switch (Upgrade.moneyType)
+            switch (upgrade.moneyType)
             {
                 case MoneyType.Gold:
                     // LevelUpSuccess = uiMoney.MinusGold(Upgrade.cost);
-                    LevelUpSuccess = GameManager.Instance.MinusGold(CurrentCost);
+                    levelUpSuccess = GameManager.Instance.MinusGold(currentCost);
                     break;
                 case MoneyType.Diamond:
-                    LevelUpSuccess = GameManager.Instance.MinusDiamond(CurrentCost);
+                    levelUpSuccess = GameManager.Instance.MinusDiamond(currentCost);
                     break;
             }
 
-            if (!LevelUpSuccess)
+            if (!levelUpSuccess)
             {
                 Debug.Log("자원이 부족해서 레벨업 불가");
                 yield break;
@@ -75,8 +75,8 @@ public class UpgradeManager : MonoBehaviour
             InitUpgradeCostText(); // 비용 텍스트
 
             // 해당 스탯 강화 적용
-            float increase = Upgrade.IncreaseNum;
-            switch (Upgrade.stateType)
+            float increase = upgrade.IncreaseNum;
+            switch (upgrade.stateType)
             {
                 case PlayerStat.Atk:
                     //GameManager.Instance[this, PlayerStat.Atk] += increase;
@@ -97,12 +97,12 @@ public class UpgradeManager : MonoBehaviour
             }
 
             // LevelText.text = $"Level {Level.ToString("D2")}";
-            Debug.Log($"{Upgrade.name} 강화 성공!");
+            Debug.Log($"{upgrade.name} 강화 성공!");
 
             //  if (lockManager != null) lockManager.SetAttackLevel(Level);
-            if (lockManager != null && lockManager.Length > 0)
+            if (LockManager != null && LockManager.Length > 0)
             {
-                foreach (var lockManagers in lockManager)
+                foreach (var lockManagers in LockManager)
                 {
                     if (lockManagers != null)
                         lockManagers.SetAttackLevel(Level);
@@ -123,13 +123,13 @@ public class UpgradeManager : MonoBehaviour
     {
         LevelText.text = $"Lv.{Level.ToString("D2")}";
 
-        float IncreaseLevel = upgradeInfo[0].IncreaseNum;
-        float Total = (Level - 1) * IncreaseLevel;
-        Total = Mathf.Max(0f, Total); // 음수면 0으로
+        float increaseLevel = UpgradeInfo[0].IncreaseNum;
+        float total = (Level - 1) * increaseLevel;
+        total = Mathf.Max(0f, total); // 음수면 0으로
 
-        for (int i = 0; i < Level && i < upgradeInfo.Length; i++)
+        for (int i = 0; i < Level && i < UpgradeInfo.Length; i++)
         {
-            Total += upgradeInfo[i].IncreaseNum;
+            total += UpgradeInfo[i].IncreaseNum;
         }
 
         // 현재 공격력
@@ -138,37 +138,37 @@ public class UpgradeManager : MonoBehaviour
         //Debug.Log($"현재 MAxHP: {GameManager.Instance[PlayerStat.CurrentHp]}");
 
         // 이름 & 설명 표시
-        NameText.text = upgradeInfo[Mathf.Min(Level, upgradeInfo.Length - 1)].name;
-        DescriptionText.text = $"{NameText.text}이 <color=red>{Total:F1}</color>배 증가합니다.";
+        NameText.text = UpgradeInfo[Mathf.Min(Level, UpgradeInfo.Length - 1)].name;
+        DescriptionText.text = $"{NameText.text}이 <color=red>{total:F1}</color>배 증가합니다.";
 
         // 강화 정보 가져오기
-        var Upgrade = upgradeInfo[Mathf.Min(Level, upgradeInfo.Length - 1)];
+        var upgrade = UpgradeInfo[Mathf.Min(Level, UpgradeInfo.Length - 1)];
 
         // 아이콘 설정
-        if (UpgradeIcon != null && Upgrade.Icon != null)
-            UpgradeIcon.sprite = Upgrade.Icon;
+        if (UpgradeIcon != null && upgrade.Icon != null)
+            UpgradeIcon.sprite = upgrade.Icon;
     }
 
     // 강화 비용 비율
-    private int GetCurrentCost(int Level, UpgradeInfo upgrade)
+    private int GetCurrentCost(int level, UpgradeInfo upgrade)
     {
         // upgrade.cost: 기본 비용
         // Pow(): 제곱
         // upgrade.Increasecost: 비용 증가율
         // Mathf.FloorToInt(x): 소수점 버리고 정수로
-        return Mathf.FloorToInt(upgrade.cost * Mathf.Pow(upgrade.Increasecost, Level));
+        return Mathf.FloorToInt(upgrade.cost * Mathf.Pow(upgrade.Increasecost, level));
     }
 
     // 비용 텍스트
     void InitUpgradeCostText()
     {
-        if (Level >= MAX_Level || GameManager.Instance[PlayerStat.SlotCount] >= 29)
+        if (Level >= MAX_LEVEL || GameManager.Instance[PlayerStat.SlotCount] >= 29)
         {
             UpgradeCostText.text = "최대 레벨";
             return;
         }
 
-        var upgrade = upgradeInfo[Mathf.Min(Level, upgradeInfo.Length - 1)];
+        var upgrade = UpgradeInfo[Mathf.Min(Level, UpgradeInfo.Length - 1)];
         int cost = GetCurrentCost(Level, upgrade);
         UpgradeCostText.text = $"{cost} {upgrade.moneyType}";
     }
