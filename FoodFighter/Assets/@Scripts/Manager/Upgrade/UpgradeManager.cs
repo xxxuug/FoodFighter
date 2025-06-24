@@ -54,7 +54,7 @@ public class UpgradeManager : MonoBehaviour
 
             bool levelUpSuccess = false;
 
-            switch (upgrade.moneyType)
+            switch (upgrade.MoneyType)
             {
                 case MoneyType.Gold:
                     // LevelUpSuccess = uiMoney.MinusGold(Upgrade.cost);
@@ -76,7 +76,7 @@ public class UpgradeManager : MonoBehaviour
 
             // 해당 스탯 강화 적용
             float increase = upgrade.IncreaseNum;
-            switch (upgrade.stateType)
+            switch (upgrade.StateType)
             {
                 case PlayerStat.Atk:
                     //GameManager.Instance[this, PlayerStat.Atk] += increase;
@@ -97,7 +97,7 @@ public class UpgradeManager : MonoBehaviour
             }
 
             // LevelText.text = $"Level {Level.ToString("D2")}";
-            Debug.Log($"{upgrade.name} 강화 성공!");
+            Debug.Log($"{upgrade.Name} 강화 성공!");
 
             //  if (lockManager != null) lockManager.SetAttackLevel(Level);
             if (LockManager != null && LockManager.Length > 0)
@@ -138,7 +138,7 @@ public class UpgradeManager : MonoBehaviour
         //Debug.Log($"현재 MAxHP: {GameManager.Instance[PlayerStat.CurrentHp]}");
 
         // 이름 & 설명 표시
-        NameText.text = UpgradeInfo[Mathf.Min(Level, UpgradeInfo.Length - 1)].name;
+        NameText.text = UpgradeInfo[Mathf.Min(Level, UpgradeInfo.Length - 1)].Name;
         DescriptionText.text = $"{NameText.text}이 <color=red>{total:F1}</color>배 증가합니다.";
 
         // 강화 정보 가져오기
@@ -156,7 +156,7 @@ public class UpgradeManager : MonoBehaviour
         // Pow(): 제곱
         // upgrade.Increasecost: 비용 증가율
         // Mathf.FloorToInt(x): 소수점 버리고 정수로
-        return Mathf.FloorToInt(upgrade.cost * Mathf.Pow(upgrade.Increasecost, level));
+        return Mathf.FloorToInt(upgrade.Cost * Mathf.Pow(upgrade.Increasecost, level));
     }
 
     // 비용 텍스트
@@ -170,6 +170,6 @@ public class UpgradeManager : MonoBehaviour
 
         var upgrade = UpgradeInfo[Mathf.Min(Level, UpgradeInfo.Length - 1)];
         int cost = GetCurrentCost(Level, upgrade);
-        UpgradeCostText.text = $"{cost} {upgrade.moneyType}";
+        UpgradeCostText.text = $"{cost} {upgrade.MoneyType}";
     }
 }
