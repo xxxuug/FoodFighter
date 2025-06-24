@@ -49,7 +49,7 @@ public class EnemyController : BaseController
     {
         if (_player == null) return;
 
-        if (Distance.GetDistance(_player.transform, transform) >= 0.5f)
+        if (Utils.GetDistance(_player.transform, transform) >= 0.5f)
         {
             Move();
         }

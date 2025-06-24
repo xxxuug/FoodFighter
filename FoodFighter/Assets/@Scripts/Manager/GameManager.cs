@@ -145,18 +145,14 @@ public class GameManager : Singleton<GameManager>
 
     void UpdateMoney()
     {
-        //GoldText.text = $"{Gold}";
-        //DiamondText.text = $"{Diamond}";
-
         if (GoldText != null)
-        //GoldText.text = $"{PlayerInfo.Gold}";
-        GoldText.text = $"{_playerInfo.Gold}";
+            GoldText.text = Utils.FormatKoreanNumber(_playerInfo.Gold);
         if (DiamondText != null)
-        DiamondText.text = $"{_playerInfo.Diamond}";
+            DiamondText.text = Utils.FormatKoreanNumber(_playerInfo.Diamond);
     }
     #endregion
 
-    #region StageLavel
+    #region StageLevel
     public int ClearedStageLevel = 0; // 마지막으로 클리어한 스테이지
     public int StageUnlock = 0; // 도전 버튼 누른 보스 번호
 
