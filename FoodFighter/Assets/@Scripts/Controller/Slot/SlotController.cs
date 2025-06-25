@@ -189,7 +189,7 @@ public class SlotController : Singleton<SlotController>
                 }
             }
         }
-        Debug.Log("현재 최고 레벨 : " + maxLevel);
-        Debug.Log("현재 최고 레벨 아이템 : " + maxSprite);
+        //Debug.Log("현재 최고 레벨 : " + maxLevel);
+        //Debug.Log("현재 최고 레벨 아이템 : " + maxSprite);
     }
 }

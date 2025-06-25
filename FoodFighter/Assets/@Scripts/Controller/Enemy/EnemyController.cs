@@ -1,16 +1,22 @@
 using UnityEngine;
 
+public enum EnemyKind
+{
+    Minion1, Minion2, Minion3, Minion4, Minion5,
+}
+
 public class EnemyController : BaseController
 {
+    [SerializeField] EnemyKind enemyKind;
     [SerializeField] Transform _player;
     [SerializeField] AttackController _attackController;
     private Animator _animator;
     private float _speed = 0.5f;
 
     [Header("Status")]
-    private float _initHp = 10;
+    [SerializeField] private float _initHp;
     private float _currentHp;
-    public float _damage = 5;
+    public float _damage;
 
     public bool IsAttacking
     {
@@ -41,8 +47,10 @@ public class EnemyController : BaseController
 
     private void OnEnable()
     {
-        _currentHp = _initHp;
-        //Debug.Log("리스폰 잡몹 현재 HP : " + _hp);
+        _currentHp = (int)_initHp;
+        _damage = (int)_damage;
+        Debug.Log($"{gameObject.name} 리스폰 잡몹 현재 HP : " + _currentHp);
+        Debug.Log($"{gameObject.name} 리스폰 잡몹 현재 공격력 : " + _damage);
     }
 
     void Update()
@@ -67,10 +75,37 @@ public class EnemyController : BaseController
     public void TakeDamage(float damage)
     {
         _currentHp -= damage;
-        Debug.Log("잡몹 HP : " + _currentHp);
 
         if (_currentHp <= 0)
+        {
             Die();
+
+            switch (enemyKind)
+            {
+                case EnemyKind.Minion1:
+                    _initHp *= 1.1f;
+                    _damage *= 1.1f;
+                    break;
+                case EnemyKind.Minion2:
+                    _initHp *= 1.1f;
+                    _damage *= 1.1f;
+                    break;
+                case EnemyKind.Minion3:
+                    _initHp *= 1.2f;
+                    _damage *= 1.2f;
+                    break;
+                case EnemyKind.Minion4:
+                    _initHp *= 1.4f;
+                    _damage *= 1.4f;
+                    break;
+                case EnemyKind.Minion5:
+                    _initHp *= 2f;
+                    _damage *= 2f;
+                    break;
+            }
+
+            Debug.Log($"{gameObject.name}의 증가한 체력 : {_initHp}");
+        }
         else
             GetHit();
     }

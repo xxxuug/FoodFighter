@@ -14,11 +14,11 @@ public class SpawningPool : Singleton<SpawningPool>
     // 서브 스테이지별 마릿수 지정
     private Dictionary<int, int[]> _spawnTable = new()
     {
-        {1, new[] {2,2,0,0,0} },
-        {2, new[] {1,2,2,0,0} },
-        {3, new[] {1,2,3,0,0} },
-        {4, new[] {1,1,2,3,0} },
-        {5, new[] {1,1,2,3,1} },
+        {1, new[] {1,2,0,0,0} },
+        {2, new[] {1,2,1,0,0} },
+        {3, new[] {1,2,2,0,0} },
+        {4, new[] {1,2,3,1,0} },
+        {5, new[] {1,2,3,2,1} },
     };
 
     private void Awake()

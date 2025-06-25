@@ -82,6 +82,9 @@ public class UpgradeManager : MonoBehaviour
                 case PlayerStat.CriticalProbability:
                     GameManager.Instance[PlayerStat.CriticalProbability] += increase;
                     break;
+                case PlayerStat.CriticalDamage:
+                    GameManager.Instance[PlayerStat.CriticalDamage] += increase;
+                    break;
                 case PlayerStat.SlotCount:
                     GameManager.Instance[PlayerStat.SlotCount] += 1;
                     Debug.Log($"{GameManager.Instance[PlayerStat.SlotCount]} 강화됨");
@@ -89,11 +92,10 @@ public class UpgradeManager : MonoBehaviour
                     if (SlotController.Instance != null)
                         SlotController.Instance.UpdateSlotUnlock();
                     break;
-
-                    // 그 외 스탯
             }
 
             Debug.Log($"{upgrade.Name} 강화 성공!");
+            GameManager.Instance.TotalAttack(); // 공격력 조회
 
             if (LockManager != null && LockManager.Length > 0)
             {

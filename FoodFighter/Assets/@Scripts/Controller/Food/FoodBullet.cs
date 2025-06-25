@@ -21,7 +21,7 @@ public class FoodBullet : BaseController
     private void OnEnable()
     {
         // 공격력 가져오기
-        atk = GameManager.Instance[PlayerStat.Atk];
+        atk = GameManager.Instance[PlayerStat.TotalAtk];
 
         StartCoroutine(DisableTime());
     }
@@ -48,7 +48,8 @@ public class FoodBullet : BaseController
 
             EnemyController enemy = collision.GetComponent<EnemyController>();
             enemy.TakeDamage(atk);
-            Debug.Log($"몬스터에게 {atk} 데미지 입힘");
+
+            ObjectManager.Instance.Despawn(this); // 음식 false
         }
     }
 
@@ -59,19 +60,14 @@ public class FoodBullet : BaseController
 
         _spriteRederer.sprite = maxSprite;
 
-        Debug.Log("무기 스프라이트 변경됨: " + maxSprite.name);
+        //Debug.Log("무기 스프라이트 변경됨: " + maxSprite.name);
         // 추후 공격력 증가 함수 참조
     }
 
     IEnumerator PlayHitEffect(GameObject effect)
     {
         GameObject hitEffect = PoolManager.Instance.GetEffectObject(effect, transform.position);
-        Debug.Log("이펙트 생성");
-        yield return new WaitForSeconds(0.3f);
 
-        Debug.Log($"이펙트 사라짐 처리: {hitEffect.name}");
-        ObjectManager.Instance.Despawn(hitEffect); // 이펙트 false
-        yield return new WaitForSeconds(0.3f);
-        ObjectManager.Instance.Despawn(this); // 음식 false
+        yield return new WaitForSeconds(0f);
     }
 }

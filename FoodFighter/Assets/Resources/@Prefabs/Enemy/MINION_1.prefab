@@ -155,7 +155,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 0}
   _attackController: {fileID: 8348357661166507669}
-  _damage: 5
+  _initHp: 100
+  _damage: 10
 --- !u!70 &4169935668319419919
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

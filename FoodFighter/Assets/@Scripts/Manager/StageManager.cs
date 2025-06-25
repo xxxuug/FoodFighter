@@ -36,15 +36,6 @@ public class StageManager : Singleton<StageManager>
     #endregion
 
     private List<EnemyController> _aliveEnemy = new();
-    private EnemyController _enemyController;
-
-    private float _subMultipleHpAmount = 1.1f;
-    private float _mainMultipleHpAmount = 1.3f;
-
-    private void Start()
-    {
-        _enemyController = FindAnyObjectByType<EnemyController>();
-    }
 
     public void AddEnemy(EnemyController enemy)
     {
@@ -67,17 +58,13 @@ public class StageManager : Singleton<StageManager>
         if (StageInfo.SubStage >= 5)
         {
             StageInfo.MainStage++;
-            StageInfo.SubStage = 1;
-            _enemyController.MultipleHp(_mainMultipleHpAmount);
-        }
+            StageInfo.SubStage = 1;        }
         else
         {
             StageInfo.SubStage++;
-            _enemyController.MultipleHp(_subMultipleHpAmount);
         }
 
         OnStageInfoChanged?.Invoke();
-        //Debug.Log($"다음 스테이지 : {StageInfo.GetDisplayStage()}");
         Invoke(nameof(EnemyRespawn), 2f);
     }
 

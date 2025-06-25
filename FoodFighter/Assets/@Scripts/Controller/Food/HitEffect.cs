@@ -1,16 +1,19 @@
+using System.Collections;
 using UnityEngine;
 
-public class HitEffect : MonoBehaviour
+public class HitEffect : BaseController
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    private void OnEnable()
     {
-        
+        StartCoroutine(Spawn());
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator Spawn()
     {
-        
+        yield return new WaitForSeconds(0.3f);
+        ObjectManager.Instance.Despawn(this);
     }
+
+    protected override void Initialize() { }
 }

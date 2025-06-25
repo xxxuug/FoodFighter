@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Callbacks;
 using UnityEngine;
 
 public enum PlayerStat
@@ -34,22 +33,22 @@ public class GameManager : Singleton<GameManager>
 {
     #region Init
 
-    [SerializeField] private TMP_Text GoldText;
-    [SerializeField] private TMP_Text DiamondText;
+    private TMP_Text GoldText;
+    private TMP_Text DiamondText;
+    private TMP_Text TotalAtkText;
 
     private void Awake()
     {
-        //DontDestroyOnLoad(this.gameObject);
 
         InitPlayerState();
 
-        // GoldText = GameObject.Find("Gold Text - Text")?.GetComponent<TMP_Text>();
-        // DiamondText = GameObject.Find("Diamond Text - Text")?.GetComponent<TMP_Text>();
         GoldText = GameObject.Find(Define.GoldText)?.GetComponent<TMP_Text>();
         DiamondText = GameObject.Find(Define.DiamondText)?.GetComponent<TMP_Text>();
+        TotalAtkText = GameObject.Find(Define.TotalAtkText)?.GetComponent<TMP_Text>();
 
         OnPlayerInfoChanged += UpdateMoney;
         UpdateMoney();
+        TotalAttack();
     }
 
     protected override void Clear()
@@ -61,7 +60,7 @@ public class GameManager : Singleton<GameManager>
 
     void InitPlayerState() // 플레이어 스탯 초기값
     {
-        this[PlayerStat.Atk] = 1;
+        this[PlayerStat.Atk] = 100;
         this[PlayerStat.CurrentHp] = 500;
         this[PlayerStat.MaxHp] = this[PlayerStat.CurrentHp];
         this[PlayerStat.CriticalProbability] = 0;
@@ -150,6 +149,16 @@ public class GameManager : Singleton<GameManager>
         if (DiamondText != null)
             DiamondText.text = Utils.FormatKoreanNumber(_playerInfo.Diamond);
     }
+
+    public void TotalAttack()
+    {
+        // 전체 공격력 = 공격력 * ((1 - 크리티컬 확률) + 크리티컬 확률 * 크리티컬 데미지)
+        this[PlayerStat.TotalAtk] = this[PlayerStat.Atk] * 
+            ((1 - this[PlayerStat.CriticalProbability]) + this[PlayerStat.CriticalProbability] * this[PlayerStat.CriticalDamage]);
+        Debug.Log("현재 총 공격력 : " + this[PlayerStat.TotalAtk]);
+
+        TotalAtkText.text = Utils.FormatKoreanNumber((long)this[PlayerStat.TotalAtk]);
+    }
     #endregion
 
     #region StageLevel
@@ -169,17 +178,5 @@ public class GameManager : Singleton<GameManager>
             ClearedStageLevel = stageIndex;
         }
     }
-
-    //public List<bool> StageLocked;
-
-    //public void UnlockStage(int stageIndex)
-    //{
-    //    StageLocked[stageIndex] = false;
-    //}
-
-    //public bool IsStageLocked(int stageIndex)
-    //{
-    //    return StageLocked[stageIndex];
-    //}
     #endregion
 }
