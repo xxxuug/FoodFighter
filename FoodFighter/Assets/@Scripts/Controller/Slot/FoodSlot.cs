@@ -80,11 +80,11 @@ public class FoodSlot : BaseController, IBeginDragHandler, IEndDragHandler, IDra
                         int currentLevel = 0;
 
                         // 다음 레벨 이미지로 교체
-                        foreach (var item in SlotController.Instance._spriteLists)
+                        foreach (var item in FoodData.Instance.FoodLists)
                         {
-                            if (item.ItemIcon == targetSlot._icon.sprite) // 아이콘 같은지 확인하고
+                            if (item.Icon == targetSlot._icon.sprite) // 아이콘 같은지 확인하고
                             {
-                                currentLevel = item.ItemLevel; // 같으면 해당 아이콘 아이템 레벨을 넣어주기
+                                currentLevel = item.Level; // 같으면 해당 아이콘 아이템 레벨을 넣어주기
                                 break;
                             }
                         }
@@ -97,11 +97,11 @@ public class FoodSlot : BaseController, IBeginDragHandler, IEndDragHandler, IDra
                         _icon.sprite = null;
                         _icon.color = new Color(1f, 1f, 1f, 0f);
 
-                        foreach (var item in SlotController.Instance._spriteLists)
+                        foreach (var item in FoodData.Instance.FoodLists)
                         {
-                            if (item.ItemLevel == nextLevel) // 아이템레벨이 다음 레벨이라면
+                            if (item.Level == nextLevel) // 아이템레벨이 다음 레벨이라면
                             {
-                                targetSlot._icon.sprite = item.ItemIcon; // 해당 레벨 아이콘으로 바꿔주기
+                                targetSlot._icon.sprite = item.Icon; // 해당 레벨 아이콘으로 바꿔주기
                                 SlotController.Instance.FindMaxFoodBullet(); // 바꿔줄 때마다 여기서 현재 존재하는 가장 최고 레벨 아이콘이 뭔지 찾기
                             }
                         }

@@ -3,13 +3,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-[System.Serializable]
-public class ItemSprite
-{
-    public int ItemLevel;
-    public Sprite ItemIcon;
-}
-
 public class SlotController : Singleton<SlotController>
 {
     private FoodBullet _foodbullet;
@@ -25,9 +18,6 @@ public class SlotController : Singleton<SlotController>
     [SerializeField] Sprite LockBackground;
     public Sprite LockIcon;
     public Sprite UnlockBackground;
-
-    [Header("레벨 별 슬롯 이미지 변환")]
-    public List<ItemSprite> _spriteLists;
 
     [Header("음식 생성 버튼")]
     public Button FoodCreateButton;
@@ -147,7 +137,7 @@ public class SlotController : Singleton<SlotController>
                 if (background.sprite == UnlockBackground && icon.sprite == null)
                 {
                     icon.color = new Color(1f, 1f, 1f, 1f);
-                    icon.sprite = _spriteLists[0].ItemIcon;
+                    icon.sprite = FoodData.Instance.GetFood(1).Icon; // 1레벨 아이콘 가져오기
                     _currentCount--;
                     FoodCreateCountText.text = $"{_currentCount}/{_maxCount}";
                     return;
@@ -175,13 +165,13 @@ public class SlotController : Singleton<SlotController>
 
             if (icon.sprite == null) continue;
 
-            foreach (var item in _spriteLists)
+            foreach (var item in FoodData.Instance.FoodLists)
             {
-                if (item.ItemIcon == icon.sprite) // 
+                if (item.Icon == icon.sprite) // 
                 {
-                    if (item.ItemLevel > maxLevel) // 그 레벨이 현재 최대 레벨보다 높다면
+                    if (item.Level > maxLevel) // 그 레벨이 현재 최대 레벨보다 높다면
                     {
-                        maxLevel = item.ItemLevel; // 최대 레벨을 이 레벨로 지정
+                        maxLevel = item.Level; // 최대 레벨을 이 레벨로 지정
                         maxSprite = icon.sprite; // 아이콘도 최대 레벨 아이콘으로 지정
                         _foodbullet.SetFoodSprite(maxSprite); // 푸드불렛의 실질적 아이콘도 변경
                     }

@@ -5,9 +5,9 @@ public class FoodBullet : BaseController
 {
     public GameObject HitEffect;
 
-    public float speed = 5f;
+    public float Speed = 10f;
     public float Second = 1.5f;
-    private float atk; 
+    private float _atk; 
 
     private SpriteRenderer _spriteRederer;
 
@@ -21,7 +21,7 @@ public class FoodBullet : BaseController
     private void OnEnable()
     {
         // 공격력 가져오기
-        atk = GameManager.Instance[PlayerStat.TotalAtk];
+        _atk = GameManager.Instance[PlayerStat.TotalAtk];
 
         StartCoroutine(DisableTime());
     }
@@ -31,8 +31,8 @@ public class FoodBullet : BaseController
         float time = 0f;
         while (time < Second)
         {
-            transform.Translate(Vector3.right * speed * Time.deltaTime, Space.World);
-            transform.Rotate(0, 0, 360 * speed * Time.deltaTime, Space.Self);
+            transform.Translate(Vector3.right * Speed * Time.deltaTime, Space.World);
+            transform.Rotate(0, 0, 360 * Speed * Time.deltaTime, Space.Self);
             time += Time.deltaTime;
             yield return null;
         }
@@ -44,10 +44,10 @@ public class FoodBullet : BaseController
     {
         if (collision.CompareTag(Define.EnemyTag))
         {
-            StartCoroutine(PlayHitEffect(HitEffect));
+            PoolManager.Instance.GetEffectObject(HitEffect, transform.position);
 
             EnemyController enemy = collision.GetComponent<EnemyController>();
-            enemy.TakeDamage(atk);
+            enemy.TakeDamage(_atk);
 
             ObjectManager.Instance.Despawn(this); // 음식 false
         }
@@ -62,12 +62,5 @@ public class FoodBullet : BaseController
 
         //Debug.Log("무기 스프라이트 변경됨: " + maxSprite.name);
         // 추후 공격력 증가 함수 참조
-    }
-
-    IEnumerator PlayHitEffect(GameObject effect)
-    {
-        GameObject hitEffect = PoolManager.Instance.GetEffectObject(effect, transform.position);
-
-        yield return new WaitForSeconds(0f);
     }
 }

@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f68fdb65544cefb479af3c24993660f1, type: 3}
+  m_Name: FoodData
+  m_EditorClassIdentifier: 
+  FoodLists:
+  - Level: 1
+    Name: "\uC0CC\uB4DC\uC704\uCE58"
+    Icon: {fileID: -3188074485087870156, guid: e8e2c8d654d13574a8bda941e55176d1, type: 3}
+    AttackPower: 100
+  - Level: 2
+    Name: "\uBC14\uAC8C\uD2B8\uBE75"
+    Icon: {fileID: 2280896472503784695, guid: 55af37ca4d5887e409c4c26f630de983, type: 3}
+    AttackPower: 200
+  - Level: 3
+    Name: "\uD584\uBC84\uAC70"
+    Icon: {fileID: -8910731402955747676, guid: 7bc36eecd364dcc4a996e5acf8b3439a, type: 3}
+    AttackPower: 300
+  - Level: 4
+    Name: "\uBD80\uB9AC\uD1A0"
+    Icon: {fileID: -2746619368070703002, guid: 5f42d763bca55db4a8b79d97f75e0a4f, type: 3}
+    AttackPower: 400
+  - Level: 5
+    Name: "\uBCA0\uC774\uAE00"
+    Icon: {fileID: -3252362642447589388, guid: 7cd8417fcfe7256419dd3bf4e85e1187, type: 3}
+    AttackPower: 500
+  - Level: 6
+    Name: "\uCD08\uCF5C\uB81B"
+    Icon: {fileID: 3402237756184917044, guid: a02a9bf0d7e494747bf515084f037839, type: 3}
+    AttackPower: 600
+  - Level: 7
+    Name: "\uCFE0\uD0A4"
+    Icon: {fileID: -7999359915324440046, guid: c69de2a0c192a5843a8e2716ab27ab7a, type: 3}
+    AttackPower: 700
+  - Level: 8
+    Name: "\uB3C4\uB11B"
+    Icon: {fileID: -2384686177647784442, guid: f060c25f48e67cb4eb84bba1ea7cbaca, type: 3}
+    AttackPower: 800
+  - Level: 9
+    Name: "\uB9CC\uB450"
+    Icon: {fileID: -6299632600273129176, guid: f3d6f47e43f19934a9be5fe4c79afe34, type: 3}
+    AttackPower: 900
+  - Level: 10
+    Name: "\uD6C4\uB77C\uC774"
+    Icon: {fileID: -1597054895677741477, guid: da054dce7008e4d4c9d4e4e833b05d32, type: 3}
+    AttackPower: 1000
+  - Level: 10
+    Name: "\uD6C4\uB77C\uC774"
+    Icon: {fileID: -1597054895677741477, guid: da054dce7008e4d4c9d4e4e833b05d32, type: 3}
+    AttackPower: 1100
+  - Level: 10
+    Name: "\uD6C4\uB77C\uC774"
+    Icon: {fileID: -1597054895677741477, guid: da054dce7008e4d4c9d4e4e833b05d32, type: 3}
+    AttackPower: 1200
+  - Level: 10
+    Name: "\uD6C4\uB77C\uC774"
+    Icon: {fileID: -1597054895677741477, guid: da054dce7008e4d4c9d4e4e833b05d32, type: 3}
+    AttackPower: 1300
+  - Level: 10
+    Name: "\uD6C4\uB77C\uC774"
+    Icon: {fileID: -1597054895677741477, guid: da054dce7008e4d4c9d4e4e833b05d32, type: 3}
+    AttackPower: 1400
+  - Level: 10
+    Name: "\uD6C4\uB77C\uC774"
+    Icon: {fileID: -1597054895677741477, guid: da054dce7008e4d4c9d4e4e833b05d32, type: 3}
+    AttackPower: 1500
+  - Level: 16
+    Name: "\uD56B\uB3C4\uADF8"
+    Icon: {fileID: 6859398865006647817, guid: 84796492001c66a4b9f8a7a909429b37, type: 3}
+    AttackPower: 1600
+  - Level: 17
+    Name: "\uC544\uC774\uC2A4\uD06C\uB9BC"
+    Icon: {fileID: 1071802224744195977, guid: a57597cdf00c6de48bdd1d1771bd7be6, type: 3}
+    AttackPower: 1700
+  - Level: 18
+    Name: "\uC824\uB9AC"
+    Icon: {fileID: 2293209901692578444, guid: 72f57cece9fcb25488d26ba5304dbc41, type: 3}
+    AttackPower: 1800
+  - Level: 10
+    Name: "\uD6C4\uB77C\uC774"
+    Icon: {fileID: -1597054895677741477, guid: da054dce7008e4d4c9d4e4e833b05d32, type: 3}
+    AttackPower: 1900
+  - Level: 20
+    Name: "\uD32C\uCF00\uC774\uD06C"
+    Icon: {fileID: 4065782940691347251, guid: e87803a19c3e8e54b89cfde903f52352, type: 3}
+    AttackPower: 2000
