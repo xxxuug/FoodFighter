@@ -274,5 +274,6 @@ MonoBehaviour:
   enemyKind: 1
   _player: {fileID: 0}
   _attackController: {fileID: 901278543223897395}
+  _speed: 1.2
   _initHp: 120
   _damage: 15

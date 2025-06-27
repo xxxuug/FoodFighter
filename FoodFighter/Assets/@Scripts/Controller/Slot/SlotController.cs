@@ -25,6 +25,9 @@ public class SlotController : Singleton<SlotController>
     private int _currentCount;
     private int _maxCount = 10;
 
+    [Header("다른 스크립트 외부 참조용 최대 레벨")]
+    public int MaxLevelRef;
+
     private List<Vector2Int> _slotUnlockOrder = new List<Vector2Int>()
     {
             new Vector2Int(2, 1),
@@ -62,6 +65,11 @@ public class SlotController : Singleton<SlotController>
     };
 
     protected override void Initialize() { }
+
+    private void Awake()
+    {
+        MaxLevelRef = 1;
+    }
 
     void Start()
     {
@@ -174,6 +182,8 @@ public class SlotController : Singleton<SlotController>
                         maxLevel = item.Level; // 최대 레벨을 이 레벨로 지정
                         maxSprite = icon.sprite; // 아이콘도 최대 레벨 아이콘으로 지정
                         _foodbullet.SetFoodSprite(maxSprite); // 푸드불렛의 실질적 아이콘도 변경
+                        MaxLevelRef = maxLevel; // 외부 참조용 변수에 최고 레벨 넣어주기
+                        GameManager.Instance.TotalAttack(); // 공격력 갱신
                     }
                     break;
                 }

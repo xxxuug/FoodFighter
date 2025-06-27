@@ -53,7 +53,7 @@ public class SpawningPool : Singleton<SpawningPool>
 
                 _spawnEnemy.Add(enemy);
                 StageManager.Instance.AddEnemy(enemy);
-                _enemySpawn += new Vector3(0.5f, 0);
+                _enemySpawn += new Vector3(0.3f, 0);
             }
         }
     }

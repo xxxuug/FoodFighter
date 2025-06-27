@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : BaseController
 {
@@ -7,6 +9,9 @@ public class PlayerController : BaseController
 
     [Header("플레이어와 적 거리")]
     private float _range = 4.5f;
+
+    [Header("플레이어 죽었을 경우")]
+    private Image _playerDiePanel;
 
     public float Speed
     {
@@ -31,13 +36,23 @@ public class PlayerController : BaseController
     void Die()
     {
         _animator.SetTrigger(Define.Die);
+
+        _playerDiePanel.gameObject.SetActive(true);
+        // 페이드 인
+        StartCoroutine(FadePlayerDiePanel(1f, 0f));
+        // 페이드 아웃
+        StartCoroutine(FadePlayerDiePanel(0f, 1f));
     }
 
     protected override void Initialize()
     {
         _animator = GetComponent<Animator>();
+        _playerDiePanel = GameObject.Find("PlayerDiePanel - Panel").GetComponent<Image>();
+
         // 달리기 유지
         Speed = 1;
+
+        _playerDiePanel.gameObject.SetActive(false);
     }
 
     void Update()
@@ -100,5 +115,22 @@ public class PlayerController : BaseController
         {
             GetHit();
         }
+    }
+
+    IEnumerator FadePlayerDiePanel(float from, float to)
+    {
+        float time = 0f;
+        float duration = 1f;
+        Color c = _playerDiePanel.color;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float alpha = Mathf.Lerp(from, to, time / duration);
+            _playerDiePanel.color = new Color(c.r, c.g, c.b, alpha);
+            yield return null;
+        }
+
+        _playerDiePanel.color = new Color(c.r, c.g, c.b, to);
     }
 }

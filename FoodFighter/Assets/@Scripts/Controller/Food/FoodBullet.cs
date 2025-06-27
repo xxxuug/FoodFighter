@@ -21,7 +21,7 @@ public class FoodBullet : BaseController
     private void OnEnable()
     {
         // 공격력 가져오기
-        _atk = GameManager.Instance[PlayerStat.TotalAtk];
+        _atk = GameManager.Instance.TotalAttack();
 
         StartCoroutine(DisableTime());
     }

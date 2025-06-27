@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public enum PlayerStat
@@ -12,6 +13,7 @@ public enum PlayerStat
     CriticalDamage, // 크리티컬 데미지
     SlotCount, // 머지 슬롯 칸 개수
     TotalAtk, // 총 공격력
+    TotalCriticalDamage,
 }
 
 public class PlayerInfo
@@ -48,6 +50,10 @@ public class GameManager : Singleton<GameManager>
 
         OnPlayerInfoChanged += UpdateMoney;
         UpdateMoney();
+    }
+
+    private void Start()
+    {
         TotalAttack();
     }
 
@@ -66,7 +72,6 @@ public class GameManager : Singleton<GameManager>
         this[PlayerStat.CriticalProbability] = 0;
         this[PlayerStat.CriticalDamage] = 0;
         this[PlayerStat.SlotCount] = 6;
-        //this[PlayerStat.TotalAtk] = 데미지 합산 값
     }
     #endregion
 
@@ -150,14 +155,30 @@ public class GameManager : Singleton<GameManager>
             DiamondText.text = Utils.FormatKoreanNumber(_playerInfo.Diamond);
     }
 
-    public void TotalAttack()
+    public float TotalAttack()
     {
-        // 전체 공격력 = 공격력 * ((1 - 크리티컬 확률) + 크리티컬 확률 * 크리티컬 데미지)
-        this[PlayerStat.TotalAtk] = this[PlayerStat.Atk] * 
-            ((1 - this[PlayerStat.CriticalProbability]) + this[PlayerStat.CriticalProbability] * this[PlayerStat.CriticalDamage]);
-        Debug.Log("현재 총 공격력 : " + this[PlayerStat.TotalAtk]);
+        this[PlayerStat.TotalAtk] = this[PlayerStat.Atk] + FoodData.Instance.GetFood(SlotController.Instance.MaxLevelRef).AttackPower;
+        // 기본 크리티컬 데미지(총 공격력*1.5)에서 증가한 크리티컬 데미지 %를 곱한 값을 총 공격력에 더하기
+        this[PlayerStat.TotalCriticalDamage] = (this[PlayerStat.TotalAtk] * 1.5f) + ((this[PlayerStat.TotalAtk] * 1.5f) * (this[PlayerStat.CriticalDamage] / 100));
+
+        float rand = UnityEngine.Random.Range(0f, 100f); // 0에서 100 사이의 랜덤한 수. 소수점 포함
+        float damage;
+
+        if (rand <= this[PlayerStat.CriticalProbability])
+        {
+            // 크리티컬 데미지 적용
+            damage = this[PlayerStat.TotalCriticalDamage];
+            Debug.Log($"크리티컬 발생! 현재 크리티컬 확률 : {this[PlayerStat.CriticalProbability]} 데미지 : {damage}");
+        }
+        else
+        {
+            // 총 공격력으로 데미지 적용
+            damage = this[PlayerStat.TotalAtk];
+        }
 
         TotalAtkText.text = Utils.FormatKoreanNumber((long)this[PlayerStat.TotalAtk]);
+
+        return damage;
     }
     #endregion
 

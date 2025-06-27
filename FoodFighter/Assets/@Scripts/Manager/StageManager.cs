@@ -50,7 +50,9 @@ public class StageManager : Singleton<StageManager>
         _aliveEnemy.Remove(enemy);
 
         if (_aliveEnemy.Count == 0)
+        {
             NextStage();
+        }
     }
 
     void NextStage()
@@ -64,6 +66,7 @@ public class StageManager : Singleton<StageManager>
             StageInfo.SubStage++;
         }
 
+        ResetPlayerHP();
         OnStageInfoChanged?.Invoke();
         Invoke(nameof(EnemyRespawn), 2f);
     }
@@ -71,5 +74,10 @@ public class StageManager : Singleton<StageManager>
     void EnemyRespawn()
     {
         SpawningPool.Instance.NextStageEnemyRespawn();
+    }
+
+    void ResetPlayerHP()
+    {
+        GameManager.Instance[PlayerStat.CurrentHp] = GameManager.Instance[PlayerStat.MaxHp];
     }
 }

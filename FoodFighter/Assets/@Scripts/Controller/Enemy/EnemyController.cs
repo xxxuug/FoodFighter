@@ -11,7 +11,7 @@ public class EnemyController : BaseController
     [SerializeField] Transform _player;
     [SerializeField] AttackController _attackController;
     private Animator _animator;
-    private float _speed = 0.5f;
+    public float _speed = 1f; // 몬스터마다 다르게
 
     [Header("Status")]
     [SerializeField] private float _initHp;
@@ -49,8 +49,8 @@ public class EnemyController : BaseController
     {
         _currentHp = (int)_initHp;
         _damage = (int)_damage;
-        Debug.Log($"{gameObject.name} 리스폰 잡몹 현재 HP : " + _currentHp);
-        Debug.Log($"{gameObject.name} 리스폰 잡몹 현재 공격력 : " + _damage);
+        //Debug.Log($"{gameObject.name} 리스폰 잡몹 현재 HP : " + _currentHp);
+        //Debug.Log($"{gameObject.name} 리스폰 잡몹 현재 공격력 : " + _damage);
     }
 
     void Update()
@@ -104,7 +104,7 @@ public class EnemyController : BaseController
                     break;
             }
 
-            Debug.Log($"{gameObject.name}의 증가한 체력 : {_initHp}");
+            //Debug.Log($"{gameObject.name}의 증가한 체력 : {_initHp}");
         }
         else
             GetHit();

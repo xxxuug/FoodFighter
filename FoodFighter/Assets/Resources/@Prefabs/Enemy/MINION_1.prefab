@@ -153,8 +153,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5261611bcf6661e43948db6acda16742, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyKind: 0
   _player: {fileID: 0}
   _attackController: {fileID: 8348357661166507669}
+  _speed: 1.5
   _initHp: 100
   _damage: 10
 --- !u!70 &4169935668319419919

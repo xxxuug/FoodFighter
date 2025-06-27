@@ -126,9 +126,6 @@ public class UpgradeManager : MonoBehaviour
             total += UpgradeInfo[i].IncreaseNum;
         }
 
-        // 현재 공격력
-        //Debug.Log($"현재 Atk: {GameManager.Instance[PlayerStat.Atk]}");
-
         // 이름 & 설명 표시
         NameText.text = UpgradeInfo[Mathf.Min(_level, UpgradeInfo.Length - 1)].Name;
         string totValue = Utils.FormatKoreanNumber((long)total);
