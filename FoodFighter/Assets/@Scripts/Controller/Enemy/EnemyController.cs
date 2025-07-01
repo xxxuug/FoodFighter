@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public enum EnemyKind
@@ -17,6 +18,7 @@ public class EnemyController : BaseController
     [SerializeField] private float _initHp;
     private float _currentHp;
     public float _damage;
+    public TMP_Text HitDamage;
 
     public bool IsAttacking
     {
@@ -44,16 +46,15 @@ public class EnemyController : BaseController
 
         _animator = GetComponent<Animator>();
 
-        _player = GameObject.FindWithTag("Player")?.transform;
-
+        _player = GameObject.FindWithTag(Define.PlayerTag)?.transform;
     }
 
     private void OnEnable()
     {
         _currentHp = (int)_initHp;
         _damage = (int)_damage;
-        //Debug.Log($"{gameObject.name} 리스폰 잡몹 현재 HP : " + _currentHp);
-        //Debug.Log($"{gameObject.name} 리스폰 잡몹 현재 공격력 : " + _damage);
+
+        HitDamage.gameObject.SetActive(false); // 피격 데미지 비활성화
     }
 
     void Update()
@@ -68,6 +69,9 @@ public class EnemyController : BaseController
         {
             IsAttacking = true;
         }
+
+        if (HitDamage.gameObject.activeSelf)
+            HitDamageUp();
     }
 
     void Move()
@@ -75,9 +79,18 @@ public class EnemyController : BaseController
         transform.Translate(Vector3.left * _speed * Time.deltaTime);
     }
 
+    void HitDamageUp()
+    {
+        RectTransform hitPos = HitDamage.GetComponent<RectTransform>();
+        hitPos.localPosition += Vector3.up * 0.5f * Time.deltaTime;
+    }
+
     public void TakeDamage(float damage)
     {
         _currentHp -= damage;
+
+        HitDamage.gameObject.SetActive(true); // 피격 데미지 활성화
+        HitDamage.text = $"{damage}";
 
         if (_currentHp <= 0)
         {
@@ -106,8 +119,6 @@ public class EnemyController : BaseController
                     _damage *= 2f;
                     break;
             }
-
-            //Debug.Log($"{gameObject.name}의 증가한 체력 : {_initHp}");
         }
         else
             GetHit();
