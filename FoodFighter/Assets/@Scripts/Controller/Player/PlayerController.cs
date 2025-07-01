@@ -11,9 +11,6 @@ public class PlayerController : BaseController
     [Header("플레이어와 적 거리")]
     private float _range = 4.5f;
 
-    [Header("플레이어 죽었을 경우")]
-    private Image _playerDiePanel;
-
     public float Speed
     {
         get { return _animator.GetFloat(Define.Speed); }
@@ -48,9 +45,8 @@ public class PlayerController : BaseController
     // 죽음 애니메이션 실행 함수
     void Die()
     {
-
-        Debug.Log("주인공이 죽었습니다. 처리해주세요!");
-        return;
+        UI_Death death = GameObject.Find(Define.PlayerDeath).GetComponent<UI_Death>();
+        StartCoroutine(death.Death());
     }
 
     protected override void Initialize()
@@ -67,20 +63,14 @@ public class PlayerController : BaseController
 
 
         _animator = GetComponent<Animator>();
-        /*
-                _playerDiePanel = GameObject.Find("PlayerDiePanel - Panel").GetComponent<Image>();
-        */
+
         // 씬 이름에 "Boss"가 포함되어 있으면 보스 스테이지로 간주
         isBossStage = SceneManager.GetActiveScene().name.Contains(Define.BossStageScene);
 
         // 달리기 유지
         Speed = 1;
-
-        /*
-                _playerDiePanel.gameObject.SetActive(false);
-        */
     }
-    
+
     public void SetStage()
     {
         transform.position = _stagePlayerSpawn;
@@ -211,11 +201,6 @@ public class PlayerController : BaseController
             IsAttacking = false;
             Speed = 1; // 달리기 재진입
         }
-
-        //StageManager.Instance.boss
-        
-        //battleState = BattleState.BossTurn;
-        //boss.GetComponent<BossStageController>().battleState = BattleState.BossTurn;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -249,22 +234,5 @@ public class PlayerController : BaseController
         _animator.ResetTrigger("Attak");
         _animator.ResetTrigger(Define.GetHit);
         _animator.ResetTrigger(Define.Die);
-    }
-
-    IEnumerator FadePlayerDiePanel(float from, float to)
-    {
-        float time = 0f;
-        float duration = 1f;
-        Color c = _playerDiePanel.color;
-
-        while (time < duration)
-        {
-            time += Time.deltaTime;
-            float alpha = Mathf.Lerp(from, to, time / duration);
-            _playerDiePanel.color = new Color(c.r, c.g, c.b, alpha);
-            yield return null;
-        }
-
-        _playerDiePanel.color = new Color(c.r, c.g, c.b, to);
     }
 }

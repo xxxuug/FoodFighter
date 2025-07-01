@@ -75,7 +75,7 @@ public class LockManager : MonoBehaviour
         StageManager.Instance.Player.SetBossStage();
         StageManager.Instance.EnemyRespawnStop();
 
-        SpawningPool.Instance.EnenmyClear();
+        SpawningPool.Instance.EnemyClear();
 
         GameManager.Instance.CurBossStageIndex = lockInfo[0].StageIndex;
         //GameManager.Instance.StageUnlock = capturedIndex;

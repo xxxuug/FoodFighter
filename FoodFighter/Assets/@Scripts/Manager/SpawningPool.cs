@@ -34,6 +34,7 @@ public class SpawningPool : Singleton<SpawningPool>
 
     void SpawnStage(int main, int sub)
     {
+
         _spawnEnemy.Clear();
 
         int stageIndex = Mathf.Clamp(sub, 1, 5);
@@ -67,8 +68,7 @@ public class SpawningPool : Singleton<SpawningPool>
         SpawnStage(main, sub);
     }
 
-    // 추가한 부분
-    public void EnenmyClear()
+    public void EnemyClear()
     {
         foreach (var enemy in _spawnEnemy)
         {

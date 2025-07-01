@@ -40,6 +40,11 @@ public class UI_Status : MonoBehaviour
             HpBar.fillAmount = currentHp / maxHp;
             HpText.text = $"{currentHp}";
         }
+        
+        if (currentHp <= 0)
+        {
+            HpText.text = "0";
+        }
     }
 
     void UpdateStageUI()

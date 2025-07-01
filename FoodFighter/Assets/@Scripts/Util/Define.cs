@@ -32,6 +32,7 @@ public class Define
     public const string GoldText = "Gold Text - Text";
     public const string DiamondText = "Diamond Text - Text";
     public const string TotalAtkText = "Attack Text - Text";
+    public const string PlayerDeath = "Player Death";
     #endregion
 
 }

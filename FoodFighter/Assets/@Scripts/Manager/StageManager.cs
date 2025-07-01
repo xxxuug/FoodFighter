@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class StageInfo
 {
@@ -65,6 +64,15 @@ public class StageManager : Singleton<StageManager>
         }
     }
 
+    public void RemoveAllEnemy()
+    {
+        foreach (var enemy in _aliveEnemy)
+        {
+            ObjectManager.Instance.Despawn(enemy);
+        }
+        _aliveEnemy.Clear();
+    }
+
     void NextStage()
     {
         if (StageInfo.SubStage >= 5)
@@ -94,5 +102,22 @@ public class StageManager : Singleton<StageManager>
     void ResetPlayerHP()
     {
         GameManager.Instance[PlayerStat.CurrentHp] = GameManager.Instance[PlayerStat.MaxHp];
+    }
+
+    public void SetPrevStage()
+    {
+        if (StageInfo.SubStage == 1)
+        {
+            StageInfo.MainStage--;
+            StageInfo.SubStage = 5;
+        }
+        else
+        {
+            StageInfo.SubStage--;
+        }
+
+        ResetPlayerHP();
+        OnStageInfoChanged?.Invoke();
+        Invoke(nameof(EnemyRespawn), 2f);
     }
 }
