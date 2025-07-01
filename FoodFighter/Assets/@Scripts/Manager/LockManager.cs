@@ -21,11 +21,10 @@ public class LockInfo
 public class LockManager : MonoBehaviour
 {
     private int AttackLevel = 0; // 공격력 레벨
-    public int StageLevel = 0; // 스테이지 레벨
 
     public LockInfo[] lockInfo;
 
-    bool mIsLock = false;
+    private bool _isBossState = true;
 
     public void RefreshUnlock()
     {
@@ -36,7 +35,7 @@ public class LockManager : MonoBehaviour
             switch (Locks.lockType)
             {
                 case LockType.AttackLevel: // 공격력
-                    mIsLock = AttackLevel >= Locks.Level; // 현재 공격력 >= 요구 공격력이라면 잠금 해제
+                    UnLock = AttackLevel >= Locks.Level; // 현재 공격력 >= 요구 공격력이라면 잠금 해제
                     break;
                 case LockType.Stage: // 스테이지
                     UnLock = GameManager.Instance.BossStageOpen[Locks.StageIndex];
@@ -45,7 +44,7 @@ public class LockManager : MonoBehaviour
             }
 
             // Locks.UnlockObject.SetActive(UnLock);
-            if(Locks.LockObject != null)
+            if (Locks.LockObject != null)
                 Locks.LockObject.SetActive(!UnLock); // 잠금 상태일 때만 true
         }
     }
@@ -53,15 +52,11 @@ public class LockManager : MonoBehaviour
 
     private void Update()
     {
-        RefreshUnlock();
-    }
-
-
-    public void SetStage(int Level)
-    {
-        StageLevel = Level;
-
-        RefreshUnlock();
+        if (_isBossState)
+        {
+            RefreshUnlock();
+            _isBossState = false;
+        }
     }
 
     public void SetAttackLevel(int Level)

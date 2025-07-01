@@ -1,15 +1,5 @@
 using UnityEngine;
 using System;
-using System.Net.NetworkInformation;
-
-[Serializable]
-public class BossData
-{
-    public int Stage;
-    public GameObject BossPrefab;
-    public Vector3 SpawnPosition; // 보스 시작 위치
-    public Vector3 TargetPosition; // 보스가 이동해야 할 중앙 위치
-}
 
 public class BossStageSpawningPool : MonoBehaviour
 {

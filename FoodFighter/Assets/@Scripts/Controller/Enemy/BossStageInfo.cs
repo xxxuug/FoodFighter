@@ -12,6 +12,7 @@ public class BossStageInfo : ScriptableObject
         public int Stage; // 몇 번째 보스 스테이지인지
         public GameObject BossPrefab; // 보스 프리팹
         public float CurrentHp;
+        public float MaxHp;
         public float Damage;
         public int RewardGold;
         public int RewardDiamond;

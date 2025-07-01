@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 //public class StageData
 //{
@@ -22,7 +24,6 @@ public class BossStageController : BaseController
 
     [SerializeField] private GameObject rewardPopup; // 보상
     [SerializeField] private float attackDelay = 1.5f ; // 공격 텀
-                                                        // [SerializeField] private Transform firePoint;
 
     BossStageInfo _stagInfo;
 
@@ -32,6 +33,7 @@ public class BossStageController : BaseController
     private bool _isDead = false;
     [Header("Status")]
     private float _currentHP;
+    private float _maxHP;
     private float _damage;
     private float _speed = 0.3f;
 
@@ -40,6 +42,10 @@ public class BossStageController : BaseController
     [Header("보스 이동 관련")]
     [SerializeField] private Vector3 _targetPosition = new Vector3(0.6f, 2f, 0f); // 중앙 목표 위치
     [SerializeField] private float _moveSpeed = 0.5f;
+
+    private GameObject _hpUI;
+    private Image _hpImage;
+    private TMP_Text _hpText;
 
     [SerializeField] private BossStageInfo _stageInfo;
 
@@ -57,6 +63,18 @@ public class BossStageController : BaseController
         //_currentHP = _stageData.CurrentHp;
 
         // Init(1, bossType);
+    }
+
+    private void Start()
+    {
+        _hpUI = GameObject.Find("BossHpUI");
+        _hpImage = GameObject.Find("BossHpBar - Image")?.GetComponent<Image>();
+        _hpText = GameObject.Find("BossHpBar Text - Text")?.GetComponent<TMP_Text>();
+
+        Debug.Log($"Hp UI 연결 _hpUI: {_hpUI != null}, _hpImage: {_hpImage != null}, _hpText: {_hpText != null}");
+
+        if (_hpUI != null)
+            _hpUI.SetActive(false);
     }
 
     public void AllInit(int stage)
@@ -80,6 +98,7 @@ public class BossStageController : BaseController
 
         // 초기화
         _currentHP = data.CurrentHp;
+        _maxHP = data.MaxHp;
         _damage = data.Damage;
         rewardGold = data.RewardGold;
         rewardDiamond = data.RewardDiamond;
@@ -127,6 +146,9 @@ public class BossStageController : BaseController
         {
             battleState = BattleState.WaitTurn;
             Debug.Log("보스 전투 위치 도착");
+
+            _hpUI.SetActive(true);
+            UpdateHP();
         }
     }
 
@@ -154,6 +176,8 @@ public class BossStageController : BaseController
     {
         _currentHP -= damage;
         Debug.Log($"보스 현재 HP: {_currentHP}");
+        UpdateHP();
+
         if (_currentHP <= 0)
         {
             Die();
@@ -167,7 +191,9 @@ public class BossStageController : BaseController
     public void Die()
     {
         Debug.Log("보스 사망");
-      //  _anim.SetTrigger("Die");
+        //  _anim.SetTrigger("Die");
+
+        _hpUI.SetActive(false);
 
         int nextStageIndex = GameManager.Instance.CurBossStageIndex + 1;
         GameManager.Instance.BossStageOpen[nextStageIndex] = true;
@@ -191,6 +217,15 @@ public class BossStageController : BaseController
 
         // 게임 씬으로 복귀
         SceneManager.LoadScene(Define.GameScene);
+    }
+
+    void UpdateHP()
+    {
+        if (_hpImage != null && _maxHP > 0)
+        {
+            _hpImage.fillAmount = _currentHP / _maxHP;
+            _hpText.text = $"{_currentHP}";
+        }
     }
 
     void Despawn()
