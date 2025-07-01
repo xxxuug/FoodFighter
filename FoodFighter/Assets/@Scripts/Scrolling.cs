@@ -11,14 +11,19 @@ public class Scrolling : MonoBehaviour
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
-
+/*
     public void SetPlayer(PlayerController player)
     {
         _player = player;
     }
-
+*/
     void Update()
     {
+        if(_player == null)
+        {
+            _player = StageManager.Instance.Player;
+        }
+
         if (_player != null && _player.IsAttacking == false)
         {
             _offset += Time.deltaTime * _speed;

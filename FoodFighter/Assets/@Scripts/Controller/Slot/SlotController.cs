@@ -64,7 +64,10 @@ public class SlotController : Singleton<SlotController>
             new Vector2Int(5, 4),
     };
 
-    protected override void Initialize() { }
+    protected override void Initialize() 
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
 
     private void Awake()
     {
@@ -154,6 +157,9 @@ public class SlotController : Singleton<SlotController>
         }
     }
 
+    // 총알을 쏘면 함수가 호출되나 보스전에서 총을 쏘지 않으면 호출 x
+    // 그래서 보스전에서 총알을 쏘기전에 음식을 합성하면 에러남
+
     // FoodBullet 찾아오는 함수
     public void FindFoodBullet(FoodBullet bullet)
     {
@@ -181,9 +187,10 @@ public class SlotController : Singleton<SlotController>
                     {
                         maxLevel = item.Level; // 최대 레벨을 이 레벨로 지정
                         maxSprite = icon.sprite; // 아이콘도 최대 레벨 아이콘으로 지정
-                        _foodbullet.SetFoodSprite(maxSprite); // 푸드불렛의 실질적 아이콘도 변경
+                        _foodbullet?.SetFoodSprite(maxSprite); // 푸드불렛의 실질적 아이콘도 변경
                         MaxLevelRef = maxLevel; // 외부 참조용 변수에 최고 레벨 넣어주기
-                        GameManager.Instance.TotalAttack(); // 공격력 갱신
+
+                        //GameManager.Instance.TotalAttack; // 공격력 갱신
                     }
                     break;
                 }

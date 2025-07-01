@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerController : BaseController
@@ -26,6 +27,18 @@ public class PlayerController : BaseController
         set { _animator.SetBool(Define.isAttacking, value); }
     }
 
+    //public GameObject boss { get; set; }
+    private Vector3 _stagePlayerSpawn = new Vector2(-1.43f, 1.39f); // 플레이어 스폰 위치
+    private Vector3 _bossStagePlayerSpawn = new Vector3(-4f, 1.8f, 0f); // 플레이어 시작 위치
+
+    public bool isBossStage { get; set; }
+
+    public BattleState battleState = BattleState.None;
+    public Vector3 BossBattleTargetPos = new Vector3(-0.9f, 1.8f, 0f); // 중앙 목표 위치    
+
+    private float moveSpeed = 1.3f;
+
+
     // 피격 애니메이션 실행 함수
     void GetHit()
     {
@@ -35,30 +48,77 @@ public class PlayerController : BaseController
     // 죽음 애니메이션 실행 함수
     void Die()
     {
-        _animator.SetTrigger(Define.Die);
 
-        _playerDiePanel.gameObject.SetActive(true);
-        // 페이드 인
-        StartCoroutine(FadePlayerDiePanel(1f, 0f));
-        // 페이드 아웃
-        StartCoroutine(FadePlayerDiePanel(0f, 1f));
+        Debug.Log("주인공이 죽었습니다. 처리해주세요!");
+        return;
     }
 
     protected override void Initialize()
     {
+        if (StageManager.Instance.Player == null)
+        {
+            StageManager.Instance.Player = this;
+            DontDestroyOnLoad(this);
+        }
+        else
+        {
+            Destroy(this.gameObject); // 중복 생성된 거면 삭제
+        }
+
+
         _animator = GetComponent<Animator>();
-        _playerDiePanel = GameObject.Find("PlayerDiePanel - Panel").GetComponent<Image>();
+        /*
+                _playerDiePanel = GameObject.Find("PlayerDiePanel - Panel").GetComponent<Image>();
+        */
+        // 씬 이름에 "Boss"가 포함되어 있으면 보스 스테이지로 간주
+        isBossStage = SceneManager.GetActiveScene().name.Contains(Define.BossStageScene);
 
         // 달리기 유지
         Speed = 1;
 
-        _playerDiePanel.gameObject.SetActive(false);
+        /*
+                _playerDiePanel.gameObject.SetActive(false);
+        */
+    }
+    
+    public void SetStage()
+    {
+        transform.position = _stagePlayerSpawn;
+        isBossStage = false;
+    }
+
+    public void SetBossStage()
+    {
+        if (StageManager.Instance.Player == null)
+        {
+            // 처음 시작한 경우만 생성
+            StageManager.Instance.Player = ObjectManager.Instance.Spawn<PlayerController>(_bossStagePlayerSpawn);
+            DontDestroyOnLoad(StageManager.Instance.Player.gameObject);
+        }
+        else // 중복이라면
+        {
+            // 있으면 위치만 이동
+            StageManager.Instance.Player.transform.position = _bossStagePlayerSpawn;
+        }
+
+        battleState = BattleState.MoveToCenter;
+        _animator.StopPlayback();
+        isBossStage = true;
+
+        ResetForBossSTage(); // 상태 한 번 초기화
     }
 
     void Update()
     {
-        // if (새 스테이지 진입 시마다)
-        FindDistance();
+        if (isBossStage == true)
+        {
+            HandleBossStage();
+        }
+        else
+        {
+            // if (새 스테이지 진입 시 마다)
+            FindDistance();
+        }
     }
 
     // Enemy 태그 붙은 오브젝트 찾고 거리 구하는 함수
@@ -83,7 +143,7 @@ public class PlayerController : BaseController
             }
         }
 
-        if (isNearEnemy)
+        if (isNearEnemy == true)
         {
             // idle 진입
             IsAttacking = true;
@@ -94,6 +154,68 @@ public class PlayerController : BaseController
             IsAttacking = false;
             Speed = 1; // 달리기 재진입
         }
+    }
+
+    void HandleBossStage()
+    {
+        switch (battleState)
+        {
+            case BattleState.MoveToCenter:
+                MoveToBossBattlePosition();
+                break;
+
+            case BattleState.PlayerTurn:
+                HandlePlayerTurn();
+                break;
+
+            case BattleState.BossTurn:
+                break;
+
+            case BattleState.End:
+                Speed = 0;
+                break;
+        }
+    }
+
+    // 플레이어가 전투 하는 가운데로 이동하는 함수
+    void MoveToBossBattlePosition()
+    {
+        // y, z 고정하고 x만 이동
+        Vector3 targetPos = new Vector3(BossBattleTargetPos.x, transform.position.y, transform.position.z);
+        transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+        Speed = 1;
+
+        if (Vector3.Distance(transform.position, targetPos) < 0.1f)
+        {
+            Speed = 0f;
+            battleState = BattleState.PlayerTurn;
+            Debug.Log("플레이어 전투 위치 도착");
+        }
+    }
+
+    private void HandlePlayerTurn()
+    {
+        if (StageManager.Instance.boss == null)
+            return;
+
+        bool isNearEnemy = StageManager.Instance.boss.battleState == BattleState.WaitTurn;
+
+        if (isNearEnemy == true)
+        {
+            // idle 진입
+            IsAttacking = true;
+            Speed = 0;
+        }
+        else
+        {
+            IsAttacking = false;
+            Speed = 1; // 달리기 재진입
+        }
+
+        //StageManager.Instance.boss
+        
+        //battleState = BattleState.BossTurn;
+        //boss.GetComponent<BossStageController>().battleState = BattleState.BossTurn;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -115,6 +237,18 @@ public class PlayerController : BaseController
         {
             GetHit();
         }
+    }
+
+    // 초기화
+    public void ResetForBossSTage()
+    {
+        battleState = BattleState.MoveToCenter;
+        IsAttacking = false;
+        Speed = 1f;
+
+        _animator.ResetTrigger("Attak");
+        _animator.ResetTrigger(Define.GetHit);
+        _animator.ResetTrigger(Define.Die);
     }
 
     IEnumerator FadePlayerDiePanel(float from, float to)

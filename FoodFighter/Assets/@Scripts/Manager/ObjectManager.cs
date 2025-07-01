@@ -13,16 +13,19 @@ public class ObjectManager : Singleton<ObjectManager>
     // "게임 씬 위에 현재 활성화되어 존재하는 몬스터 인스턴스들"을 실시간으로 관리하는 컬렉션
     public HashSet<EnemyController> Enemies { get; set; } = new HashSet<EnemyController>();
     public HashSet<GoldController> Golds { get; set; } = new HashSet<GoldController>();
+    public HashSet<BossStageController> Boss { get; set; } = new HashSet<BossStageController>();
 
     // 스폰할 수 있는 몬스터 프리팹 목록
     public List<GameObject> EnemyPrefabs = new List<GameObject>();
     public List<GameObject> GoldPrefabs = new List<GameObject>();
     public List<GameObject> HitEffectPrefabs = new List<GameObject>();
+    public List<GameObject> BossPrefabs = new List<GameObject>();
 
     private GameObject _playerResource;
     private GameObject _foodResource;
     private GameObject _goldResource;
     private GameObject _hitEffectResource;
+    private GameObject _bossResource;
 
     protected override void Initialize()
     {
@@ -40,6 +43,7 @@ public class ObjectManager : Singleton<ObjectManager>
         _foodResource = Resources.Load<GameObject>(Define.BulletPath);
         _goldResource = Resources.Load<GameObject>(Define.GoldPath);
         _hitEffectResource = Resources.Load<GameObject>(Define.HitEffectPath);
+        _bossResource = Resources.Load<GameObject>(Define.BossPath);
 
         // enemy 폴더 프리팹 로드
         EnemyPrefabs.Clear();
@@ -64,8 +68,7 @@ public class ObjectManager : Singleton<ObjectManager>
             GameObject obj = Instantiate(_playerResource, spawnPos, Quaternion.identity);
             PlayerController playerController = obj.GetOrAddComponent<PlayerController>();
             _player = playerController;
-            FindAnyObjectByType<Scrolling>()?.SetPlayer(playerController); // 코드 개선 필요
-
+            
             return playerController as T;
         }
         else if (type == typeof(FoodBullet))
@@ -88,6 +91,14 @@ public class ObjectManager : Singleton<ObjectManager>
                 }
             }
         }
+
+        else if (type == typeof(BossStageController))
+        {
+            GameObject obj = Instantiate(_bossResource, spawnPos, Quaternion.identity);
+            BossStageController boss = obj.GetOrAddComponent<BossStageController>();
+            Boss.Add(boss);
+            return boss as T;
+        }
         else if (type == typeof(GoldController))
         {
             GameObject obj = Instantiate(_goldResource, spawnPos, Quaternion.identity);
@@ -107,11 +118,12 @@ public class ObjectManager : Singleton<ObjectManager>
     public void Despawn<T>(T obj) where T : BaseController
     {
         obj.gameObject.SetActive(false);
-
+        /*
         EnemyController enemy = obj as EnemyController;
 
         if (enemy != null)
             StageManager.Instance.RemoveEnemy(enemy);
+        */
     }
 
     // 게임오브젝트 despawn

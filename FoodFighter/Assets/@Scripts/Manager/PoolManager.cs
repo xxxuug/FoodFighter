@@ -45,12 +45,14 @@ public class PoolManager : Singleton<PoolManager>
                 if (!_parentObject.ContainsKey(type))
                 {
                     GameObject go = new GameObject(type.Name);
+                    
                     if (type == typeof(FoodBullet))
                     {
                         Transform player = GameObject.FindWithTag("Player")?.transform;
                         if (player != null)
                             go.transform.parent = player;
                     }
+                    
                     _parentObject.Add(type, go);
                 }
                 var obj = ObjectManager.Instance.Spawn<T>(pos);
@@ -132,7 +134,11 @@ public class PoolManager : Singleton<PoolManager>
     protected override void Clear()
     {
         base.Clear();
+        
         _pooledObject.Clear();
         _parentObject.Clear();
+
+        _pooledPrefabs.Clear();
+        _parentPrefabs.Clear();
     }
 }

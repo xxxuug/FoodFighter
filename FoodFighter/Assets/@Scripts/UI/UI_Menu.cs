@@ -54,7 +54,7 @@ public class UI_Menu : UI_Base
     }
 
     // 강화 버튼 클릭
-    void OnClickEnhanceButton()
+    public void OnClickEnhanceButton()
     {
 
         if (OpenPanel != null) OpenPanel.ClosePanel();

@@ -153,6 +153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebebc07911e3e1e40b1af6b33c82d6f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  battleState: 0
+  BossBattleTargetPos: {x: -0.9, y: 1.8, z: 0}
 --- !u!114 &7824851183439512571
 MonoBehaviour:
   m_ObjectHideFlags: 0

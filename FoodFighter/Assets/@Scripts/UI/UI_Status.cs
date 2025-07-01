@@ -11,6 +11,13 @@ public class UI_Status : MonoBehaviour
     [Header("Stage")]
     public TMP_Text StageText;
 
+    [Header("공격력")]
+    public TMP_Text TotalAtkText;
+
+    [Header("보상")]
+    public TMP_Text GoldText;
+    public TMP_Text DiamondText;
+
     private void Start()
     {
         GameManager.Instance.OnPlayerStatChanged += UpdateHpUI;
@@ -39,6 +46,47 @@ public class UI_Status : MonoBehaviour
     {
         if (GameManager.Instance == null) return;
 
-        StageText.text = StageManager.Instance.StageInfo.GetDisplayStage();
+        if (StageManager.Instance.Player.isBossStage == false)
+            StageText.text = StageManager.Instance.StageInfo.GetDisplayStage();
+        else
+            StageText.text = $"BossStage {GameManager.Instance.CurBossStageIndex + 1}";
     }
+
+    private void Update()
+    {
+        TotalAttack();
+
+        if (DiamondText != null && GameManager.Instance != null)
+            DiamondText.text = Utils.FormatKoreanNumber(GameManager.Instance.Diamond);
+
+        if (GoldText != null && GameManager.Instance != null)
+            GoldText.text = Utils.FormatKoreanNumber(GameManager.Instance.Gold);
+    }
+
+    public float TotalAttack()
+    {
+        GameManager.Instance[PlayerStat.TotalAtk] = GameManager.Instance[PlayerStat.Atk] + FoodData.Instance.GetFood(SlotController.Instance.MaxLevelRef).AttackPower;
+        // 기본 크리티컬 데미지(총 공격력*1.5)에서 증가한 크리티컬 데미지 %를 곱한 값을 총 공격력에 더하기
+        GameManager.Instance[PlayerStat.TotalCriticalDamage] = (GameManager.Instance[PlayerStat.TotalAtk] * 1.5f) + ((GameManager.Instance[PlayerStat.TotalAtk] * 1.5f) * (GameManager.Instance[PlayerStat.CriticalDamage] / 100));
+
+        float rand = UnityEngine.Random.Range(0f, 100f); // 0에서 100 사이의 랜덤한 수. 소수점 포함
+        float damage;
+
+        if (rand <= GameManager.Instance[PlayerStat.CriticalProbability])
+        {
+            // 크리티컬 데미지 적용
+            damage = GameManager.Instance[PlayerStat.TotalCriticalDamage];
+            Debug.Log($"크리티컬 발생! 현재 크리티컬 확률 : {GameManager.Instance[PlayerStat.CriticalProbability]} 데미지 : {damage}");
+        }
+        else
+        {
+            // 총 공격력으로 데미지 적용
+            damage = GameManager.Instance[PlayerStat.TotalAtk];
+        }
+
+        TotalAtkText.text = Utils.FormatKoreanNumber((long)GameManager.Instance[PlayerStat.TotalAtk]);
+
+        return damage;
+    }
+
 }

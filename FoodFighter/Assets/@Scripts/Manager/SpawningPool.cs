@@ -24,7 +24,7 @@ public class SpawningPool : Singleton<SpawningPool>
     private void Awake()
     {
         ObjectManager.Instance.ResourceAllLoad();
-        ObjectManager.Instance.Spawn<PlayerController>(_playerSpawn);
+        ObjectManager.Instance.Spawn<PlayerController>(_playerSpawn);        
     }
 
     void Start()
@@ -65,5 +65,16 @@ public class SpawningPool : Singleton<SpawningPool>
         var main = StageManager.Instance.StageInfo.MainStage;
         var sub = StageManager.Instance.StageInfo.SubStage;
         SpawnStage(main, sub);
+    }
+
+    // 추가한 부분
+    public void EnenmyClear()
+    {
+        foreach (var enemy in _spawnEnemy)
+        {
+            StageManager.Instance.RemoveEnemy(enemy);
+        }
+
+        _spawnEnemy.Clear();
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class StageInfo
 {
@@ -36,6 +37,8 @@ public class StageManager : Singleton<StageManager>
     #endregion
 
     private List<EnemyController> _aliveEnemy = new();
+    public BossStageController boss { get; set; }
+    public PlayerController Player { get; set; }
 
     public void AddEnemy(EnemyController enemy)
     {
@@ -47,8 +50,15 @@ public class StageManager : Singleton<StageManager>
 
     public void RemoveEnemy(EnemyController enemy)
     {
-        _aliveEnemy.Remove(enemy);
+        ObjectManager.Instance.Despawn(enemy);
 
+        _aliveEnemy.Remove(enemy);
+    }
+
+    public void HuntEnemy(EnemyController enemy)
+    {
+        RemoveEnemy(enemy);
+        
         if (_aliveEnemy.Count == 0)
         {
             NextStage();
@@ -74,6 +84,11 @@ public class StageManager : Singleton<StageManager>
     void EnemyRespawn()
     {
         SpawningPool.Instance.NextStageEnemyRespawn();
+    }
+
+    public void EnemyRespawnStop()
+    {
+        CancelInvoke(nameof(EnemyRespawn));
     }
 
     void ResetPlayerHP()

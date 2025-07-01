@@ -26,6 +26,7 @@ public class Define
 
     #region Other String
     public const string GameScene = "Game";
+    public const string BossStageScene = "StageBoss";
     public const string SlotIcon = "SlotIcon";
     public const string SlotBackground = "Slot Background - Image";
     public const string GoldText = "Gold Text - Text";

@@ -39,6 +39,9 @@ public class EnemyController : BaseController
 
     protected override void Initialize()
     {
+        if(StageManager.Instance.boss != null)
+            StageManager.Instance.RemoveEnemy(this);
+
         _animator = GetComponent<Animator>();
 
         _player = GameObject.FindWithTag("Player")?.transform;
@@ -112,7 +115,7 @@ public class EnemyController : BaseController
 
     void Despawn()
     {
-        ObjectManager.Instance.Despawn(this);
+        StageManager.Instance.HuntEnemy(this);        
     }
 
     void DropGold()

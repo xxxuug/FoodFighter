@@ -9,6 +9,10 @@ public class FoodShooter : MonoBehaviour
 
     public void Shooting()
     {
+        if (StageManager.Instance.boss != null)
+            if (StageManager.Instance.Player.battleState != BattleState.PlayerTurn)
+                return;
+
         // 재사용 대기시간 중일 땐 return
         if (!_canShoot)
             return;

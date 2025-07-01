@@ -23,6 +23,10 @@ public class UpgradeManager : MonoBehaviour
 
     private void Start()
     {
+        //게임 매니저에서 레벨 정보를 획득
+        PlayerStat statType = UpgradeInfo[0].StateType;
+        _level = GameManager.Instance.level[statType];
+
         _originDescriptionText = DescriptionText.text; // 원본 설명 텍스트를 오리진 변수에 저장
 
         UpdateUI();
@@ -73,19 +77,24 @@ public class UpgradeManager : MonoBehaviour
             switch (upgrade.StateType)
             {
                 case PlayerStat.Atk:
-                    GameManager.Instance[PlayerStat.Atk] += increase;
+                    //GameManager.Instance[PlayerStat.Atk] += increase;
+                    GameManager.Instance.LevelUp(PlayerStat.Atk, increase);
                     break;
                 case PlayerStat.MaxHp:
-                    GameManager.Instance[PlayerStat.MaxHp] += increase;
+                    //GameManager.Instance[PlayerStat.MaxHp] += increase;
+                    GameManager.Instance.LevelUp(PlayerStat.MaxHp, increase);
                     break;
                 case PlayerStat.CriticalProbability:
-                    GameManager.Instance[PlayerStat.CriticalProbability] += increase;
+                    //GameManager.Instance[PlayerStat.CriticalProbability] += increase;
+                    GameManager.Instance.LevelUp(PlayerStat.CriticalProbability, increase);
                     break;
                 case PlayerStat.CriticalDamage:
-                    GameManager.Instance[PlayerStat.CriticalDamage] += increase;
+                    //GameManager.Instance[PlayerStat.CriticalDamage] += increase;
+                    GameManager.Instance.LevelUp(PlayerStat.CriticalDamage, increase);
                     break;
                 case PlayerStat.SlotCount:
-                    GameManager.Instance[PlayerStat.SlotCount] += 1;
+                    //GameManager.Instance[PlayerStat.SlotCount] += 1;
+                    GameManager.Instance.LevelUp(PlayerStat.SlotCount, 1);
                     Debug.Log($"{GameManager.Instance[PlayerStat.SlotCount]} 강화됨");
 
                     if (SlotController.Instance != null)
@@ -93,8 +102,9 @@ public class UpgradeManager : MonoBehaviour
                     break;
             }
 
+
             Debug.Log($"{upgrade.Name} 강화 성공!");
-            GameManager.Instance.TotalAttack(); // 공격력 조회
+            // GameManager.Instance.TotalAttack(); // 공격력 조회
 
             if (LockManager != null && LockManager.Length > 0)
             {

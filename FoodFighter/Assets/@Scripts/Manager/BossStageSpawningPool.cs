@@ -1,42 +1,64 @@
 using UnityEngine;
+using System;
+using System.Net.NetworkInformation;
+
+[Serializable]
+public class BossData
+{
+    public int Stage;
+    public GameObject BossPrefab;
+    public Vector3 SpawnPosition; // 보스 시작 위치
+    public Vector3 TargetPosition; // 보스가 이동해야 할 중앙 위치
+}
 
 public class BossStageSpawningPool : MonoBehaviour
 {
-    private int StageSelect;
-
-  //  [Header("보스 데이터")]
-    private BossData[] bossData;
-
-    private Vector3 _playerSpawn = new Vector3(-1.43f, 1.39f, 0); // 플레이어 스폰 위치
-    private Vector3 _initBossSpawn = new Vector2(3.34f, 1.62f); // 보스 스폰 위치
-
-    private BossStageController _stageController;
+    //[SerializeField] private BossData[] _bossDataList;
 
     private void Awake()
     {
-        ObjectManager.Instance.ResourceAllLoad();
-        ObjectManager.Instance.Spawn<PlayerController>(_playerSpawn);
-
-        StageSelect = PlayerPrefs.GetInt("SelectedBossStage", 0);
-        SpawnBoss(StageSelect);
+        // ObjectManager.Instance.Spawn<PlayerController>(_playerSpawn);         
     }
 
-    void SpawnBoss(int StageSelect)
+    private void Start()
     {
-        if (StageSelect < 0 || StageSelect >= bossData.Length)
+        int currentStage = GameManager.Instance.CurBossStageIndex;
+
+        BossStageInfo.Data selectBoss = null;
+        foreach (var data in GameManager.Instance.bossStageInfo.list)
         {
+            if (data.Stage == currentStage)
+            {
+                selectBoss = data;
+                break;
+            }
+        }
+
+        if (selectBoss == null)
+        {
+            Debug.Log("해당하는 보스 없음");
             return;
         }
 
-        BossData data = bossData[StageSelect];
+        // 풀로 보스 생성
+        var baseObj = PoolManager.Instance.GetObject(selectBoss.BossPrefab, selectBoss.SpawnPosition);
+        BossStageController boss = baseObj as BossStageController;
 
-        // 풀을 통해 보스 생성
-        var bossObj = PoolManager.Instance.GetObject(data.BossPrefab, _initBossSpawn);
-        _stageController = bossObj as BossStageController;
-
-        if (_stageController != null)
+        if (boss == null)
         {
-            _stageController.Init(data);
+            Debug.Log("보스 프리팹에 BossStageController가 없습니다.");
+            return;
         }
+
+        boss.gameObject.SetActive(true);
+        boss.battleState = BattleState.MoveToCenter;
+
+        StageManager.Instance.boss = boss;
+
+        boss.AllInit(currentStage);
+
+        // 보스가 이동할 중앙 위치 설정
+        //boss.SendMessage("SetTArgetPosition", selectBoss.TargetPosition);
+        //boss.Init(currentStage, selectBoss.BossType);
     }
 }
