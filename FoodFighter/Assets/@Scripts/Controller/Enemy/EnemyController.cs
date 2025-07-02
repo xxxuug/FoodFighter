@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -18,7 +19,11 @@ public class EnemyController : BaseController
     [SerializeField] private float _initHp;
     private float _currentHp;
     public float _damage;
-    public TMP_Text HitDamage;
+
+    [Header("Hit Damage")]
+    public GameObject HitDamagePrefab;
+    private RectTransform _hitPos;
+    private GameObject _hitDamage;
 
     public bool IsAttacking
     {
@@ -41,12 +46,14 @@ public class EnemyController : BaseController
 
     protected override void Initialize()
     {
-        if(StageManager.Instance.boss != null)
+
+        if (StageManager.Instance.boss != null)
             StageManager.Instance.RemoveEnemy(this);
 
         _animator = GetComponent<Animator>();
 
         _player = GameObject.FindWithTag(Define.PlayerTag)?.transform;
+
     }
 
     private void OnEnable()
@@ -54,7 +61,7 @@ public class EnemyController : BaseController
         _currentHp = (int)_initHp;
         _damage = (int)_damage;
 
-        HitDamage.gameObject.SetActive(false); // 피격 데미지 비활성화
+        ObjectManager.Instance.Despawn(_hitDamage);
     }
 
     void Update()
@@ -69,9 +76,6 @@ public class EnemyController : BaseController
         {
             IsAttacking = true;
         }
-
-        if (HitDamage.gameObject.activeSelf)
-            HitDamageUp();
     }
 
     void Move()
@@ -79,18 +83,35 @@ public class EnemyController : BaseController
         transform.Translate(Vector3.left * _speed * Time.deltaTime);
     }
 
-    void HitDamageUp()
+    IEnumerator HitDamageUp()
     {
-        RectTransform hitPos = HitDamage.GetComponent<RectTransform>();
-        hitPos.localPosition += Vector3.up * 0.5f * Time.deltaTime;
+        Vector3 startPos = _hitDamage.GetComponent<RectTransform>().localPosition;
+        Vector3 endPos = startPos + Vector3.up * 0.5f;
+
+        float t = 0;
+        float duration = 0.5f;
+
+        while (t < duration)
+        {
+            _hitDamage.GetComponent<RectTransform>().localPosition = Vector3.Lerp(startPos, endPos, t / duration);
+            t += Time.deltaTime;
+
+            yield return null;
+        }
+        ObjectManager.Instance.Despawn(_hitDamage);
     }
 
     public void TakeDamage(float damage)
     {
         _currentHp -= damage;
 
-        HitDamage.gameObject.SetActive(true); // 피격 데미지 활성화
-        HitDamage.text = $"{damage}";
+        _hitDamage = PoolManager.Instance.GetEffectObject(HitDamagePrefab, Vector3.zero);
+        _hitDamage.GetComponent<RectTransform>().transform.SetParent(this.transform.Find(Define.UI));
+
+        _hitDamage.GetComponent<RectTransform>().localPosition = new Vector3(0, 0.15f, 0);
+        _hitDamage.GetComponent<TMP_Text>().text = $"{damage}";
+        StartCoroutine(HitDamageUp());
+        Debug.Log($"[TakeDamage] {this.gameObject.name} 피격 데미지 텍스트 생성");
 
         if (_currentHp <= 0)
         {

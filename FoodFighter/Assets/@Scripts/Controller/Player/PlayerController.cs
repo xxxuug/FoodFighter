@@ -214,7 +214,7 @@ public class PlayerController : BaseController
     public void TakeDamage(float damage)
     {
         GameManager.Instance[PlayerStat.CurrentHp] -= damage;
-        Debug.Log($"현재 플레이어 HP : {GameManager.Instance[PlayerStat.CurrentHp]}");
+        //Debug.Log($"현재 플레이어 HP : {GameManager.Instance[PlayerStat.CurrentHp]}");
 
         if (GameManager.Instance[PlayerStat.CurrentHp] <= 0)
             Die();

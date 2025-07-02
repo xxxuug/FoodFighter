@@ -125,7 +125,7 @@ public class PoolManager : Singleton<PoolManager>
         }
 
         GameObject newObj = GameObject.Instantiate(prefab, pos, Quaternion.identity);
-        newObj.transform.parent = _parentPrefabs[prefab].transform;
+        newObj.transform.SetParent(_parentPrefabs[prefab].transform);
         _pooledPrefabs[prefab].Add(newObj);
 
         return newObj;

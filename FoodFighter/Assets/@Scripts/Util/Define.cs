@@ -9,6 +9,7 @@ public class Define
     public const string AllEnemyPath = "@Prefabs/Enemy";
     public const string GoldPath = "@Prefabs/Gold";
     public const string BossPath = "@Prefabs/Enemy/TestBoss";
+    public const string HitDamagePath = "@Prefabs/Enemy/Hit Damage - Text.prefab";
     #endregion
 
     #region Tag
@@ -33,6 +34,7 @@ public class Define
     public const string DiamondText = "Diamond Text - Text";
     public const string TotalAtkText = "Attack Text - Text";
     public const string PlayerDeath = "Player Death";
+    public const string UI = "UI";
     #endregion
 
 }

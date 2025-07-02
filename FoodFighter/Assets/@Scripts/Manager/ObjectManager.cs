@@ -20,12 +20,14 @@ public class ObjectManager : Singleton<ObjectManager>
     public List<GameObject> GoldPrefabs = new List<GameObject>();
     public List<GameObject> HitEffectPrefabs = new List<GameObject>();
     public List<GameObject> BossPrefabs = new List<GameObject>();
+    public List<GameObject> HitDamagePrefabs = new List<GameObject>();
 
     private GameObject _playerResource;
     private GameObject _foodResource;
     private GameObject _goldResource;
     private GameObject _hitEffectResource;
     private GameObject _bossResource;
+    private GameObject _hitDamageResource; // 피격 데미지
 
     protected override void Initialize()
     {
@@ -44,6 +46,7 @@ public class ObjectManager : Singleton<ObjectManager>
         _goldResource = Resources.Load<GameObject>(Define.GoldPath);
         _hitEffectResource = Resources.Load<GameObject>(Define.HitEffectPath);
         _bossResource = Resources.Load<GameObject>(Define.BossPath);
+        _hitDamageResource = Resources.Load<GameObject>(Define.HitDamagePath);
 
         // enemy 폴더 프리팹 로드
         EnemyPrefabs.Clear();
