@@ -48,10 +48,13 @@ public class PlayerController : BaseController
     {
         if (isBossStage == true)
         {
-            SceneManager.LoadScene("Game");
-
             // 보스 전에서 사망했을 경우 HP 다시 초기화
             GameManager.Instance[PlayerStat.CurrentHp] = GameManager.Instance[PlayerStat.MaxHp];
+
+            SceneManager.LoadScene("Game");
+
+            // 플레이어 위치 및 상태 초기화
+            StartCoroutine(ResetDeath());
         }
         else
         {
@@ -120,6 +123,13 @@ public class PlayerController : BaseController
             // if (새 스테이지 진입 시 마다)
             FindDistance();
         }
+
+        //// 디버그용 바로 죽이기
+        //if (Input.GetKeyUp(KeyCode.P) == true)
+        //{
+        //    TakeDamage(GameManager.Instance[PlayerStat.CurrentHp]);
+        //    Debug.Log("디버그용 플레이어 사망");
+        //}
     }
 
     // Enemy 태그 붙은 오브젝트 찾고 거리 구하는 함수
@@ -241,6 +251,22 @@ public class PlayerController : BaseController
         battleState = BattleState.MoveToCenter;
         IsAttacking = false;
         Speed = 1f;
+
+        _animator.ResetTrigger("Attak");
+        _animator.ResetTrigger(Define.GetHit);
+        _animator.ResetTrigger(Define.Die);
+    }
+
+    IEnumerator ResetDeath()
+    {
+        yield return new WaitForSeconds(0.01f); // 씬이 로드 될 때까지 약간 대기
+
+        isBossStage = false;
+        battleState = BattleState.None;
+        IsAttacking = false;
+        Speed = 1f;
+
+        transform.position = _stagePlayerSpawn;
 
         _animator.ResetTrigger("Attak");
         _animator.ResetTrigger(Define.GetHit);

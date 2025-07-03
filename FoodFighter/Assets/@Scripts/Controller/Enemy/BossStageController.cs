@@ -147,6 +147,13 @@ public class BossStageController : BaseController
         {
             IsAttacking = true;
         }
+
+        // 디버그용 바로 죽이기
+        if (Input.GetKeyUp(KeyCode.P) == true)
+        {
+            TakeDamage(_currentHP);
+            Debug.Log("디버그용 보스 사망");
+        }
         /*
                 switch (battleState)
                 {
@@ -158,15 +165,6 @@ public class BossStageController : BaseController
                         if (!_isAttacking) StartCoroutine(HandleBossTurn());
                         break;
                 }
-
-
-
-        // 디버그용 바로 죽이기
-        if (Input.GetKeyUp(KeyCode.P) == true)
-        {
-            TakeDamage(_currentHP);
-            Debug.Log("디버그용 보스 사망");
-        }
 
         if (battleState == BattleState.BossTurn && !_isAttacking)
         {
