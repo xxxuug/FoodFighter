@@ -22,10 +22,8 @@ public class EnemyController : BaseController
 
     [Header("Hit Damage")]
     public GameObject HitDamagePrefab;
-    private RectTransform _hitPos;
     private GameObject _hitDamage;
-
-    private CapsuleCollider2D capsuleCollider;
+    private bool _isDead = false;
 
     public bool IsAttacking
     {
@@ -40,8 +38,6 @@ public class EnemyController : BaseController
 
     public void Die()
     {
-        capsuleCollider.enabled = false;
-
         _animator.SetTrigger(Define.Die);
         DropGold();
 
@@ -50,24 +46,21 @@ public class EnemyController : BaseController
 
     protected override void Initialize()
     {
-
         if (StageManager.Instance.boss != null)
             StageManager.Instance.RemoveEnemy(this);
 
         _animator = GetComponent<Animator>();
 
         _player = GameObject.FindWithTag(Define.PlayerTag)?.transform;
-        capsuleCollider = GetComponent<CapsuleCollider2D>();
 
         _attackController.enemyController = this;
     }
 
     private void OnEnable()
-    {
-        capsuleCollider.enabled = true;
-
+    { 
         _currentHp = (int)_initHp;
         _damage = (int)_damage;
+        _isDead = false;
 
         ObjectManager.Instance.Despawn(_hitDamage);
     }
@@ -97,7 +90,7 @@ public class EnemyController : BaseController
         Vector3 endPos = startPos + Vector3.up * 0.5f;
 
         float t = 0;
-        float duration = 0.5f;
+        float duration = 0.3f;
 
         while (t < duration)
         {
@@ -111,6 +104,8 @@ public class EnemyController : BaseController
 
     public void TakeDamage(float damage)
     {
+        if (_isDead) return;
+
         _currentHp -= damage;
 
         _hitDamage = PoolManager.Instance.GetEffectObject(HitDamagePrefab, Vector3.zero);
@@ -119,10 +114,12 @@ public class EnemyController : BaseController
         _hitDamage.GetComponent<RectTransform>().localPosition = new Vector3(0, 0.15f, 0);
         _hitDamage.GetComponent<TMP_Text>().text = $"{damage}";
         StartCoroutine(HitDamageUp());
-        Debug.Log($"[TakeDamage] {this.gameObject.name} 피격 데미지 텍스트 생성");
+        //Debug.Log($"[TakeDamage] {this.gameObject.name} 피격 데미지 텍스트 생성");
+        // 적이 사라지는 것보다 텍스트를 더 먼저 사라지게
 
         if (_currentHp <= 0)
         {
+            _isDead = true;
             Die();
 
             switch (enemyKind)
@@ -155,6 +152,7 @@ public class EnemyController : BaseController
 
     void Despawn()
     {
+        ObjectManager.Instance.Despawn(_hitDamage);
         StageManager.Instance.HuntEnemy(this);        
     }
 
