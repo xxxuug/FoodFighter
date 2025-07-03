@@ -6,21 +6,13 @@ public class BossBullet : MonoBehaviour
 
     public float Speed = 10f;
     
-    private float mAttack;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-
-    }
+    private float _attack;
 
     public void SetDamage(float _damage)
     {
-        mAttack = _damage;
+        _attack = _damage;
     }
 
-    // Update is called once per frame
     void Update()
     {
         transform.Translate(Vector3.left * Speed * Time.deltaTime, Space.World);
@@ -34,7 +26,7 @@ public class BossBullet : MonoBehaviour
             PoolManager.Instance.GetEffectObject(HitEffect, transform.position);
 
             PlayerController player = collision.GetComponent<PlayerController>();
-            player.TakeDamage(mAttack);
+            player.TakeDamage(_attack);
 
             /*
             ObjectManager.Instance.Despawn(this); // À½½Ä false

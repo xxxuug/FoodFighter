@@ -195,30 +195,45 @@ public class SlotController : Singleton<SlotController>
         int maxLevel = -1; // 초기 값을 -1로 줘서 아직 찾지 못한 초기 값임을 나타냄
         Sprite maxSprite = null; // 최고 레벨 이미지 null
 
-        foreach (var slot in _slots)
+        foreach (var foodSlot in GameManager.Instance.foodSlotInfoArr)
         {
-            Image icon = slot.transform.Find(Define.SlotIcon).GetComponent<Image>();
+            if (foodSlot.isLock || foodSlot.foodLevel <= 0) continue;
 
-            if (icon.sprite == null) continue;
-
-            foreach (var item in FoodData.Instance.FoodLists)
+            if (foodSlot.foodLevel > maxLevel)
             {
-                if (item.Icon == icon.sprite) // 
-                {
-                    if (item.Level > maxLevel) // 그 레벨이 현재 최대 레벨보다 높다면
-                    {
-                        maxLevel = item.Level; // 최대 레벨을 이 레벨로 지정
-                        maxSprite = icon.sprite; // 아이콘도 최대 레벨 아이콘으로 지정
-                        _foodbullet?.SetFoodSprite(maxSprite); // 푸드불렛의 실질적 아이콘도 변경
-                        MaxLevelRef = maxLevel; // 외부 참조용 변수에 최고 레벨 넣어주기
+                maxLevel = foodSlot.foodLevel;
 
-                        //GameManager.Instance.TotalAttack; // 공격력 갱신
-                    }
-                    break;
-                }
+                var foodinfo = FoodData.Instance.GetFood(maxLevel);
+                if (foodSlot != null)
+                    maxSprite = foodinfo.Icon;
             }
+           // Image icon = slot.transform.Find(Define.SlotIcon).GetComponent<Image>();
+
+            //if (icon.sprite == null) continue;
+
+            //foreach (var item in FoodData.Instance.FoodLists)
+            //{
+            //    if (item.Icon == icon.sprite) // 
+            //    {
+            //        if (item.Level > maxLevel) // 그 레벨이 현재 최대 레벨보다 높다면
+            //        {
+            //            maxLevel = item.Level; // 최대 레벨을 이 레벨로 지정
+            //            maxSprite = icon.sprite; // 아이콘도 최대 레벨 아이콘으로 지정
+            //            _foodbullet?.SetFoodSprite(maxSprite); // 푸드불렛의 실질적 아이콘도 변경
+            //            MaxLevelRef = maxLevel; // 외부 참조용 변수에 최고 레벨 넣어주기
+
+            //            //GameManager.Instance.TotalAttack; // 공격력 갱신
+            //        }
+            //        break;
+            //    }
+            //}
         }
-        //Debug.Log("현재 최고 레벨 : " + maxLevel);
+        if (maxSprite != null)
+        {
+            _foodbullet?.SetFoodSprite(maxSprite);
+            MaxLevelRef = maxLevel;
+        }
+        //ebug.Log("현재 최고 레벨 : " + maxLevel);
         //Debug.Log("현재 최고 레벨 아이템 : " + maxSprite);
     }
 }

@@ -1,9 +1,6 @@
 using EnumDef;
-using System;
-using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
-using UnityEditor.iOS;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -150,20 +147,22 @@ public class BossStageController : BaseController
         {
             IsAttacking = true;
         }
-/*
-        switch (battleState)
-        {
-            case BattleState.MoveToCenter:
-                MoveToBossBattlePosition();
-                break;
+        /*
+                switch (battleState)
+                {
+                    case BattleState.MoveToCenter:
+                        MoveToBossBattlePosition();
+                        break;
 
-            case BattleState.BossTurn:
-                if (!_isAttacking) StartCoroutine(HandleBossTurn());
-                break;
-        }
+                    case BattleState.BossTurn:
+                        if (!_isAttacking) StartCoroutine(HandleBossTurn());
+                        break;
+                }
+
+
 
         // 디버그용 바로 죽이기
-        if(Input.GetKeyUp(KeyCode.P) == true)
+        if (Input.GetKeyUp(KeyCode.P) == true)
         {
             TakeDamage(_currentHP);
             Debug.Log("디버그용 보스 사망");
@@ -173,11 +172,21 @@ public class BossStageController : BaseController
         {
             StartCoroutine(HandleBossTurn());
         }
-*/
+        */
     }
     void Move()
     {
+        Vector3 targetPos = new Vector3(_targetPosition.x, transform.position.y, transform.position.z);
         transform.Translate(Vector3.left * _speed * Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, targetPos) < 0.1f)
+        {
+            battleState = BattleState.WaitTurn;
+            //Debug.Log("보스 전투 위치 도착");
+
+            _hpUI.SetActive(true);
+            UpdateHP();
+        }
     }
 /*
     // 보스가 전투하는 가운데로 이동하는 함수
@@ -294,11 +303,10 @@ public class BossStageController : BaseController
     {
         Debug.Log($"Fire!!! {_damage} Damage");
 
-        //투사체 날려주세요
         UnityEngine.Object obj = Resources.Load("@Prefabs/BossBullet");
         var bullet = Instantiate(obj).GetComponent<BossBullet>();
         bullet.transform.position = transform.position;
-        bullet.SetDamage(_damage);
+        bullet.SetDamage(_damage + 15);
 
         /*
         var bullet = Instantiate(Bullet).GetComponent<BossBullet>();

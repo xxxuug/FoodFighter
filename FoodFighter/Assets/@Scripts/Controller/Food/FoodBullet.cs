@@ -17,7 +17,7 @@ public class FoodBullet : BaseController
     protected override void Initialize() 
     {
         _spriteRederer = GetComponent<SpriteRenderer>();
-        SlotController.Instance.FindFoodBullet(this);
+       // SlotController.Instance.FindFoodBullet(this);
     }
 
     private void OnEnable()
@@ -27,6 +27,8 @@ public class FoodBullet : BaseController
         
         // 공격력 가져오기
         _atk = GameManager.Instance[PlayerStat.TotalAtk];
+
+        SlotController.Instance.FindFoodBullet(this);
 
         StartCoroutine(DisableTime());
     }

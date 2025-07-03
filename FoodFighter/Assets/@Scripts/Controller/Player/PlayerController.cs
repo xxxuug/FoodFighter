@@ -46,8 +46,18 @@ public class PlayerController : BaseController
     // 죽음 애니메이션 실행 함수
     void Die()
     {
-        UI_Death death = GameObject.Find(Define.PlayerDeath).GetComponent<UI_Death>();
-        StartCoroutine(death.Death());
+        if (isBossStage == true)
+        {
+            SceneManager.LoadScene("Game");
+
+            // 보스 전에서 사망했을 경우 HP 다시 초기화
+            GameManager.Instance[PlayerStat.CurrentHp] = GameManager.Instance[PlayerStat.MaxHp];
+        }
+        else
+        {
+            UI_Death death = GameObject.Find(Define.PlayerDeath).GetComponent<UI_Death>();
+            StartCoroutine(death.Death());
+        }
     }
 
     protected override void Initialize()

@@ -21,7 +21,7 @@ MonoBehaviour:
     RewardGold: 1000
     RewardDiamond: 1000
     SpawnPosition: {x: 4, y: 2, z: 0}
-    TargetPosition: {x: 0.6, y: 2, z: 0}
+    TargetPosition: {x: 2.3, y: 2, z: 0}
   - Stage: 1
     BossPrefab: {fileID: 6076369115776015053, guid: b416da2fd7844da409af5ac12baea79a, type: 3}
     CurrentHp: 2000
@@ -30,7 +30,7 @@ MonoBehaviour:
     RewardGold: 2000
     RewardDiamond: 2000
     SpawnPosition: {x: 4, y: 2, z: 0}
-    TargetPosition: {x: 0.6, y: 2, z: 0}
+    TargetPosition: {x: 2.3, y: 2, z: 0}
   - Stage: 0
     BossPrefab: {fileID: 6076369115776015053, guid: b416da2fd7844da409af5ac12baea79a, type: 3}
     CurrentHp: 0
