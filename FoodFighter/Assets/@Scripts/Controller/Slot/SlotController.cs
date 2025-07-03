@@ -24,52 +24,14 @@ public class SlotController : Singleton<SlotController>
     [Header("음식 생성 버튼")]
     public Button FoodCreateButton;
     public TMP_Text FoodCreateCountText;
+    public Image CreateCharge;
     private int _currentCount;
     private int _maxCount = 10;
 
     [Header("다른 스크립트 외부 참조용 최대 레벨")]
     public int MaxLevelRef;
-/*
-    private List<Vector2Int> _slotUnlockOrder = new List<Vector2Int>()
-    {
-            new Vector2Int(2, 1),
-            new Vector2Int(3, 1),
-            new Vector2Int(2, 2),
-            new Vector2Int(3, 2),
-            new Vector2Int(2, 3),
-            new Vector2Int(3, 3),
 
-            new Vector2Int(1, 1),
-            new Vector2Int(4, 1),
-            new Vector2Int(1, 2),
-            new Vector2Int(4, 2),
-            new Vector2Int(1, 3),
-            new Vector2Int(4, 3),
-
-            new Vector2Int(0, 1),
-            new Vector2Int(0, 2),
-            new Vector2Int(0, 3),
-            new Vector2Int(2, 0),
-            new Vector2Int(3, 0),
-            new Vector2Int(1, 0),
-            new Vector2Int(4, 0),
-            new Vector2Int(2, 4),
-            new Vector2Int(3, 4),
-            new Vector2Int(1, 4),
-            new Vector2Int(4, 4),
-            new Vector2Int(0, 0),
-            new Vector2Int(0, 4),
-            new Vector2Int(5, 0),
-            new Vector2Int(5, 1),
-            new Vector2Int(5, 2),
-            new Vector2Int(5, 3),
-            new Vector2Int(5, 4),
-    };
-*/
-    protected override void Initialize() 
-    {
-        //DontDestroyOnLoad(this.gameObject);
-    }
+    protected override void Initialize() { }
 
     private void Awake()
     {
@@ -85,13 +47,10 @@ public class SlotController : Singleton<SlotController>
             for (int j = 0; j < _vCount; j++)
             {
                 GameObject slot = Instantiate(_slotPrefab, transform);
-                
+
                 var foodSlot = slot.GetComponent<FoodSlot>();
-                foodSlot.kIndex = (j* _hCount) + i;
-/*
-                var tmpText = slot.GetComponentInChildren<TMP_Text>();
-                tmpText.text = foodSlot.kIndex.ToString();
-*/
+                foodSlot.kIndex = (j * _hCount) + i;
+
                 _slots[i, j] = slot;
             }
         }
@@ -100,7 +59,7 @@ public class SlotController : Singleton<SlotController>
 
         _currentCount = _maxCount;
 
-        if(GameManager.Instance.isFirstFoodSpawn == false)
+        if (GameManager.Instance.isFirstFoodSpawn == false)
         {
             GameManager.Instance.isFirstFoodSpawn = true;
             SpawnFood();
@@ -158,25 +117,30 @@ public class SlotController : Singleton<SlotController>
 
     void SpawnFood()
     {
-        for(int i = 0; i < GameManager.Instance.foodSlotInfoArr.Length; i++)
+        if (_currentCount > 0)
         {
-            var foodSlot = GameManager.Instance.foodSlotInfoArr[i];
-
-            if (foodSlot.isLock == false && foodSlot.foodLevel == 0/*background.sprite == UnlockBackground && icon.sprite == null*/)
+            for (int i = 0; i < GameManager.Instance.foodSlotInfoArr.Length; i++)
             {
-                foodSlot.foodLevel = 1;
+                var foodSlot = GameManager.Instance.foodSlotInfoArr[i];
 
-                GameObject slot = _slots[foodSlot.indexColRow.x, foodSlot.indexColRow.y];
-                Image background = slot.GetComponent<Image>();
-                Image icon = slot.transform.Find(Define.SlotIcon).GetComponent<Image>(); // Find 함수 개선 필요
+                if (foodSlot.isLock == false && foodSlot.foodLevel == 0)
+                {
+                    foodSlot.foodLevel = 1;
 
-                icon.color = new Color(1f, 1f, 1f, 1f);
-                icon.sprite = FoodData.Instance.GetFood(1).Icon; // 1레벨 아이콘 가져오기
-                _currentCount--;
-                FoodCreateCountText.text = $"{_currentCount}/{_maxCount}";
-                return;
+                    GameObject slot = _slots[foodSlot.indexColRow.x, foodSlot.indexColRow.y];
+                    Image background = slot.GetComponent<Image>();
+                    Image icon = slot.transform.Find(Define.SlotIcon).GetComponent<Image>(); // Find 함수 개선 필요
+
+                    icon.color = new Color(1f, 1f, 1f, 1f);
+                    icon.sprite = FoodData.Instance.GetFood(1).Icon; // 1레벨 아이콘 가져오기
+                    _currentCount--;
+                    FoodCreateCountText.text = $"{_currentCount}/{_maxCount}";
+                    return;
+                }
             }
         }
+        else
+            Debug.Log("제작할 수 있는 음식 수가 부족합니다.");
     }
 
     // 총알을 쏘면 함수가 호출되나 보스전에서 총을 쏘지 않으면 호출 x
@@ -207,26 +171,6 @@ public class SlotController : Singleton<SlotController>
                 if (foodSlot != null)
                     maxSprite = foodinfo.Icon;
             }
-           // Image icon = slot.transform.Find(Define.SlotIcon).GetComponent<Image>();
-
-            //if (icon.sprite == null) continue;
-
-            //foreach (var item in FoodData.Instance.FoodLists)
-            //{
-            //    if (item.Icon == icon.sprite) // 
-            //    {
-            //        if (item.Level > maxLevel) // 그 레벨이 현재 최대 레벨보다 높다면
-            //        {
-            //            maxLevel = item.Level; // 최대 레벨을 이 레벨로 지정
-            //            maxSprite = icon.sprite; // 아이콘도 최대 레벨 아이콘으로 지정
-            //            _foodbullet?.SetFoodSprite(maxSprite); // 푸드불렛의 실질적 아이콘도 변경
-            //            MaxLevelRef = maxLevel; // 외부 참조용 변수에 최고 레벨 넣어주기
-
-            //            //GameManager.Instance.TotalAttack; // 공격력 갱신
-            //        }
-            //        break;
-            //    }
-            //}
         }
         if (maxSprite != null)
         {
