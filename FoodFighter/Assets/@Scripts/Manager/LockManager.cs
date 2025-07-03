@@ -1,27 +1,13 @@
+using ClassDef;
+using EnumDef;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public enum LockType
-{
-    AttackLevel, // 공격력 레벨
-    Stage, // 스테이지 레벨 
-}
-
-[Serializable]
-public class LockInfo
-{
-    public LockType lockType; // 어떤 조건으로 잠기는지 (공격력 or 스테이지)    
-    public int Level; // 요구 레벨
-    public int StageIndex;
-    public GameObject LockObject; // 잠겨있을 때 보여줄 오브젝트
-}
 
 public class LockManager : MonoBehaviour
 {
-    private int AttackLevel = 0; // 공격력 레벨
-
     public LockInfo[] lockInfo;
 
     private bool _isBossState = true;
@@ -35,7 +21,7 @@ public class LockManager : MonoBehaviour
             switch (Locks.lockType)
             {
                 case LockType.AttackLevel: // 공격력
-                    UnLock = AttackLevel >= Locks.Level; // 현재 공격력 >= 요구 공격력이라면 잠금 해제
+                    UnLock = GameManager.Instance.AttackLevel >= Locks.Level; // 현재 공격력 >= 요구 공격력이라면 잠금 해제
                     break;
                 case LockType.Stage: // 스테이지
                     UnLock = GameManager.Instance.BossStageOpen[Locks.StageIndex];
@@ -61,7 +47,7 @@ public class LockManager : MonoBehaviour
 
     public void SetAttackLevel(int Level)
     {
-        AttackLevel = Level;
+        GameManager.Instance.AttackLevel = Level;
         RefreshUnlock();
     }
 
@@ -71,6 +57,7 @@ public class LockManager : MonoBehaviour
         StageManager.Instance.EnemyRespawnStop();
 
         SpawningPool.Instance.EnemyClear();
+        StageManager.Instance.RemoveAllEnemy();
 
         GameManager.Instance.CurBossStageIndex = lockInfo[0].StageIndex;
         //GameManager.Instance.StageUnlock = capturedIndex;

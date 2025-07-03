@@ -1,3 +1,5 @@
+using ClassDef;
+using EnumDef;
 using System.Collections;
 using TMPro;
 using UnityEngine;

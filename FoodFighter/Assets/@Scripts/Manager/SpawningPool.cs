@@ -70,11 +70,6 @@ public class SpawningPool : Singleton<SpawningPool>
 
     public void EnemyClear()
     {
-        foreach (var enemy in _spawnEnemy)
-        {
-            StageManager.Instance.RemoveEnemy(enemy);
-        }
-
         _spawnEnemy.Clear();
     }
 }

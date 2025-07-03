@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using EnumDef;
 
 public class BossStageSpawningPool : MonoBehaviour
 {
@@ -45,7 +46,7 @@ public class BossStageSpawningPool : MonoBehaviour
 
         StageManager.Instance.boss = boss;
 
-        boss.AllInit(currentStage);
+        boss.SetData(selectBoss);
 
         // 보스가 이동할 중앙 위치 설정
         //boss.SendMessage("SetTArgetPosition", selectBoss.TargetPosition);

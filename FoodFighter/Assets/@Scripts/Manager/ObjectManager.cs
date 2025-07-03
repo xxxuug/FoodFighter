@@ -132,7 +132,7 @@ public class ObjectManager : Singleton<ObjectManager>
     // 게임오브젝트 despawn
     public void Despawn(GameObject obj)
     {
-        obj.SetActive(false);
+        obj?.SetActive(false);
         //Debug.Log("Despawn 실행");
     }
 

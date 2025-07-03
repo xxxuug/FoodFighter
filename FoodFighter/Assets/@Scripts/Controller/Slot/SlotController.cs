@@ -1,4 +1,6 @@
+using EnumDef;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,7 +29,7 @@ public class SlotController : Singleton<SlotController>
 
     [Header("다른 스크립트 외부 참조용 최대 레벨")]
     public int MaxLevelRef;
-
+/*
     private List<Vector2Int> _slotUnlockOrder = new List<Vector2Int>()
     {
             new Vector2Int(2, 1),
@@ -63,10 +65,10 @@ public class SlotController : Singleton<SlotController>
             new Vector2Int(5, 3),
             new Vector2Int(5, 4),
     };
-
+*/
     protected override void Initialize() 
     {
-        DontDestroyOnLoad(this.gameObject);
+        //DontDestroyOnLoad(this.gameObject);
     }
 
     private void Awake()
@@ -83,6 +85,13 @@ public class SlotController : Singleton<SlotController>
             for (int j = 0; j < _vCount; j++)
             {
                 GameObject slot = Instantiate(_slotPrefab, transform);
+                
+                var foodSlot = slot.GetComponent<FoodSlot>();
+                foodSlot.kIndex = (j* _hCount) + i;
+/*
+                var tmpText = slot.GetComponentInChildren<TMP_Text>();
+                tmpText.text = foodSlot.kIndex.ToString();
+*/
                 _slots[i, j] = slot;
             }
         }
@@ -90,7 +99,13 @@ public class SlotController : Singleton<SlotController>
         UpdateSlotUnlock();
 
         _currentCount = _maxCount;
-        SpawnFood();
+
+        if(GameManager.Instance.isFirstFoodSpawn == false)
+        {
+            GameManager.Instance.isFirstFoodSpawn = true;
+            SpawnFood();
+        }
+
         FoodCreateButton.onClick.AddListener(SpawnFood);
     }
 
@@ -98,9 +113,12 @@ public class SlotController : Singleton<SlotController>
     {
         int unlockCount = Mathf.FloorToInt(GameManager.Instance[PlayerStat.SlotCount]);
 
-        for (int index = 0; index < _slotUnlockOrder.Count; index++)
+        var foodSlots = GameManager.Instance.foodSlotInfoArr;
+        for (int index = 0; index < foodSlots.Length; index++)
         {
-            Vector2Int pos = _slotUnlockOrder[index];
+            var foodSlot = foodSlots[index];
+
+            Vector2Int pos = foodSlot.indexColRow;
             int i = pos.x;
             int j = pos.y;
 
@@ -112,47 +130,51 @@ public class SlotController : Singleton<SlotController>
 
             if (index < unlockCount)
             {
-                background.sprite = UnlockBackground;
+                foodSlot.isLock = false;
 
-                // 이미 음식이 들어있다면 건드리지 않도록
-                if (icon.sprite == LockIcon)
+                background.sprite = UnlockBackground;
+                icon.sprite = null;
+                icon.color = new Color(1f, 1f, 1f, 0f);
+
+                foreach (var item in FoodData.Instance.FoodLists)
                 {
-                    icon.sprite = null;
-                    icon.color = new Color(1f, 1f, 1f, 0f);
+                    if (item.Level == foodSlot.foodLevel) // 아이템레벨이 다음 레벨이라면
+                    {
+                        icon.sprite = item.Icon; // 해당 레벨 아이콘으로 바꿔주기
+                        icon.color = new Color(1f, 1f, 1f, 1f);
+                    }
                 }
             }
             else
             {
-                background.sprite = LockBackground;
+                foodSlot.isLock = true;
 
-                // 잠금 상태일 때만 아이콘 초기화 
-                if (icon.sprite == null)
-                {
-                    icon.sprite = LockIcon;
-                    icon.color = new Color(0.435f, 0.435f, 0.435f);
-                }
+                background.sprite = LockBackground;
+                icon.sprite = LockIcon;
+                icon.color = new Color(0.435f, 0.435f, 0.435f);
             }
         }
     }
 
     void SpawnFood()
     {
-        for (int i = 0; i < _hCount; i++)
+        for(int i = 0; i < GameManager.Instance.foodSlotInfoArr.Length; i++)
         {
-            for (int j = 0; j < _vCount; j++)
+            var foodSlot = GameManager.Instance.foodSlotInfoArr[i];
+
+            if (foodSlot.isLock == false && foodSlot.foodLevel == 0/*background.sprite == UnlockBackground && icon.sprite == null*/)
             {
-                GameObject slot = _slots[i, j];
+                foodSlot.foodLevel = 1;
+
+                GameObject slot = _slots[foodSlot.indexColRow.x, foodSlot.indexColRow.y];
                 Image background = slot.GetComponent<Image>();
                 Image icon = slot.transform.Find(Define.SlotIcon).GetComponent<Image>(); // Find 함수 개선 필요
 
-                if (background.sprite == UnlockBackground && icon.sprite == null)
-                {
-                    icon.color = new Color(1f, 1f, 1f, 1f);
-                    icon.sprite = FoodData.Instance.GetFood(1).Icon; // 1레벨 아이콘 가져오기
-                    _currentCount--;
-                    FoodCreateCountText.text = $"{_currentCount}/{_maxCount}";
-                    return;
-                }
+                icon.color = new Color(1f, 1f, 1f, 1f);
+                icon.sprite = FoodData.Instance.GetFood(1).Icon; // 1레벨 아이콘 가져오기
+                _currentCount--;
+                FoodCreateCountText.text = $"{_currentCount}/{_maxCount}";
+                return;
             }
         }
     }

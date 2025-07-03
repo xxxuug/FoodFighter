@@ -25,6 +25,8 @@ public class EnemyController : BaseController
     private RectTransform _hitPos;
     private GameObject _hitDamage;
 
+    private CapsuleCollider2D capsuleCollider;
+
     public bool IsAttacking
     {
         get { return _animator.GetBool(Define.isAttacking); }
@@ -38,6 +40,8 @@ public class EnemyController : BaseController
 
     public void Die()
     {
+        capsuleCollider.enabled = false;
+
         _animator.SetTrigger(Define.Die);
         DropGold();
 
@@ -53,11 +57,15 @@ public class EnemyController : BaseController
         _animator = GetComponent<Animator>();
 
         _player = GameObject.FindWithTag(Define.PlayerTag)?.transform;
+        capsuleCollider = GetComponent<CapsuleCollider2D>();
 
+        _attackController.enemyController = this;
     }
 
     private void OnEnable()
     {
+        capsuleCollider.enabled = true;
+
         _currentHp = (int)_initHp;
         _damage = (int)_damage;
 

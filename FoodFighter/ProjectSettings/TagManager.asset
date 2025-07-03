@@ -7,6 +7,8 @@ TagManager:
   - Enemy
   - Undefined
   - Boss
+  - Food
+  - BossBullet
   layers:
   - Default
   - TransparentFX

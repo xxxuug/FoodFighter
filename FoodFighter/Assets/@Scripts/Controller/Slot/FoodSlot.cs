@@ -8,6 +8,8 @@ public class FoodSlot : BaseController, IBeginDragHandler, IEndDragHandler, IDra
     private Image _background; // 슬롯 배경
     private Image _icon; // 슬롯 아이콘
 
+    public int kIndex;
+
     [Header("기존 정보 저장 데이터")]
     private Vector3 _startPos; // 잘못 드래그 했을 때 원상복귀 시킬 위치
     private Vector3 _startScale; // 기존 스케일 
@@ -75,6 +77,31 @@ public class FoodSlot : BaseController, IBeginDragHandler, IEndDragHandler, IDra
                 var targetSlot = result.gameObject.GetComponent<FoodSlot>();
                 if (targetSlot != null && targetSlot != this) // 다른 슬롯이라면
                 {
+                    var beginFoodSlot = GameManager.Instance.GetFoodSlotInfo(kIndex);
+                    var endFoodSlot = GameManager.Instance.GetFoodSlotInfo(targetSlot.kIndex);
+
+                    if(endFoodSlot.foodLevel != 0 && beginFoodSlot.foodLevel == endFoodSlot.foodLevel)
+                    {
+                        // 복구
+                        _icon.rectTransform.position = _startPos; // icon 원래 위치 복구
+                        _icon.rectTransform.localScale = _startScale; // icon 원래 스케일 복구
+                        _icon.sprite = null;
+                        _icon.color = new Color(1f, 1f, 1f, 0f);
+
+                        beginFoodSlot.foodLevel = 0;
+                        endFoodSlot.foodLevel++;
+
+                        foreach (var item in FoodData.Instance.FoodLists)
+                        {
+                            if (item.Level == endFoodSlot.foodLevel) // 아이템레벨이 다음 레벨이라면
+                            {
+                                targetSlot._icon.sprite = item.Icon; // 해당 레벨 아이콘으로 바꿔주기
+                                SlotController.Instance.FindMaxFoodBullet(); // 바꿔줄 때마다 여기서 현재 존재하는 가장 최고 레벨 아이콘이 뭔지 찾기
+                            }
+                        }
+                        return;
+                    }
+/*
                     if (targetSlot._icon != null && targetSlot._icon.sprite == _icon.sprite) // 아이콘이 같다면
                     {
                         int currentLevel = 0;
@@ -107,6 +134,7 @@ public class FoodSlot : BaseController, IBeginDragHandler, IEndDragHandler, IDra
                         }
                         return;
                     }
+*/
                 }
             }
 

@@ -1,47 +1,11 @@
+using ClassDef;
+using EnumDef;
 using Mono.Cecil;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-// 전투
-public enum BattleState
-{
-    None,
-    MoveToCenter,
-    WaitTurn,
-    PlayerTurn,
-    BossTurn,
-    End
-}
-
-public enum PlayerStat
-{
-    Atk, // 공격력
-    CurrentHp, // 현재 HP
-    MaxHp, // 최대 HP
-    CriticalProbability, // 크리티컬 확률
-    CriticalDamage, // 크리티컬 데미지
-    SlotCount, // 머지 슬롯 칸 개수
-    TotalAtk, // 총 공격력
-    TotalCriticalDamage,
-
-    Max
-}
-
-//public class PlayerInfo
-//{
-//    public int Gold;
-//    public int Diamond;
-//}
-
-// 게임 세이브/로드
-[Serializable]
-public class GameData
-{
-    //public PlayerInfo PlayerInfo;
-    public StageInfo StageInfo;
-    public Dictionary<PlayerStat, float> stat;
-}
 
 public class GameManager : Singleton<GameManager>
 {
@@ -63,6 +27,11 @@ public class GameManager : Singleton<GameManager>
     public int Diamond { get; set; } = 50;
 
     public BossStageInfo bossStageInfo { get; set; }
+    public int AttackLevel { get; set; } // 공격력 레벨
+
+    public FoodSlotInfo[] foodSlotInfoArr = new FoodSlotInfo[6*5];
+
+    public bool isFirstFoodSpawn = false;
 
     private void Awake()
     {
@@ -84,14 +53,53 @@ public class GameManager : Singleton<GameManager>
             _level[(PlayerStat)i] = 0;
 
         bossStageInfo = Resources.Load<BossStageInfo>("BossStageInfo");
+
+        foodSlotInfoArr[0] = new FoodSlotInfo(2, 1);
+        foodSlotInfoArr[1] = new FoodSlotInfo(3, 1);
+        foodSlotInfoArr[2] = new FoodSlotInfo(2, 2);
+        foodSlotInfoArr[3] = new FoodSlotInfo(3, 2);
+        foodSlotInfoArr[4] = new FoodSlotInfo(2, 3);
+        foodSlotInfoArr[5] = new FoodSlotInfo(3, 3);
+
+        foodSlotInfoArr[6] = new FoodSlotInfo(1, 1);
+        foodSlotInfoArr[7] = new FoodSlotInfo(4, 1);
+        foodSlotInfoArr[8] = new FoodSlotInfo(1, 2);
+        foodSlotInfoArr[9] = new FoodSlotInfo(4, 2);
+        foodSlotInfoArr[10] = new FoodSlotInfo(1, 3);
+        foodSlotInfoArr[11] = new FoodSlotInfo(4, 3);
+
+        foodSlotInfoArr[12] = new FoodSlotInfo(0, 1);
+        foodSlotInfoArr[13] = new FoodSlotInfo(0, 2);
+        foodSlotInfoArr[14] = new FoodSlotInfo(0, 3);
+        foodSlotInfoArr[15] = new FoodSlotInfo(2, 0);
+        foodSlotInfoArr[16] = new FoodSlotInfo(3, 0);
+        foodSlotInfoArr[17] = new FoodSlotInfo(1, 0);
+        foodSlotInfoArr[18] = new FoodSlotInfo(4, 0);
+        foodSlotInfoArr[19] = new FoodSlotInfo(2, 4);
+        foodSlotInfoArr[20] = new FoodSlotInfo(3, 4);
+        foodSlotInfoArr[21] = new FoodSlotInfo(1, 4);
+        foodSlotInfoArr[22] = new FoodSlotInfo(4, 4);
+        foodSlotInfoArr[23] = new FoodSlotInfo(0, 0);
+        foodSlotInfoArr[24] = new FoodSlotInfo(0, 4);
+        foodSlotInfoArr[25] = new FoodSlotInfo(5, 0);
+        foodSlotInfoArr[26] = new FoodSlotInfo(5, 1);
+        foodSlotInfoArr[27] = new FoodSlotInfo(5, 2);
+        foodSlotInfoArr[28] = new FoodSlotInfo(5, 3);
+        foodSlotInfoArr[29] = new FoodSlotInfo(5, 4);
     }
 
     //private void Start()
     //{
     //    TotalAttack();
     //}
-    
 
+    public FoodSlotInfo GetFoodSlotInfo(int _index)
+    {
+        int colIndex = _index % 6;
+        int rowIndex = _index / 6;
+        return foodSlotInfoArr.Where(_p => _p.indexColRow.x == colIndex && _p.indexColRow.y == rowIndex).FirstOrDefault();
+    }
+    
     protected override void Clear()
     {
         base.Clear();

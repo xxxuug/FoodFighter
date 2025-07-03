@@ -1,17 +1,8 @@
+using ClassDef;
+using EnumDef;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class StageInfo
-{
-    public int MainStage;
-    public int SubStage;
-
-    public string GetDisplayStage()
-    {
-        return $"STAGE {MainStage}-{SubStage}";
-    }
-}
 
 public class StageManager : Singleton<StageManager>
 {
@@ -78,7 +69,8 @@ public class StageManager : Singleton<StageManager>
         if (StageInfo.SubStage >= 5)
         {
             StageInfo.MainStage++;
-            StageInfo.SubStage = 1;        }
+            StageInfo.SubStage = 1;
+        }
         else
         {
             StageInfo.SubStage++;

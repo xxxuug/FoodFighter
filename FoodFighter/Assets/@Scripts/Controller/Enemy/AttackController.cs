@@ -4,6 +4,10 @@ public class AttackController : MonoBehaviour
 {
     private bool _isTakeDamage = false; // 데미지를 맞췄는지 여부
 
+    public EnemyController enemyController { get; set; }
+    public BossStageController bossStageController { get; set; }
+
+
     private void Start()
     {
         GetComponent<Collider2D>().enabled = false;
@@ -16,8 +20,14 @@ public class AttackController : MonoBehaviour
         if (other.CompareTag(Define.PlayerTag) && gameObject.activeSelf)
         {
             PlayerController playerController = other.GetComponent<PlayerController>();
-            EnemyController enemyController = GetComponentInParent<EnemyController>();
-            playerController.TakeDamage(enemyController._damage);
+
+            if(enemyController != null){
+                playerController.TakeDamage(enemyController._damage);
+            }
+
+            if (bossStageController != null){
+                playerController.TakeDamage(bossStageController.damage);
+            }
         }                    
     }
 
