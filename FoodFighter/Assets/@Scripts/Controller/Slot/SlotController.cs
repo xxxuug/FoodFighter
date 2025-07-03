@@ -1,4 +1,5 @@
 using EnumDef;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -27,6 +28,7 @@ public class SlotController : Singleton<SlotController>
     public Image CreateCharge;
     private int _currentCount;
     private int _maxCount = 10;
+    private bool _isCharging = false;
 
     [Header("다른 스크립트 외부 참조용 최대 레벨")]
     public int MaxLevelRef;
@@ -65,6 +67,7 @@ public class SlotController : Singleton<SlotController>
             SpawnFood();
         }
 
+        CountChargeStart(); // 횟수 충전
         FoodCreateButton.onClick.AddListener(SpawnFood);
     }
 
@@ -116,7 +119,7 @@ public class SlotController : Singleton<SlotController>
     }
 
     void SpawnFood()
-    {
+    { 
         if (_currentCount > 0)
         {
             for (int i = 0; i < GameManager.Instance.foodSlotInfoArr.Length; i++)
@@ -134,13 +137,14 @@ public class SlotController : Singleton<SlotController>
                     icon.color = new Color(1f, 1f, 1f, 1f);
                     icon.sprite = FoodData.Instance.GetFood(1).Icon; // 1레벨 아이콘 가져오기
                     _currentCount--;
+                    CountChargeStart(); // 횟수 충전
                     FoodCreateCountText.text = $"{_currentCount}/{_maxCount}";
                     return;
                 }
             }
         }
         else
-            Debug.Log("제작할 수 있는 음식 수가 부족합니다.");
+            Debug.Log("음식을 제작할 수 있는 횟수가 부족합니다.");
     }
 
     // 총알을 쏘면 함수가 호출되나 보스전에서 총을 쏘지 않으면 호출 x
@@ -179,5 +183,36 @@ public class SlotController : Singleton<SlotController>
         }
         //ebug.Log("현재 최고 레벨 : " + maxLevel);
         //Debug.Log("현재 최고 레벨 아이템 : " + maxSprite);
+    }
+
+    void CountChargeStart()
+    {
+        if (!_isCharging && _currentCount < _maxCount)
+            StartCoroutine(FoodCreateCharge());
+    }
+
+    // 음식 생성 횟수 충전 게이지 바
+    IEnumerator FoodCreateCharge()
+    {
+        _isCharging = true;
+        CreateCharge.fillAmount = 0f; // 시작할 때 0으로 초기화
+
+        while (_currentCount < _maxCount) // count가 10이 될 때까지 반복
+        {
+            float t = 0f;
+            float duration = 3f;
+
+            while (t < duration)
+            {
+                t += Time.deltaTime;
+                CreateCharge.fillAmount = t / duration;
+                yield return null;
+            }
+            CreateCharge.fillAmount = 1f; // 오차 방지
+
+            _currentCount++; // count 증가
+            FoodCreateCountText.text = $"{_currentCount}/{_maxCount}";
+        }
+        _isCharging = false;
     }
 }
