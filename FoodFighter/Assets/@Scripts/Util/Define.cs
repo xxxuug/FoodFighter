@@ -10,6 +10,7 @@ public class Define
     public const string GoldPath = "@Prefabs/Gold";
     public const string BossPath = "@Prefabs/Enemy/TestBoss";
     public const string HitDamagePath = "@Prefabs/Enemy/Hit Damage - Text.prefab";
+    public const string PopUpPath = "@Prefabs/General Pop-up.prefab";
     #endregion
 
     #region Tag

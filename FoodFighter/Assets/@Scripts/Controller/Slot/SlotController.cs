@@ -33,6 +33,11 @@ public class SlotController : Singleton<SlotController>
     [Header("다른 스크립트 외부 참조용 최대 레벨")]
     public int MaxLevelRef;
 
+    [Header("음식 레벨업")]
+    [SerializeField] UI_PopUp _upgradePopup;
+    [SerializeField] GameObject _popUp;
+    private int _lastLevel;
+
     protected override void Initialize() { }
 
     private void Awake()
@@ -161,7 +166,8 @@ public class SlotController : Singleton<SlotController>
     public void FindMaxFoodBullet()
     {
         int maxLevel = -1; // 초기 값을 -1로 줘서 아직 찾지 못한 초기 값임을 나타냄
-        Sprite maxSprite = null; // 최고 레벨 이미지 null
+        //Sprite maxSprite = null; // 최고 레벨 이미지 null
+        FoodData.FoodInfo maxFood = null;
 
         foreach (var foodSlot in GameManager.Instance.foodSlotInfoArr)
         {
@@ -171,15 +177,25 @@ public class SlotController : Singleton<SlotController>
             {
                 maxLevel = foodSlot.foodLevel;
 
-                var foodinfo = FoodData.Instance.GetFood(maxLevel);
-                if (foodSlot != null)
-                    maxSprite = foodinfo.Icon;
+                //var foodinfo = FoodData.Instance.GetFood(maxLevel);
+                maxFood = FoodData.Instance.GetFood(maxLevel);
+                //if (foodSlot != null)
+                //    maxSprite = foodinfo.Icon;
             }
         }
-        if (maxSprite != null)
+        //if (maxSprite != null)
+        if (maxFood != null)
         {
-            _foodbullet?.SetFoodSprite(maxSprite);
+            _foodbullet?.SetFoodSprite(maxFood.Icon);
             MaxLevelRef = maxLevel;
+
+            if (maxLevel > _lastLevel)
+            {
+                _lastLevel = maxLevel;
+                UI_PopUp popUp = _upgradePopup.GetComponent<UI_PopUp>();
+                _popUp.SetActive(true);
+                popUp.Open(maxFood);
+            }
         }
         //ebug.Log("현재 최고 레벨 : " + maxLevel);
         //Debug.Log("현재 최고 레벨 아이템 : " + maxSprite);

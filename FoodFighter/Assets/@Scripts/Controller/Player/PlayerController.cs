@@ -2,7 +2,6 @@ using EnumDef;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class PlayerController : BaseController
 {
@@ -123,13 +122,6 @@ public class PlayerController : BaseController
             // if (새 스테이지 진입 시 마다)
             FindDistance();
         }
-
-        //// 디버그용 바로 죽이기
-        //if (Input.GetKeyUp(KeyCode.P) == true)
-        //{
-        //    TakeDamage(GameManager.Instance[PlayerStat.CurrentHp]);
-        //    Debug.Log("디버그용 플레이어 사망");
-        //}
     }
 
     // Enemy 태그 붙은 오브젝트 찾고 거리 구하는 함수
