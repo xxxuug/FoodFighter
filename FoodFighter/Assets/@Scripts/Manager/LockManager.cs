@@ -12,6 +12,11 @@ public class LockManager : MonoBehaviour
 
     private bool _isBossState = true;
 
+    private void Start()
+    {
+        RefreshUnlock();
+    }
+
     public void RefreshUnlock()
     {
         foreach (var Locks in lockInfo)

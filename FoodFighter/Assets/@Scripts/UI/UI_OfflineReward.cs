@@ -29,9 +29,9 @@ public class UI_OfflineReward : MonoBehaviour
 
         if (hours > 0)
             timeText += $"{hours}시간 ";
-        if (minutes > 0 || hours == 0)
+        if (minutes > 0 || hours > 0)
             timeText += $"{minutes}분 ";
-        if (seconds > 0 || (hours == 0 && minutes == 0))
+       // if (seconds > 0 || (hours == 0 && minutes == 0))
             timeText += $"{seconds}초 ";
 
         _offlineTimeText.text = timeText.Trim(); // 마지막 공백 제거

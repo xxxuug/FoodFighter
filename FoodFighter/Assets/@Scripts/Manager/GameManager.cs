@@ -5,6 +5,9 @@ using NUnit.Compatibility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using UnityEditor.Experimental.GraphView;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 
@@ -38,6 +41,8 @@ public class GameManager : Singleton<GameManager>
     {
         LoadLastStage(); // 마지막 스테이지 복구
         CheckOfflineReward(); // 오프라인 보상 체크
+
+        LoadUpgradeDate();
     }
 
     // 어플리케이션이 완전히 종료될 때 호출됨
@@ -135,9 +140,48 @@ public class GameManager : Singleton<GameManager>
             }
             else
             {
-                StageManager.Instance.StageInfo.SubStage++; // SuubStage만 증가
+                StageManager.Instance.StageInfo.SubStage++; // SubStage만 증가
             }
         }
+    }
+
+    // 강화 데이터 저장
+    public void SaveUpgradeDate()
+    {
+        foreach (var pair in _level)
+        {
+            string key = $"UpgradeLevel_{pair.Key}";
+            PlayerPrefs.SetInt(key, pair.Value);
+        }
+
+        foreach(var pair in _stat)
+        {
+            string key = $"UpgradeStat_{pair.Key}";
+            PlayerPrefs.SetFloat(key, pair.Value);
+        }
+
+        PlayerPrefs.SetInt("AttackLevel", AttackLevel);
+
+        PlayerPrefs.Save();
+    }
+
+    // 강화 데이터 불러오기
+    void LoadUpgradeDate()
+    {
+        foreach(PlayerStat stat in Enum.GetValues(typeof(PlayerStat)))
+        {
+            string levelKey = $"UpgradeLevel_{stat}";
+            string statKey = $"UpgradeStat_{stat}";
+
+            if (PlayerPrefs.HasKey(levelKey))
+                _level[stat] = PlayerPrefs.GetInt(levelKey);
+
+            if (PlayerPrefs.HasKey(statKey))
+                _stat[stat] = PlayerPrefs.GetFloat(statKey);
+        }
+
+        if (PlayerPrefs.HasKey("AttackLevel"))
+            AttackLevel = PlayerPrefs.GetInt("AttackLevel");
     }
 
     private void Awake()
@@ -148,16 +192,9 @@ public class GameManager : Singleton<GameManager>
         for (int i = 1; i < _bossStageOpenStateArr.Length; i++)
             _bossStageOpenStateArr[i] = false;
 
-        //GoldText = GameObject.Find(Define.GoldText)?.GetComponent<TMP_Text>();
-        //DiamondText = GameObject.Find(Define.DiamondText)?.GetComponent<TMP_Text>();
-        //TotalAtkText = GameObject.Find(Define.TotalAtkText)?.GetComponent<TMP_Text>();
-
-        //OnPlayerInfoChanged += UpdateMoney;
-        //UpdateMoney();
-
-        // 모든 강화 레벨을 0으로 초기화
-        for (int i = 0; i < (int)PlayerStat.Max; i++)
-            _level[(PlayerStat)i] = 0;
+        //// 모든 강화 레벨을 0으로 초기화
+        //for (int i = 0; i < (int)PlayerStat.Max; i++)
+        //    _level[(PlayerStat)i] = 0;
 
         bossStageInfo = Resources.Load<BossStageInfo>("BossStageInfo");
 
@@ -194,11 +231,6 @@ public class GameManager : Singleton<GameManager>
         foodSlotInfoArr[28] = new FoodSlotInfo(5, 3);
         foodSlotInfoArr[29] = new FoodSlotInfo(5, 4);
     }
-
-    //private void Start()
-    //{
-    //    TotalAttack();
-    //}
 
     public FoodSlotInfo GetFoodSlotInfo(int _index)
     {
@@ -260,24 +292,7 @@ public class GameManager : Singleton<GameManager>
     #region Player Info (Gold / Diamond)
     // player info 갱신
     public event Action OnPlayerInfoChanged;
-/*
-    private PlayerInfo _playerInfo = new PlayerInfo()
-    {
-        Gold = 1000,
-        Diamond = 50,
-    };
-*/
-/*
-    public PlayerInfo PlayerInfo
-    {
-        get { return _playerInfo; }
-        set
-        {
-            _playerInfo = value;
-            OnPlayerInfoChanged?.Invoke();
-        }
-    }
-*/
+
     // 골드 증가 함수
     public void AddGold(int gold)
     {
@@ -309,40 +324,6 @@ public class GameManager : Singleton<GameManager>
         OnPlayerInfoChanged?.Invoke();
         return true;
     }
-
-    //void UpdateMoney()
-    //{
-    //    if (GoldText != null)
-    //        GoldText.text = Utils.FormatKoreanNumber(_playerInfo.Gold);
-    //    if (DiamondText != null)
-    //        DiamondText.text = Utils.FormatKoreanNumber(_playerInfo.Diamond);
-    //}
-
-    //public float TotalAttack()
-    //{
-    //    this[PlayerStat.TotalAtk] = this[PlayerStat.Atk] + FoodData.Instance.GetFood(SlotController.Instance.MaxLevelRef).AttackPower;
-    //    // 기본 크리티컬 데미지(총 공격력*1.5)에서 증가한 크리티컬 데미지 %를 곱한 값을 총 공격력에 더하기
-    //    this[PlayerStat.TotalCriticalDamage] = (this[PlayerStat.TotalAtk] * 1.5f) + ((this[PlayerStat.TotalAtk] * 1.5f) * (this[PlayerStat.CriticalDamage] / 100));
-
-    //    float rand = UnityEngine.Random.Range(0f, 100f); // 0에서 100 사이의 랜덤한 수. 소수점 포함
-    //    float damage;
-
-    //    if (rand <= this[PlayerStat.CriticalProbability])
-    //    {
-    //        // 크리티컬 데미지 적용
-    //        damage = this[PlayerStat.TotalCriticalDamage];
-    //        Debug.Log($"크리티컬 발생! 현재 크리티컬 확률 : {this[PlayerStat.CriticalProbability]} 데미지 : {damage}");
-    //    }
-    //    else
-    //    {
-    //        // 총 공격력으로 데미지 적용
-    //        damage = this[PlayerStat.TotalAtk];
-    //    }
-
-    //    TotalAtkText.text = Utils.FormatKoreanNumber((long)this[PlayerStat.TotalAtk]);
-
-    //    return damage;
-    //}
     #endregion
 
 

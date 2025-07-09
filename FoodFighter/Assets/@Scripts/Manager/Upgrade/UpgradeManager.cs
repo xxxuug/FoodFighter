@@ -108,12 +108,16 @@ public class UpgradeManager : MonoBehaviour
             Debug.Log($"{upgrade.Name} 강화 성공!");
             // GameManager.Instance.TotalAttack(); // 공격력 조회
 
+            GameManager.Instance.SaveUpgradeDate();
+
             if (LockManager != null && LockManager.Length > 0)
             {
                 foreach (var lockManagers in LockManager)
                 {
                     if (lockManagers != null)
-                        lockManagers.SetAttackLevel(_level);
+                        //lockManagers.SetAttackLevel(_level);
+                        GameManager.Instance.AttackLevel = GameManager.Instance.level[PlayerStat.Atk];
+                    lockManagers.RefreshUnlock();
                 }
             }
 

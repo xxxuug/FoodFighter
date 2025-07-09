@@ -12215,7 +12215,7 @@ MonoBehaviour:
     IncreaseCost: 10
     IncreaseNum: 4
     MoneyType: 1
-    StateType: 5
+    StateType: 4
   LockManager: []
 --- !u!114 &772915709
 MonoBehaviour:
