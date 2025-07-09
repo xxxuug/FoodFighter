@@ -107,7 +107,37 @@ public class GameManager : Singleton<GameManager>
         int rewardGold = Mathf.FloorToInt((float)elapsed.TotalSeconds * 10f);
         if (rewardGold <= 0) return; // 0 이하라면 보상 x
 
-        UI_OfflineReward.Instance.Show(rewardGold);
+        UI_OfflineReward.Instance.Show(rewardGold, elapsed);
+
+        // 스테이지 보상 
+        // 1분당 1스테이지 진행
+        int stageUpCount = Mathf.FloorToInt((float)elapsed.TotalMinutes / 1f);
+
+        //올라갈 스테이지가 하나라도 있다면
+        if (stageUpCount > 0)
+        {
+            AdvanceStage(stageUpCount); // 계산된 스테이지 수만큼 실제로 스테이지 진행
+            Debug.Log($"오프라인 진행 {stageUpCount} 스테이지 자동 진행");
+
+        }
+    }
+
+    // 지정된 수(count) 만큼 스테이지를 앞으로 진행시키는 함수
+    private void AdvanceStage(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            // 현재 SubStage가 5 이상이면 메인 스테이지를 올리고 SubStage는 1로 초기화
+            if (StageManager.Instance.StageInfo.SubStage >= 5)
+            {
+                StageManager.Instance.StageInfo.MainStage++;
+                StageManager.Instance.StageInfo.SubStage = 1;
+            }
+            else
+            {
+                StageManager.Instance.StageInfo.SubStage++; // SuubStage만 증가
+            }
+        }
     }
 
     private void Awake()
