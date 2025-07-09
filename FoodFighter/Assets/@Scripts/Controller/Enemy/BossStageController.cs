@@ -291,7 +291,9 @@ public class BossStageController : BaseController
         _hpUI.SetActive(false);
 
         int nextStageIndex = GameManager.Instance.CurBossStageIndex + 1;
-        GameManager.Instance.BossStageOpen[nextStageIndex] = true;
+
+        // GameManager.Instance.BossStageOpen[nextStageIndex] = true;
+        GameManager.Instance.UnlockBossStage(nextStageIndex);
 
         Invoke(nameof(Despawn), 0.5f);
         OnDefeted();

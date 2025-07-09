@@ -43,9 +43,11 @@ public class SlotController : Singleton<SlotController>
     private void Awake()
     {
         MaxLevelRef = 1;
+
+        GameManager.Instance.LoadSlotData();
     }
 
-    void Start()
+    IEnumerator Start()
     {
         _slots = new GameObject[_hCount, _vCount];
 
@@ -62,6 +64,7 @@ public class SlotController : Singleton<SlotController>
             }
         }
 
+        yield return new WaitForEndOfFrame();
         UpdateSlotUnlock();
 
         _currentCount = _maxCount;

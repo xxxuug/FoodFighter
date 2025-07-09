@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Xml.Xsl;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.PackageManager;
 using UnityEngine;
@@ -22,6 +24,7 @@ public class GameManager : Singleton<GameManager>
     public bool[] BossStageOpen
     {
         get => _bossStageOpenStateArr;
+        set => _bossStageOpenStateArr = value;  
     }
 
     //private TMP_Text GoldText;
@@ -43,16 +46,29 @@ public class GameManager : Singleton<GameManager>
         CheckOfflineReward(); // 오프라인 보상 체크
 
         LoadUpgradeDate();
+        LoadSlotData();
+
+        LoadGoldDiaData();
+
+        LoadBossStageUnlock();
     }
 
+
     // 어플리케이션이 완전히 종료될 때 호출됨
-    private void OnApplicationQuit() => SaveQuitData();
+    private void OnApplicationQuit()
+    { 
+        SaveQuitData(); 
+        SaveSlotData();
+    }
 
     // 어플이 백그라운드로 가거나 일시 정지 되었을 때 호출됨
     private void OnApplicationPause(bool pause)
     {
         if (pause)
+        {
             SaveQuitData(); // 앱이 일시정지 될 때도 시간과 스테이지 저장
+            SaveSlotData();
+        }
     }
 
     // 게임 종료 또는 일시정지 시 데이터 저장
@@ -60,6 +76,10 @@ public class GameManager : Singleton<GameManager>
     {
         // 현재 시간을 이진(Binary) 형태로 문자열 저장
         PlayerPrefs.SetString(Define.LastPlayTimeKey, DateTime.Now.ToBinary().ToString());
+
+        // 골드 & 다이아몬드 저장
+        PlayerPrefs.SetInt("Gold", Gold);
+        PlayerPrefs.SetInt("Diamond", Diamond);
        
         // 현재 스테이지 정보를 저장
         if (StageManager.Instance != null)
@@ -182,6 +202,85 @@ public class GameManager : Singleton<GameManager>
 
         if (PlayerPrefs.HasKey("AttackLevel"))
             AttackLevel = PlayerPrefs.GetInt("AttackLevel");
+    }
+
+    void SaveSlotData()
+    {
+        for (int i = 0; i < foodSlotInfoArr.Length; i++)
+        {
+            var slot = foodSlotInfoArr[i];
+            PlayerPrefs.SetInt($"Slot_{i}_X", slot.indexColRow.x);
+            PlayerPrefs.SetInt($"Slot_{i}_Y", slot.indexColRow.y);
+            PlayerPrefs.SetInt($"Slot_{i}_FoodLevel", slot.foodLevel);
+            PlayerPrefs.SetInt($"Slot_{i}_isLock", slot.isLock ? 1 : 0);
+        }
+
+        PlayerPrefs.Save();
+    }
+
+    public void LoadSlotData()
+    {
+        for (int i = 0; i < foodSlotInfoArr.Length; i++)
+        {
+            if (PlayerPrefs.HasKey($"Slot_{i}_X")) // 저장된 슬롯이라면
+            {
+                int x = PlayerPrefs.GetInt($"Slot_{i}_X");
+                int y = PlayerPrefs.GetInt($"Slot_{i}_Y");
+                int level = PlayerPrefs.GetInt($"Slot_{i}_FoodLevel");
+                bool isLock = PlayerPrefs.GetInt($"Slot_{i}_isLock") == 1;
+
+                foodSlotInfoArr[i] = new FoodSlotInfo(x, y)
+                {
+                    foodLevel = level,
+                    isLock = isLock
+                };
+            }
+        }
+    }
+
+    private void LoadGoldDiaData()
+    {
+        if (PlayerPrefs.HasKey("Gold"))
+            Gold = PlayerPrefs.GetInt("Gold");
+
+        if (PlayerPrefs.HasKey("Diamond"))
+            Diamond = PlayerPrefs.GetInt("Diamond");
+
+        OnPlayerInfoChanged?.Invoke();
+    }
+
+    public void UnlockBossStage(int index)
+    {
+        if (index >= 0 && index < MAX_BOSS_STAGE_COUNT)
+        {
+            _bossStageOpenStateArr[index] = true;
+            SaveBossStageUnlock();
+        }
+    }
+
+    public void SaveBossStageUnlock()
+    {
+        for (int i = 0; i < MAX_BOSS_STAGE_COUNT; i++)
+        {
+            PlayerPrefs.SetInt($"BossSTageOpen_{i}", _bossStageOpenStateArr[i] ? 1 : 0);
+        }
+
+        PlayerPrefs.Save();
+    }
+
+    public void LoadBossStageUnlock()
+    {
+        for (int i = 0; i < MAX_BOSS_STAGE_COUNT; i++)
+        {
+            if (PlayerPrefs.HasKey($"BossSTageOpen_{i}"))
+            {
+                _bossStageOpenStateArr[i] = PlayerPrefs.GetInt($"BossSTageOpen_{i}") == 1;
+            }
+            else
+            {
+                _bossStageOpenStateArr[i] = (i == 0); // 0번 스테이지만 기본 해제
+            }
+        }
     }
 
     private void Awake()

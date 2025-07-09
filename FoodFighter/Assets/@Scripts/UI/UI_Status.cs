@@ -27,6 +27,9 @@ public class UI_Status : MonoBehaviour
         // 시작할 때 실행해주기
         UpdateHpUI();
         UpdateStageUI();
+
+        DiamondText.text = Utils.FormatKoreanNumber(GameManager.Instance.Diamond);
+        GoldText.text = Utils.FormatKoreanNumber(GameManager.Instance.Gold);
     }
 
     void UpdateHpUI()

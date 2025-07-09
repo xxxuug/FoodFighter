@@ -31,48 +31,48 @@ MonoBehaviour:
     RewardDiamond: 2000
     SpawnPosition: {x: 4, y: 2, z: 0}
     TargetPosition: {x: 2.8, y: 2, z: 0}
-  - Stage: 0
+  - Stage: 2
+    BossPrefab: {fileID: 6076369115776015053, guid: 2439aba98dfd25f4e9968c900f8e79f9, type: 3}
+    CurrentHp: 3000
+    MaxHp: 3000
+    Damage: 350
+    RewardGold: 3000
+    RewardDiamond: 3000
+    SpawnPosition: {x: 4, y: 2, z: 0}
+    TargetPosition: {x: 2.8, y: 2, z: 0}
+  - Stage: 3
     BossPrefab: {fileID: 6076369115776015053, guid: b416da2fd7844da409af5ac12baea79a, type: 3}
-    CurrentHp: 0
-    MaxHp: 0
-    Damage: 0
-    RewardGold: 0
-    RewardDiamond: 0
-    SpawnPosition: {x: 0, y: 0, z: 0}
-    TargetPosition: {x: 0, y: 0, z: 0}
-  - Stage: 0
+    CurrentHp: 4000
+    MaxHp: 4000
+    Damage: 400
+    RewardGold: 4000
+    RewardDiamond: 4000
+    SpawnPosition: {x: 4, y: 2, z: 0}
+    TargetPosition: {x: 2.8, y: 2, z: 0}
+  - Stage: 4
+    BossPrefab: {fileID: 6076369115776015053, guid: 2439aba98dfd25f4e9968c900f8e79f9, type: 3}
+    CurrentHp: 5000
+    MaxHp: 5000
+    Damage: 500
+    RewardGold: 5000
+    RewardDiamond: 5000
+    SpawnPosition: {x: 4, y: 2, z: 0}
+    TargetPosition: {x: 2.8, y: 2, z: 0}
+  - Stage: 5
     BossPrefab: {fileID: 6076369115776015053, guid: b416da2fd7844da409af5ac12baea79a, type: 3}
-    CurrentHp: 0
-    MaxHp: 0
-    Damage: 0
-    RewardGold: 0
-    RewardDiamond: 0
-    SpawnPosition: {x: 0, y: 0, z: 0}
-    TargetPosition: {x: 0, y: 0, z: 0}
-  - Stage: 0
-    BossPrefab: {fileID: 6076369115776015053, guid: b416da2fd7844da409af5ac12baea79a, type: 3}
-    CurrentHp: 0
-    MaxHp: 0
-    Damage: 0
-    RewardGold: 0
-    RewardDiamond: 0
-    SpawnPosition: {x: 0, y: 0, z: 0}
-    TargetPosition: {x: 0, y: 0, z: 0}
-  - Stage: 0
-    BossPrefab: {fileID: 6076369115776015053, guid: b416da2fd7844da409af5ac12baea79a, type: 3}
-    CurrentHp: 0
-    MaxHp: 0
-    Damage: 0
-    RewardGold: 0
-    RewardDiamond: 0
-    SpawnPosition: {x: 0, y: 0, z: 0}
-    TargetPosition: {x: 0, y: 0, z: 0}
-  - Stage: 0
-    BossPrefab: {fileID: 6076369115776015053, guid: b416da2fd7844da409af5ac12baea79a, type: 3}
-    CurrentHp: 0
-    MaxHp: 0
-    Damage: 0
-    RewardGold: 0
-    RewardDiamond: 0
-    SpawnPosition: {x: 0, y: 0, z: 0}
-    TargetPosition: {x: 0, y: 0, z: 0}
+    CurrentHp: 6000
+    MaxHp: 6000
+    Damage: 600
+    RewardGold: 6000
+    RewardDiamond: 6000
+    SpawnPosition: {x: 4, y: 2, z: 0}
+    TargetPosition: {x: 2.8, y: 2, z: 0}
+  - Stage: 6
+    BossPrefab: {fileID: 6076369115776015053, guid: 2439aba98dfd25f4e9968c900f8e79f9, type: 3}
+    CurrentHp: 7000
+    MaxHp: 7000
+    Damage: 700
+    RewardGold: 7000
+    RewardDiamond: 7000
+    SpawnPosition: {x: 4, y: 2, z: 0}
+    TargetPosition: {x: 2.8, y: 2, z: 0}
