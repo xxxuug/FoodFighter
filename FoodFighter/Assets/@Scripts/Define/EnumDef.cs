@@ -1,5 +1,7 @@
 using UnityEngine;
 
+public enum GameResult { Win, Lose }
+
 namespace EnumDef
 {
     // ÀüÅõ

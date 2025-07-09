@@ -26,7 +26,7 @@ public class AttackController : MonoBehaviour
             }
 
             if (bossStageController != null){
-                playerController.TakeDamage(bossStageController.damage);
+                playerController.TakeDamage(bossStageController.Damage);
             }
         }                    
     }

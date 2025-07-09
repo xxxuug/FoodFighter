@@ -1,4 +1,5 @@
 using EnumDef;
+using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -14,13 +15,11 @@ public class BossStageController : BaseController
     [SerializeField] Transform _player;
     public BattleState battleState = BattleState.None;
     [SerializeField] AttackController _attackController;
-    [SerializeField] private GameObject rewardPopup; // 보상
-    [SerializeField] private float attackDelay = 1.5f ; // 공격 텀
 
     BossStageInfo _stagInfo;
 
-    private int rewardGold;
-    private int rewardDiamond;
+    private int _rewardGold;
+    private int _rewardDiamond;
 
     private bool _isDead = false;
     [Header("Status")]
@@ -28,17 +27,18 @@ public class BossStageController : BaseController
     private float _maxHP;    
     private float _speed = 0.3f;
     private float _damage;
-    public float damage { get => _damage; }
+    public float Damage { get => _damage; }
 
 
     private bool _isAttacking = false;
 
-    [Header("보스 이동 관련")]
-    [SerializeField] private Vector3 _targetPosition = new Vector3(0.6f, 2f, 0f); // 중앙 목표 위치
-    [SerializeField] private float _moveSpeed = 0.5f;
+    //[Header("보스 이동 관련")]
+    private Vector3 _targetPosition = new Vector3(0.6f, 2f, 0f); // 중앙 목표 위치
+    private float _moveSpeed = 0.5f;
 
     private GameObject _hpUI;
     private Image _hpImage;
+    private Image _hpBoard;
     private TMP_Text _hpText;
 
     [SerializeField] private BossStageInfo _stageInfo;
@@ -57,6 +57,10 @@ public class BossStageController : BaseController
 
     [Header("스킬 투사체 프리팹")]
     public GameObject Bullet;
+
+    [Header("팝업 UI")]
+    [SerializeField] public GameObject _rewardPopup; // 팝업
+    [SerializeField] private ResultPopup _resultPopup; // 보상 세팅
 
     protected override void Initialize()
     {
@@ -82,12 +86,35 @@ public class BossStageController : BaseController
     {
         _hpUI = GameObject.Find("BossHpUI");
         _hpImage = GameObject.Find("BossHpBar - Image")?.GetComponent<Image>();
+        _hpBoard = GameObject.Find("BossHpBorder - Image")?.GetComponent<Image>();
         _hpText = GameObject.Find("BossHpBar Text - Text")?.GetComponent<TMP_Text>();
 
         Debug.Log($"Hp UI 연결 _hpUI: {_hpUI != null}, _hpImage: {_hpImage != null}, _hpText: {_hpText != null}");
 
         if (_hpUI != null)
             _hpUI.SetActive(false);
+
+        if (_rewardPopup == null)
+        {
+            _rewardPopup = GameObject.Find("WinPopup");
+        }
+        if (_resultPopup == null && _rewardPopup != null)
+        {
+            _resultPopup = _rewardPopup.GetComponent<ResultPopup>();
+        }
+
+        _rewardPopup.SetActive(false);
+
+        if (StageManager.Instance.Player.isBossStage == true)
+        {
+            if (StageManager.Instance.Player._losePopup == null)
+                StageManager.Instance.Player._losePopup = GameObject.Find("LosePopup");
+
+            if (StageManager.Instance.Player._losePopup != null)
+                StageManager.Instance.Player._losePopup.SetActive(false);
+        }
+
+        Time.timeScale = 1f;
     }
 
     public void SetData(BossStageInfo.Data _data)
@@ -113,13 +140,13 @@ public class BossStageController : BaseController
         _currentHP = _data.CurrentHp;
         _maxHP = _data.MaxHp;
         _damage = _data.Damage;
-        rewardGold = _data.RewardGold;
-        rewardDiamond = _data.RewardDiamond;
+        _rewardGold = _data.RewardGold;
+        _rewardDiamond = _data.RewardDiamond;
         _targetPosition = _data.TargetPosition;
 
         transform.position = _data.SpawnPosition;
 
-        Debug.Log($"보스 Init 완료! HP: {_currentHP}, 보상: {rewardGold}/{rewardDiamond}");
+        Debug.Log($"보스 Init 완료! HP: {_currentHP}, 보상: {_rewardGold}/{_rewardDiamond}");
     }
 
 
@@ -154,6 +181,21 @@ public class BossStageController : BaseController
             TakeDamage(_currentHP);
             Debug.Log("디버그용 보스 사망");
         }
+
+        //if (GameManager.Instance[PlayerStat.CurrentHp] <= 0)
+        //{
+        //    if (StageManager.Instance.Player._losePopup != null)
+        //        StageManager.Instance.Player._losePopup.SetActive(true);
+
+        //    if (!_isDead)
+        //    {
+        //        _isDead = true;
+
+        //        StageManager.Instance.Player.Die();
+        //    }
+
+        //    Time.timeScale = 0f;
+        //}
         /*
                 switch (battleState)
                 {
@@ -182,7 +224,8 @@ public class BossStageController : BaseController
             battleState = BattleState.WaitTurn;
             //Debug.Log("보스 전투 위치 도착");
 
-            _hpUI.SetActive(true);
+            //   _hpUI.SetActive(true);
+            StartCoroutine(ShowBossHPUI());
             UpdateHP();
         }
     }
@@ -257,18 +300,27 @@ public class BossStageController : BaseController
     void OnDefeted()
     {
         // 보상 지급
-        GameManager.Instance.AddGold(rewardGold);
-        GameManager.Instance.AddDiamond(rewardDiamond);
+        GameManager.Instance.AddGold(_rewardGold);
+        GameManager.Instance.AddDiamond(_rewardDiamond);
 
-        if (rewardPopup != null)
-            rewardPopup.SetActive(true);
+        if (_rewardPopup != null)
+        {
+            _rewardPopup.SetActive(true);
+            Time.timeScale = 0f;
 
-        Debug.Log($"보상 지급 완료! 골드: {rewardGold}, 다이아몬드: {rewardDiamond}");
-        
-        StageManager.Instance.Player.SetStage();
+            if (_resultPopup != null)
+                _resultPopup.SetReward(_rewardGold, _rewardDiamond);
+        }
+
+        Debug.Log($"보상 지급 완료! 골드: {_rewardGold}, 다이아몬드: {_rewardDiamond}");
+
+        // StageManager.Instance.Player.SetStage();
+
+        //StopAllCoroutines();
+        //StageManager.Instance.Player.StartCoroutine(StageManager.Instance.Player.ResetDeath());
 
         // 게임 씬으로 복귀
-        SceneManager.LoadScene(Define.GameScene);
+        // SceneManager.LoadScene(Define.GameScene);
     }
 
     void UpdateHP()
@@ -276,7 +328,7 @@ public class BossStageController : BaseController
         if (_hpImage != null && _maxHP > 0)
         {
             _hpImage.fillAmount = _currentHP / _maxHP;
-            _hpText.text = $"{_currentHP}";
+            _hpText.text = $"{_maxHP} / {_currentHP}";
         }
     }
 
@@ -318,5 +370,49 @@ public class BossStageController : BaseController
         var boss = GetComponentInParent<BossStageController>();
         boss.IsSpellSkill = false;
         Debug.Log("Skill~~");
+    }
+
+    // HpBqr 자연스럽게 나타나게 하기
+    IEnumerator ShowBossHPUI()
+    {
+        _hpUI.SetActive(true);
+
+        RectTransform hpImage = _hpImage.GetComponent<RectTransform>();
+        RectTransform hpBoard = _hpBoard.GetComponent<RectTransform>();
+
+        // 원래 크기 저장
+        Vector2 hpImagefullSize = new Vector2(575.0398f, hpImage.sizeDelta.y);
+        Vector2 hpImageCenterSize = new Vector2(0f, hpImagefullSize.y);
+
+        Vector2 hpBoardFullSize = new Vector2(614f, hpBoard.sizeDelta.y);
+        Vector2 hpBoardCenterSize = new Vector2(0f, hpBoardFullSize.y);
+
+
+        // 중앙에서 양쪽으로 펼쳐지도록 설정
+        hpImage.pivot = new Vector2(0.5f, 0.5f);
+        hpImage.sizeDelta = hpImageCenterSize;
+
+        hpBoard.pivot = new Vector2(0.5f, 0.5f);
+        hpBoard.sizeDelta = hpBoardCenterSize;
+
+        float duration = 1.2f;
+        float time = 0f;
+
+        while(time < duration)
+        {
+            time += Time.deltaTime;
+            float t = time / duration;
+
+            float hpImageWidth = Mathf.Lerp(0f, hpImagefullSize.x, t);
+            hpImage.sizeDelta = new Vector2(hpImageWidth, hpImagefullSize.y);
+
+            float hpBoardWidth = Mathf.Lerp(0f, hpBoardFullSize.x, t);
+            hpBoard.sizeDelta = new Vector2(hpBoardWidth, hpBoardFullSize.y);
+
+            yield return null;
+        }
+
+        hpImage.sizeDelta = hpImagefullSize;
+        hpBoard.sizeDelta = hpBoardFullSize;
     }
 }

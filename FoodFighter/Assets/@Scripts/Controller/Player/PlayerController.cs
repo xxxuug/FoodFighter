@@ -35,6 +35,8 @@ public class PlayerController : BaseController
 
     private float moveSpeed = 1.3f;
 
+    [SerializeField] public GameObject _losePopup;
+
 
     // 피격 애니메이션 실행 함수
     void GetHit()
@@ -50,10 +52,23 @@ public class PlayerController : BaseController
             // 보스 전에서 사망했을 경우 HP 다시 초기화
             GameManager.Instance[PlayerStat.CurrentHp] = GameManager.Instance[PlayerStat.MaxHp];
 
-            SceneManager.LoadScene("Game");
+            // SceneManager.LoadScene("Game");
 
             // 플레이어 위치 및 상태 초기화
             StartCoroutine(ResetDeath());
+
+            if (_losePopup == null)
+            {
+                _losePopup = GameObject.Find("LosePopup");
+            }
+
+            if (_losePopup != null)
+            {
+                _losePopup.SetActive(true);
+            }
+
+            //Debug.Log($"_losePopup: {_losePopup != null}");
+            Time.timeScale = 0f;
         }
         else
         {
@@ -82,12 +97,8 @@ public class PlayerController : BaseController
 
         // 달리기 유지
         Speed = 1;
-    }
 
-    public void SetStage()
-    {
-        transform.position = _stagePlayerSpawn;
-        isBossStage = false;
+        Time.timeScale = 1f;
     }
 
     public void SetBossStage()
@@ -121,6 +132,13 @@ public class PlayerController : BaseController
         {
             // if (새 스테이지 진입 시 마다)
             FindDistance();
+        }
+
+        // 디버그용 바로 죽이기
+        if (Input.GetKeyUp(KeyCode.O) == true)
+        {
+            TakeDamage(GameManager.Instance[PlayerStat.CurrentHp]);
+            Debug.Log("디버그용 플레이어 사망");
         }
     }
 
@@ -244,24 +262,50 @@ public class PlayerController : BaseController
         IsAttacking = false;
         Speed = 1f;
 
-        _animator.ResetTrigger("Attak");
         _animator.ResetTrigger(Define.GetHit);
-        _animator.ResetTrigger(Define.Die);
     }
 
-    IEnumerator ResetDeath()
+    public IEnumerator ResetDeath()
     {
+        Time.timeScale = 1f;
         yield return new WaitForSeconds(0.01f); // 씬이 로드 될 때까지 약간 대기
 
-        isBossStage = false;
-        battleState = BattleState.None;
+        // isBossStage = false;
+        //battleState = BattleState.None;
         IsAttacking = false;
         Speed = 1f;
 
-        transform.position = _stagePlayerSpawn;
+        if (SceneManager.GetActiveScene().name.Contains(Define.BossStageScene))
+        {
+            isBossStage = true;
+            battleState = BattleState.MoveToCenter;
+            transform.position = _bossStagePlayerSpawn;
 
-        _animator.ResetTrigger("Attak");
+            if (_losePopup == null)
+            {
+                _losePopup = GameObject.Find("LosePopup");
+                if (_losePopup != null)
+                    _losePopup.SetActive(false);
+            }
+        }
+        else
+        {
+
+            isBossStage = false;
+            battleState = BattleState.None;
+            transform.position = _stagePlayerSpawn;
+        }
+
+        // transform.position = _stagePlayerSpawn;
+
         _animator.ResetTrigger(Define.GetHit);
-        _animator.ResetTrigger(Define.Die);
+
     }
+
+
+    //public void SetStage()
+    //{
+    //    transform.position = _stagePlayerSpawn;
+    //    isBossStage = false;
+    //}
 }
