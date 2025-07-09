@@ -36,6 +36,9 @@ public class Define
     public const string TotalAtkText = "Attack Text - Text";
     public const string PlayerDeath = "Player Death";
     public const string UI = "UI";
+    public const string LastPlayTimeKey = "LastPlayTime";
+    public const string MainStageKey = "MainStage";
+    public const string SubStageKey = "SubStage";
     #endregion
 
 }

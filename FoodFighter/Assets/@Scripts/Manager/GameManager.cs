@@ -1,6 +1,7 @@
 using ClassDef;
 using EnumDef;
 using Mono.Cecil;
+using NUnit.Compatibility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,82 @@ public class GameManager : Singleton<GameManager>
     public FoodSlotInfo[] foodSlotInfoArr = new FoodSlotInfo[6*5];
 
     public bool isFirstFoodSpawn = false;
+
+    private void Start()
+    {
+        LoadLastStage(); // 마지막 스테이지 복구
+        CheckOfflineReward(); // 오프라인 보상 체크
+    }
+
+    // 어플리케이션이 완전히 종료될 때 호출됨
+    private void OnApplicationQuit() => SaveQuitData();
+
+    // 어플이 백그라운드로 가거나 일시 정지 되었을 때 호출됨
+    private void OnApplicationPause(bool pause)
+    {
+        if (pause)
+            SaveQuitData(); // 앱이 일시정지 될 때도 시간과 스테이지 저장
+    }
+
+    // 게임 종료 또는 일시정지 시 데이터 저장
+    private void SaveQuitData()
+    {
+        // 현재 시간을 이진(Binary) 형태로 문자열 저장
+        PlayerPrefs.SetString(Define.LastPlayTimeKey, DateTime.Now.ToBinary().ToString());
+       
+        // 현재 스테이지 정보를 저장
+        if (StageManager.Instance != null)
+        {
+            PlayerPrefs.SetInt(Define.MainStageKey, StageManager.Instance.StageInfo.MainStage);
+            PlayerPrefs.SetInt(Define.SubStageKey, StageManager.Instance.StageInfo.SubStage);
+        }
+
+        PlayerPrefs.Save();
+    }
+
+    // 게임 재시작 시 마지막 스테이지 불러오기
+    private void LoadLastStage()
+    {
+        // 저장된 스테이지 정보가 있는지 확인
+        if (PlayerPrefs.HasKey(Define.MainStageKey) && PlayerPrefs.HasKey(Define.SubStageKey))
+        {
+            // 저장된 Main/Suub 값 불러옴
+            int main = PlayerPrefs.GetInt(Define.MainStageKey);
+            int sub = PlayerPrefs.GetInt(Define.SubStageKey);
+
+            // StageManager의 현재 StageInfo에 복구된 값 세팅
+            StageManager.Instance.StageInfo = new StageInfo
+            {
+                MainStage = main,
+                SubStage = sub
+            };
+
+            Debug.Log($"복구됨 Main: {main}, Sub: {sub}");
+        }
+    }
+
+    // 오프라인 보상을 계산하고 팝업으로 보여주는 함수
+    private void CheckOfflineReward()
+    {
+        // 저장된 종료 시간이 없다면 return
+        if (!PlayerPrefs.HasKey(Define.LastPlayTimeKey)) return;
+
+        // Convert.ToInt64: long 정수형으로 바꿔주는 함수
+        // 저장된 문자열을 다시 DateTime으로 변환
+        long binaryTime = Convert.ToInt64(PlayerPrefs.GetString(Define.LastPlayTimeKey));
+        DateTime lastPlay = DateTime.FromBinary(binaryTime); // DateTime: 날짜 + 시간을 다루는 구조체
+
+        // TimeSpan: 두 날짜/시간 간의 차이(시간 간격)을 나타내는 구조체
+        // 현재 시각과 종료 시각의 차이 계산
+        TimeSpan elapsed = DateTime.Now - lastPlay;
+
+        // 경과 시간(초) x 10 = 총 보상 골드
+        // 1초(초당) 10 골드 씩
+        int rewardGold = Mathf.FloorToInt((float)elapsed.TotalSeconds * 10f);
+        if (rewardGold <= 0) return; // 0 이하라면 보상 x
+
+        UI_OfflineReward.Instance.Show(rewardGold);
+    }
 
     private void Awake()
     {
