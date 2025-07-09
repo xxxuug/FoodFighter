@@ -60,7 +60,7 @@ public class UI_Status : MonoBehaviour
 
     private void Update()
     {
-        TotalAttack();
+        UpdateTotalAttack();
 
         if (DiamondText != null && GameManager.Instance != null)
             DiamondText.text = Utils.FormatKoreanNumber(GameManager.Instance.Diamond);
@@ -69,7 +69,9 @@ public class UI_Status : MonoBehaviour
             GoldText.text = Utils.FormatKoreanNumber(GameManager.Instance.Gold);
     }
 
-    public float TotalAttack()
+    public bool IsCritical = false;
+
+    float UpdateTotalAttack()
     {
         GameManager.Instance[PlayerStat.TotalAtk] = GameManager.Instance[PlayerStat.Atk] + FoodData.Instance.GetFood(SlotController.Instance.MaxLevelRef).AttackPower;
         // 기본 크리티컬 데미지(총 공격력*1.5)에서 증가한 크리티컬 데미지 %를 곱한 값을 총 공격력에 더하기
@@ -81,12 +83,14 @@ public class UI_Status : MonoBehaviour
         if (rand <= GameManager.Instance[PlayerStat.CriticalProbability])
         {
             // 크리티컬 데미지 적용
+            IsCritical = true;
             damage = GameManager.Instance[PlayerStat.TotalCriticalDamage];
             Debug.Log($"크리티컬 발생! 현재 크리티컬 확률 : {GameManager.Instance[PlayerStat.CriticalProbability]} 데미지 : {damage}");
         }
         else
         {
             // 총 공격력으로 데미지 적용
+            IsCritical = false;
             damage = GameManager.Instance[PlayerStat.TotalAtk];
         }
 

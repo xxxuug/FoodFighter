@@ -112,10 +112,22 @@ public class EnemyController : BaseController
         _hitDamage.GetComponent<RectTransform>().transform.SetParent(this.transform.Find(Define.UI));
 
         _hitDamage.GetComponent<RectTransform>().localPosition = new Vector3(0, 0.15f, 0);
-        _hitDamage.GetComponent<TMP_Text>().text = $"{damage}";
+
+        GameObject ui_Status = GameObject.Find("Player Status");
+        UI_Status status = ui_Status.GetComponent<UI_Status>();
+        if (status.IsCritical == true)
+        {
+            _hitDamage.GetComponent<TMP_Text>().color = Color.yellow;
+            _hitDamage.GetComponent<TMP_Text>().text = $"{GameManager.Instance[EnumDef.PlayerStat.TotalCriticalDamage]}";
+        }
+        else
+        {
+            _hitDamage.GetComponent<TMP_Text>().color = Color.white;
+            _hitDamage.GetComponent<TMP_Text>().text = $"{GameManager.Instance[EnumDef.PlayerStat.TotalAtk]}";
+        }
+
+        //_hitDamage.GetComponent<TMP_Text>().text = $"{damage}";
         StartCoroutine(HitDamageUp());
-        //Debug.Log($"[TakeDamage] {this.gameObject.name} 피격 데미지 텍스트 생성");
-        // 적이 사라지는 것보다 텍스트를 더 먼저 사라지게
 
         if (_currentHp <= 0)
         {
