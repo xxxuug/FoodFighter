@@ -1,15 +1,8 @@
 using ClassDef;
 using EnumDef;
-using Mono.Cecil;
-using NUnit.Compatibility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Xml.Xsl;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 
@@ -42,6 +35,7 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
+
         LoadLastStage(); // 마지막 스테이지 복구
         CheckOfflineReward(); // 오프라인 보상 체크
 
@@ -291,9 +285,9 @@ public class GameManager : Singleton<GameManager>
         for (int i = 1; i < _bossStageOpenStateArr.Length; i++)
             _bossStageOpenStateArr[i] = false;
 
-        //// 모든 강화 레벨을 0으로 초기화
-        //for (int i = 0; i < (int)PlayerStat.Max; i++)
-        //    _level[(PlayerStat)i] = 0;
+        // 모든 강화 레벨을 0으로 초기화
+        for (int i = 0; i < (int)PlayerStat.Max; i++)
+            _level[(PlayerStat)i] = 0;
 
         bossStageInfo = Resources.Load<BossStageInfo>("BossStageInfo");
 
@@ -424,6 +418,5 @@ public class GameManager : Singleton<GameManager>
         return true;
     }
     #endregion
-
 
 }
