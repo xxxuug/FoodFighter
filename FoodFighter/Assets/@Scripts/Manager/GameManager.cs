@@ -23,8 +23,8 @@ public class GameManager : Singleton<GameManager>
     //private TMP_Text GoldText;
     //private TMP_Text DiamondText;
     //private TMP_Text TotalAtkText;
-    public int Gold { get; set; } = 1000;
-    public int Diamond { get; set; } = 50;
+    public int Gold { get; set; } = 0;
+    public int Diamond { get; set; } = 500000;
 
     public BossStageInfo bossStageInfo { get; set; }
     public int AttackLevel { get; set; } // 공격력 레벨
