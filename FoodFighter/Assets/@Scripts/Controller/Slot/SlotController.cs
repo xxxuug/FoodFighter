@@ -69,11 +69,16 @@ public class SlotController : Singleton<SlotController>
 
         _currentCount = _maxCount;
 
-        if (GameManager.Instance.isFirstFoodSpawn == false)
-        {
-            GameManager.Instance.isFirstFoodSpawn = true;
+        bool hasFood = GameManager.Instance.foodSlotInfoArr.Any(slot => slot.foodLevel > 0);
+
+        if (!hasFood)
             SpawnFood();
-        }
+
+        //if (GameManager.Instance.isFirstFoodSpawn == false)
+        //{
+        //    GameManager.Instance.isFirstFoodSpawn = true;
+        //    SpawnFood();
+        //}
 
         CountChargeStart(); // È½¼ö ÃæÀü
         FoodCreateButton.onClick.AddListener(SpawnFood);
