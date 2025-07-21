@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PoolManager : Singleton<PoolManager>
 {
@@ -69,6 +70,12 @@ public class PoolManager : Singleton<PoolManager>
     // 몬스터 프리팹용 함수
     public BaseController GetObject(GameObject prefab, Vector3 pos)
     {
+        string currentScene = SceneManager.GetActiveScene().name;
+        if (currentScene.Contains(Define.Dungeon) && prefab.name.Contains("Boss"))
+        {
+            return null;
+        }
+
         if (_pooledPrefabs.ContainsKey(prefab))
         {
             foreach (var obj in _pooledPrefabs[prefab])

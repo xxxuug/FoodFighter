@@ -17,6 +17,8 @@ public class Define
     public const string EnemyTag = "Enemy";
     public const string BossTag = "Boss";
     public const string PlayerTag = "Player";
+    public const string DungeonDiamond = "DungeonDiamond";
+    public const string DugeonGold = "DugeonGold";
     #endregion
 
     #region Animation
@@ -29,6 +31,7 @@ public class Define
     #region Other String
     public const string GameScene = "Game";
     public const string BossStageScene = "StageBoss";
+    public const string Dungeon = "Dungeon";
     public const string SlotIcon = "SlotIcon";
     public const string SlotBackground = "Slot Background - Image";
     public const string GoldText = "Gold Text - Text";

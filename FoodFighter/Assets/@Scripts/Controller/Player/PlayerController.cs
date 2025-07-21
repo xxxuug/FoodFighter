@@ -27,11 +27,14 @@ public class PlayerController : BaseController
     //public GameObject boss { get; set; }
     private Vector3 _stagePlayerSpawn = new Vector2(-1.43f, 1.39f); // 플레이어 스폰 위치
     private Vector3 _bossStagePlayerSpawn = new Vector3(-4f, 1.8f, 0f); // 플레이어 시작 위치
+    private Vector3 _DungeonPlayerSpawn = new Vector3(-4f, 1.39f, 0f); // 플레이어 시작 위치
 
     public bool isBossStage { get; set; }
+    public bool isDungeon { get; set; }
 
     public BattleState battleState = BattleState.None;
     public Vector3 BossBattleTargetPos = new Vector3(-0.9f, 1.8f, 0f); // 중앙 목표 위치    
+    public Vector3 DungeonBattleTargetPos = new Vector3(-1f, 1.39f, 0f); // 던전 목표 위치    
 
     private float moveSpeed = 1.3f;
 
@@ -49,6 +52,7 @@ public class PlayerController : BaseController
     {
         if (isBossStage == true)
         {
+            isDungeon = false;
             // 보스 전에서 사망했을 경우 HP 다시 초기화
             GameManager.Instance[PlayerStat.CurrentHp] = GameManager.Instance[PlayerStat.MaxHp];
 
@@ -94,6 +98,7 @@ public class PlayerController : BaseController
 
         // 씬 이름에 "Boss"가 포함되어 있으면 보스 스테이지로 간주
         isBossStage = SceneManager.GetActiveScene().name.Contains(Define.BossStageScene);
+        isDungeon = SceneManager.GetActiveScene().name.Contains(Define.Dungeon);
 
         // 달리기 유지
         Speed = 1;
@@ -118,6 +123,7 @@ public class PlayerController : BaseController
         battleState = BattleState.MoveToCenter;
         _animator.StopPlayback();
         isBossStage = true;
+        isDungeon = false;
 
         ResetForBossSTage(); // 상태 한 번 초기화
     }
@@ -128,6 +134,7 @@ public class PlayerController : BaseController
         {
             HandleBossStage();
         }
+        else if (isDungeon == true) HandleDungeonStage();
         else
         {
             // if (새 스테이지 진입 시 마다)
@@ -277,6 +284,7 @@ public class PlayerController : BaseController
 
         if (SceneManager.GetActiveScene().name.Contains(Define.BossStageScene))
         {
+            isDungeon = false;
             isBossStage = true;
             battleState = BattleState.MoveToCenter;
             transform.position = _bossStagePlayerSpawn;
@@ -288,10 +296,18 @@ public class PlayerController : BaseController
                     _losePopup.SetActive(false);
             }
         }
+        else if (SceneManager.GetActiveScene().name.Contains(Define.Dungeon))
+        {
+            isBossStage = false;
+            isDungeon = true;
+            battleState = BattleState.MoveToCenter;
+            transform.position = _DungeonPlayerSpawn;
+        }
         else
         {
 
             isBossStage = false;
+            isDungeon = false;
             battleState = BattleState.None;
             transform.position = _stagePlayerSpawn;
         }
@@ -300,6 +316,48 @@ public class PlayerController : BaseController
 
         _animator.ResetTrigger(Define.GetHit);
 
+    }
+
+    public void SetDungeonStage()
+    {
+        transform.position = _DungeonPlayerSpawn;
+        isBossStage = false;
+        isDungeon = true;
+        battleState = BattleState.MoveToCenter;
+
+        _animator.ResetTrigger(Define.GetHit);
+        Speed = 1f;
+        IsAttacking = false;
+    }
+
+    void HandleDungeonStage()
+    {
+        switch (battleState)
+        {
+            case BattleState.MoveToCenter:
+                MoveToDungeonTargetPosition(); // 플레이어 이동 함수
+                break;
+
+            case BattleState.PlayerTurn:
+                // 멈추는 상태
+                Speed = 0;
+                IsAttacking = true;
+                break;
+        }
+    }
+
+    void MoveToDungeonTargetPosition()
+    {
+        Vector3 targetPos = new Vector3(DungeonBattleTargetPos.x, transform.position.y, transform.position.z);
+        transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+        Speed = 1;
+
+        if (Vector3.Distance(transform.position, targetPos) < 0.1f)
+        {
+            Speed = 0f;
+            battleState = BattleState.PlayerTurn;
+            Debug.Log("플레이어가 석상 앞 도착");
+        }
     }
 
 

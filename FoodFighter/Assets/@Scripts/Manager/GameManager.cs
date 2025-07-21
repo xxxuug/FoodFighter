@@ -27,6 +27,13 @@ public class GameManager : Singleton<GameManager>
         set => _bossStageOpenStateArr = value;  
     }
 
+    public string SelectDungeon { get; set; }
+    public int DiaStageDungeon { get; set; } = 1;
+    public int GoldStageDungeon { get; set; } = 1;
+
+    public int GoldDungeonMoney { get; set; } = 500;
+    public int DiaDungeonMoney { get; set; } = 10;
+
     //private TMP_Text GoldText;
     //private TMP_Text DiamondText;
     //private TMP_Text TotalAtkText;
@@ -39,6 +46,7 @@ public class GameManager : Singleton<GameManager>
     public FoodSlotInfo[] foodSlotInfoArr = new FoodSlotInfo[6*5];
 
     public bool isFirstFoodSpawn = false;
+
 
     private void Start()
     {
@@ -87,6 +95,13 @@ public class GameManager : Singleton<GameManager>
             PlayerPrefs.SetInt(Define.MainStageKey, StageManager.Instance.StageInfo.MainStage);
             PlayerPrefs.SetInt(Define.SubStageKey, StageManager.Instance.StageInfo.SubStage);
         }
+
+        // 저장
+        PlayerPrefs.SetInt("GoldStageDungeon", GoldStageDungeon);
+        PlayerPrefs.SetInt("DiaStageDungeon", DiaStageDungeon);
+        PlayerPrefs.SetInt("GoldDungeonMoney", GoldDungeonMoney);
+        PlayerPrefs.SetInt("DiaDungeonMoney", DiaDungeonMoney);
+
 
         PlayerPrefs.Save();
     }
@@ -245,6 +260,12 @@ public class GameManager : Singleton<GameManager>
 
         if (PlayerPrefs.HasKey("Diamond"))
             Diamond = PlayerPrefs.GetInt("Diamond");
+
+        // 불러오기
+        GoldStageDungeon = PlayerPrefs.GetInt("GoldStageDungeon", 1);
+        DiaStageDungeon = PlayerPrefs.GetInt("DiaStageDungeon", 1);
+        GoldDungeonMoney = PlayerPrefs.GetInt("GoldDungeonMoney", 500);
+        DiaDungeonMoney = PlayerPrefs.GetInt("DiaDungeonMoney", 10);
 
         OnPlayerInfoChanged?.Invoke();
     }

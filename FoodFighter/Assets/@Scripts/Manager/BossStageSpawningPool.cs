@@ -8,7 +8,7 @@ public class BossStageSpawningPool : MonoBehaviour
 
     private void Awake()
     {
-        // ObjectManager.Instance.Spawn<PlayerController>(_playerSpawn);         
+        // ObjectManager.Instance.Spawn<PlayerController>(_playerSpawn);
     }
 
     private void Start()

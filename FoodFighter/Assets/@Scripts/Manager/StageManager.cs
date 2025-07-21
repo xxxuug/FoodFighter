@@ -29,6 +29,7 @@ public class StageManager : Singleton<StageManager>
     private List<EnemyController> _aliveEnemy = new();
     public BossStageController boss { get; set; }
     public PlayerController Player { get; set; }
+    public DungeonBossController dungeonBoss { get; set; }
 
     public void AddEnemy(EnemyController enemy)
     {

@@ -65,13 +65,27 @@ public class FoodBullet : BaseController
 
             BossStageController boss = collision.GetComponent<BossStageController>();
             boss.TakeDamage(_atk);
-            // Debug.Log($"몬스터에게 {baseAtk} 데미지 입힘");
 
-            // 턴 넘기기
-            //if (StageManager.Instance.Player is PlayerController player)
-            //{
-            //    player.battleState = BattleState.BossTurn;
-            //}
+            ObjectManager.Instance.Despawn(this);
+        }
+
+        if (collision.CompareTag(Define.DungeonDiamond))
+        {
+            PoolManager.Instance.GetEffectObject(HitEffect, transform.position);
+
+            DungeonBossController dungeon = collision.GetComponent<DungeonBossController>();
+            dungeon.TakeDamage(_atk);
+
+            ObjectManager.Instance.Despawn(this);
+        }
+
+        if (collision.CompareTag(Define.DugeonGold))
+        {
+            PoolManager.Instance.GetEffectObject(HitEffect, transform.position);
+
+            DungeonBossController dungeon = collision.GetComponent<DungeonBossController>();
+            dungeon.TakeDamage(_atk);
+
             ObjectManager.Instance.Despawn(this);
         }
     }

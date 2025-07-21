@@ -9,6 +9,8 @@ TagManager:
   - Boss
   - Food
   - BossBullet
+  - DungeonDiamond
+  - DugeonGold
   layers:
   - Default
   - TransparentFX
