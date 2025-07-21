@@ -42,10 +42,10 @@ public class DungeonButton : MonoBehaviour
         stageText.text = $"{dungeonStage} ´Ü°è";
 
         if (GoldrewardText != null)
-            GoldrewardText.text = $"{Gold}";
+            GoldrewardText.text = $"{Utils.FormatKoreanNumber(Gold)}";
 
         if (DiarewardText != null)
-            DiarewardText.text = $"{Diamond}";
+            DiarewardText.text = $"{Utils.FormatKoreanNumber(Diamond)}";
 
 
     }

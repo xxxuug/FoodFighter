@@ -40,6 +40,29 @@ public class PlayerController : BaseController
 
     [SerializeField] public GameObject _losePopup;
 
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += HandleSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= HandleSceneLoaded;
+    }
+
+    void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == Define.GameScene)
+        {
+            isBossStage = false;
+            isDungeon = false;
+            Debug.Log("씬 로드 후보스 / 던전 상태 초기화");
+
+            UI_Status status = FindObjectOfType<UI_Status>();
+            if (status != null)
+                status.UpdateStageUI();
+        }
+    }
 
     // 피격 애니메이션 실행 함수
     void GetHit()

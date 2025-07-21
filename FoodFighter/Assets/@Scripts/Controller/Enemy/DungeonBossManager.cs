@@ -2,6 +2,7 @@ using TMPro;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class DungeonBossManager : MonoBehaviour
 {
@@ -22,6 +23,10 @@ public class DungeonBossManager : MonoBehaviour
     public GameObject SuccessPopup;
     public GameObject FailPopup;
 
+    public TMP_Text RewardText;
+    public GameObject GoldImage;
+    public GameObject DiaImage;
+
     private void Start()
     {
         selectedDungeonName = GameManager.Instance.SelectDungeon;
@@ -35,11 +40,18 @@ public class DungeonBossManager : MonoBehaviour
         {
             RewardGold = GameManager.Instance.GoldDungeonMoney;
             RewardDiamond = 0; // 다이아는 주면 안 됨
+
+
+            RewardText.text = $"{Utils.FormatKoreanNumber(RewardGold)}";
+            DiaImage.SetActive(false);
         }
         else if (selectedDungeonName == "다이아광산")
         {
             RewardGold = 0; // 골드는 주면 안 됨
             RewardDiamond = GameManager.Instance.DiaDungeonMoney;
+
+            RewardText.text = $"{Utils.FormatKoreanNumber(RewardDiamond)}";
+            GoldImage.SetActive(false);
         }
 
         SuccessPopup.SetActive(false);

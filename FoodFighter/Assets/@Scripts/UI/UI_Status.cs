@@ -1,6 +1,7 @@
 using EnumDef;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UI_Status : MonoBehaviour
@@ -51,12 +52,23 @@ public class UI_Status : MonoBehaviour
         }
     }
 
-    void UpdateStageUI()
+    public void UpdateStageUI()
     {
         if (GameManager.Instance == null) return;
 
-        if (StageManager.Instance.Player.isBossStage == false)
+        if (StageManager.Instance.Player.isBossStage == false && StageManager.Instance.Player.isDungeon == false)
             StageText.text = StageManager.Instance.StageInfo.GetDisplayStage();
+        else if (StageManager.Instance.Player.isDungeon == true)
+        {
+            if (GameManager.Instance.SelectDungeon == "∞ÒµÂ±§ªÍ")
+            {
+                StageText.text = $"∞ÒµÂ ±§ªÍ {GameManager.Instance.GoldStageDungeon}";
+            }
+            else if (GameManager.Instance.SelectDungeon == "¥Ÿ¿Ãæ∆±§ªÍ")
+            {
+                StageText.text = $"¥Ÿ¿Ãæ∆ ±§ªÍ {GameManager.Instance.DiaStageDungeon}";
+            }
+        }
         else
             StageText.text = $"BossStage {GameManager.Instance.CurBossStageIndex + 1}";
     }
@@ -70,6 +82,8 @@ public class UI_Status : MonoBehaviour
 
         if (GoldText != null && GameManager.Instance != null)
             GoldText.text = Utils.FormatKoreanNumber(GameManager.Instance.Gold);
+
+        UpdateStageUI();
     }
 
     public bool IsCritical = false;

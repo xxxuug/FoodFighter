@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEditor.SceneManagement;
 using NUnit.Framework.Interfaces;
+using UnityEngine.Experimental.GlobalIllumination;
 
 public class DungeonBossController : MonoBehaviour
 {
@@ -93,11 +94,20 @@ public class DungeonBossController : MonoBehaviour
 
     private void UpdateHPUI()
     {
-        if (_maxHP > 0)
-        {
-            if (_hpImage != null) _hpImage.fillAmount = _currentHP / _maxHP;
-            if (_hpText != null) _hpText.text = $"{_currentHP:F0} / {_maxHP:F0}";
-        }
+        float displayHP = Mathf.Clamp(_currentHP, 0f, _maxHP);
+
+
+        if (_hpImage != null)
+            _hpImage.fillAmount = (_maxHP > 0f) ? displayHP / _maxHP : 0f;
+
+        if (_hpText != null) 
+            _hpText.text = $"{displayHP:F0} / {_maxHP:F0}";
+
+        //if (_maxHP > 0)
+        //{
+        //    if (_hpImage != null) _hpImage.fillAmount = _currentHP / _maxHP;
+        //    if (_hpText != null) _hpText.text = $"{_currentHP:F0} / {_maxHP:F0}";
+        //}
     }
 
     public void SetCurrentHP(float hp)
