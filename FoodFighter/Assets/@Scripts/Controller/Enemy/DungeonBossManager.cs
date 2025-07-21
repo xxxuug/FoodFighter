@@ -1,8 +1,6 @@
 using TMPro;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class DungeonBossManager : MonoBehaviour
 {

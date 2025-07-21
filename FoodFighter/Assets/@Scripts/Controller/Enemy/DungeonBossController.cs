@@ -3,9 +3,6 @@ using System;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
-using UnityEditor.SceneManagement;
-using NUnit.Framework.Interfaces;
-using UnityEngine.Experimental.GlobalIllumination;
 
 public class DungeonBossController : MonoBehaviour
 {

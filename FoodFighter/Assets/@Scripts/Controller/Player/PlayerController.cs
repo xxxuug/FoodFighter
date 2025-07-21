@@ -34,7 +34,7 @@ public class PlayerController : BaseController
 
     public BattleState battleState = BattleState.None;
     public Vector3 BossBattleTargetPos = new Vector3(-0.9f, 1.8f, 0f); // 중앙 목표 위치    
-    public Vector3 DungeonBattleTargetPos = new Vector3(-1f, 1.39f, 0f); // 던전 목표 위치    
+    public Vector3 DungeonBattleTargetPos = new Vector3(-1f, 1.39f, 0f); // 던전 목표 위치  
 
     private float moveSpeed = 1.3f;
 
