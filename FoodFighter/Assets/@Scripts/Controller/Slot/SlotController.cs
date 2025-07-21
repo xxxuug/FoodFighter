@@ -77,6 +77,8 @@ public class SlotController : Singleton<SlotController>
 
         CountChargeStart(); // 횟수 충전
         FoodCreateButton.onClick.AddListener(SpawnFood);
+
+        _lastLevel = PlayerPrefs.GetInt("LastMaxFoodLevel", 0);
     }
 
     public void UpdateSlotUnlock()
@@ -195,6 +197,10 @@ public class SlotController : Singleton<SlotController>
             if (maxLevel > _lastLevel)
             {
                 _lastLevel = maxLevel;
+                // 저장
+                PlayerPrefs.SetInt("LastMaxFoodLevel", _lastLevel);
+                PlayerPrefs.Save();
+
                 UI_PopUp popUp = _upgradePopup.GetComponent<UI_PopUp>();
                 _popUp.SetActive(true);
                 popUp.Open(maxFood);
