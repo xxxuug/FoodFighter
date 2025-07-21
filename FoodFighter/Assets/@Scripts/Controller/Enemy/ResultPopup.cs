@@ -1,8 +1,6 @@
 using EnumDef;
 using System.Collections;
 using TMPro;
-using TMPro.EditorUtilities;
-using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
