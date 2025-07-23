@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 651262abbcb120d4eab338224a5f018e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - ClickSound: {fileID: 8300000, guid: c6cf9d965e8913a439bd9f6db679e841, type: 3}
+  - EnterSound: {fileID: 8300000, guid: 25bc05c60c64cf34eb92aeadb2479abd, type: 3}
+  - CancelSound: {fileID: 8300000, guid: 813901ddc9fd0c845aebca74397df8a9, type: 3}
+  - PurchaseSound: {fileID: 8300000, guid: 88b579b371eeb5b43b7d42b4e5f023ff, type: 3}
+  - CoinSound: {fileID: 8300000, guid: 29d3b5db3cdd61d4faf9ab94cf4e92e6, type: 3}
+  - EnemyHitSound: {fileID: 8300000, guid: 94d1741e3b58b9d4694ae461f5cb9816, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

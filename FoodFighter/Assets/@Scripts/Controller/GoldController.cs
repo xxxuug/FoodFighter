@@ -7,16 +7,23 @@ public class GoldController : BaseController
     public Image GoldIcon;
 
     private Rigidbody2D _rigidbody2D;
+    private AudioSource _audioSource;
+
     private Vector3 _worldGoldPos;
     private Vector3 _startPos;
 
     private float _speed = 10f;
     private bool _isMoving = false;
 
+    [Header("Sound")]
+    public AudioClip CoinSound;
+
     protected override void Initialize() { }
 
     private void OnEnable()
     {
+        _audioSource = GetComponent<AudioSource>();
+
         if (GoldIcon == null)
             GoldIcon = GameObject.Find("Gold Icon - Image").GetComponent<Image>();
 
@@ -39,6 +46,8 @@ public class GoldController : BaseController
 
         if (Vector3.Distance(transform.position, _worldGoldPos) < 0.2f)
         {
+            SoundManager.Instance.PlayCoinSound();
+
             int randGold = Random.Range(300, 500);
             GameManager.Instance.AddGold(randGold);
             ObjectManager.Instance.Despawn(this);

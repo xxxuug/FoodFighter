@@ -26,9 +26,13 @@ public class UI_Menu : UI_Base
 
     public Menu_OpenAndClose OpenPanel = null;
 
+    private AudioClip NormalBGM;
 
     private void Start()
     {
+        NormalBGM = Resources.Load<AudioClip>(Define.NormalBGMPath);
+        SoundManager.Instance.PlayBGM(NormalBGM, 0.3f);
+
         // 강조 패널 비활성화
         ClickPanel.SetActive(false);
         // 강화 기능 패널 비활성화
@@ -56,6 +60,7 @@ public class UI_Menu : UI_Base
     // 강화 버튼 클릭
     public void OnClickEnhanceButton()
     {
+        SoundManager.Instance.PlayClickSound();
 
         if (OpenPanel != null) OpenPanel.ClosePanel();
 
@@ -71,6 +76,8 @@ public class UI_Menu : UI_Base
     // 보스 버튼 클릭
     void OnClickBossButton()
     {
+        SoundManager.Instance.PlayClickSound();
+
         if (OpenPanel != null) OpenPanel.ClosePanel();
 
         ClickPanel.SetActive(true);
@@ -85,6 +92,8 @@ public class UI_Menu : UI_Base
     // 던전 버튼 클릭
     void OnClickDungeonButton()
     {
+        SoundManager.Instance.PlayClickSound();
+
         if (OpenPanel != null) OpenPanel.ClosePanel();
 
         ClickPanel.SetActive(true);
@@ -99,6 +108,8 @@ public class UI_Menu : UI_Base
     // 상점 버튼 클릭
     void OnClickShopButton()
     {
+        SoundManager.Instance.PlayClickSound();
+
         if (OpenPanel != null) OpenPanel.ClosePanel();
 
         ClickPanel.SetActive(true);
@@ -112,6 +123,8 @@ public class UI_Menu : UI_Base
 
     void OnClickCloseButton()
     {
+        SoundManager.Instance.PlayClickSound();
+
         ClickPanel.SetActive(false);
 
         if (OpenPanel != null)

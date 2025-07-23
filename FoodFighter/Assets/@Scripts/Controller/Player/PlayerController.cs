@@ -1,15 +1,21 @@
 using EnumDef;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 public class PlayerController : BaseController
 {
     [Header("컴포넌트")]
     private Animator _animator;
+    private AudioSource _audioSource;
 
     [Header("플레이어와 적 거리")]
     private float _range = 4.5f;
+
+    [Header("사운드")]
+    public AudioClip RunSound;
+    public AudioClip AttackSound;
 
     public float Speed
     {
@@ -32,6 +38,7 @@ public class PlayerController : BaseController
     public bool isBossStage { get; set; }
     public bool isDungeon { get; set; }
 
+    [Header("보스 및 던전")]
     public BattleState battleState = BattleState.None;
     public Vector3 BossBattleTargetPos = new Vector3(-0.9f, 1.8f, 0f); // 중앙 목표 위치    
     public Vector3 DungeonBattleTargetPos = new Vector3(-1f, 1.39f, 0f); // 던전 목표 위치  
@@ -58,7 +65,7 @@ public class PlayerController : BaseController
             isDungeon = false;
             Debug.Log("씬 로드 후보스 / 던전 상태 초기화");
 
-            UI_Status status = FindObjectOfType<UI_Status>();
+            UI_Status status = FindAnyObjectByType<UI_Status>();
             if (status != null)
                 status.UpdateStageUI();
         }
@@ -118,6 +125,7 @@ public class PlayerController : BaseController
 
 
         _animator = GetComponent<Animator>();
+        _audioSource = GetComponent<AudioSource>();
 
         // 씬 이름에 "Boss"가 포함되어 있으면 보스 스테이지로 간주
         isBossStage = SceneManager.GetActiveScene().name.Contains(Define.BossStageScene);
@@ -384,9 +392,7 @@ public class PlayerController : BaseController
     }
 
 
-    //public void SetStage()
-    //{
-    //    transform.position = _stagePlayerSpawn;
-    //    isBossStage = false;
-    //}
+    // 사운드 애니메이션 이벤트
+    public void PlayRunSound() => _audioSource.PlayOneShot(RunSound);
+    public void PlayAttackSound() => _audioSource.PlayOneShot(AttackSound);
 }

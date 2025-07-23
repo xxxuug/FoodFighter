@@ -40,6 +40,7 @@ public class UI_OfflineReward : MonoBehaviour
         _rewardButton.onClick.RemoveAllListeners();
         _rewardButton.onClick.AddListener(() =>
         {
+            SoundManager.Instance.PlayClickSound();
             GameManager.Instance.AddGold(reward);
             _popup.SetActive(false);
         });

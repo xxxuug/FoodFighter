@@ -4,6 +4,7 @@ using EnumDef;
 public class BossStageSpawningPool : MonoBehaviour
 {
     //[SerializeField] private BossData[] _bossDataList;
+    private AudioClip _currencyDungeonSound;
 
     private void Awake()
     {
@@ -12,6 +13,9 @@ public class BossStageSpawningPool : MonoBehaviour
 
     private void Start()
     {
+        _currencyDungeonSound = Resources.Load<AudioClip>(Define.CurrencyDungeonBGMPath);
+        SoundManager.Instance.PlayBGM(_currencyDungeonSound, 0.3f);
+
         int currentStage = GameManager.Instance.CurBossStageIndex;
 
         BossStageInfo.Data selectBoss = null;

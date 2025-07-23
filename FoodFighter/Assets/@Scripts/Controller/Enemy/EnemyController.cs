@@ -159,7 +159,10 @@ public class EnemyController : BaseController
             }
         }
         else
+        {
             GetHit();
+            SoundManager.Instance.PlayEnemyHitSound();
+        }
     }
 
     void Despawn()

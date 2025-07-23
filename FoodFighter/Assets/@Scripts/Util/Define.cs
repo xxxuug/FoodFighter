@@ -44,4 +44,18 @@ public class Define
     public const string SubStageKey = "SubStage";
     #endregion
 
+    #region Sound Path
+    public const string ClickSoundPath = "@SoundPack/Click";
+    public const string EnterSoundPath = "@SoundPack/Enter";
+    public const string CancelSoundPath = "@SoundPack/Cancel";
+    public const string PurchaseSoundPath = "@SoundPack/Purchase";
+    public const string CoinSoundPath = "@SoundPack/Coin";
+    public const string EnemyHitSoundPath = "";
+    public const string GameStartSoundPath = "@SoundPack/GameStart.wav";
+
+    public const string NormalBGMPath = "@SoundPack/NormalBGM";
+    public const string CurrencyDungeonBGMPath = "@SoundPack/CurrencyDungeonBGM";
+    public const string MainBGMPath = "@SoundPack/MainBGM";
+    #endregion
+
 }

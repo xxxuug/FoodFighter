@@ -47,6 +47,8 @@ public class ShopManager : MonoBehaviour
     #region 패키지 아이템
     void OnClickStarterPackage()
     {
+        SoundManager.Instance.PlayClickSound();
+
         PopUp.SetActive(true); // 구매 팝업 활성화
         PurchasePopUp(); // 버튼 활성화/비활성화
         PopUpTitleText.text = "스타터 패키지 를 구매하시겠습니까?";
@@ -62,7 +64,9 @@ public class ShopManager : MonoBehaviour
     }
 
     void OnClickAdRemovePackage()
-    { 
+    {
+        SoundManager.Instance.PlayClickSound();
+
         // 구매 횟수 1번
         if (_purchaseCount == 1)
         {
@@ -83,6 +87,8 @@ public class ShopManager : MonoBehaviour
 
     void OnClickDungeonPackage()
     {
+        SoundManager.Instance.PlayClickSound();
+
         PopUp.SetActive(true); // 구매 팝업 활성화
         PurchasePopUp(); // 버튼 활성화/비활성화
         PopUpTitleText.text = "던전 패키지 를 구매하시겠습니까?";
@@ -102,12 +108,16 @@ public class ShopManager : MonoBehaviour
     // 스타터 패키지 구매 눌렀을 시
     void OnClickStarterPackagePurchaseButton()
     {
+        SoundManager.Instance.PlayEnterSound();
+
         if (GameManager.Instance.Gold < 100000)
         {
             PopUpTitleText.text = "보유 골드가 부족합니다!";
         }
         else
         {
+            SoundManager.Instance.PlayPurchaseSound();
+
             GameManager.Instance.MinusGold(100000);
             PopUpTitleText.text = "구매가 완료되었습니다.";
 
@@ -123,6 +133,8 @@ public class ShopManager : MonoBehaviour
     // 광고 제거 패키지 구매 눌렀을 시
     void OnClickAdRemovePackagePurchaseButton()
     {
+        SoundManager.Instance.PlayEnterSound();
+
         if (GameManager.Instance.Gold < 2000000) // 200만
         {
             PopUpTitleText.text = "보유 골드가 부족합니다!";
@@ -133,6 +145,8 @@ public class ShopManager : MonoBehaviour
             _purchaseCount = 0;
             PlayerPrefs.SetInt("AdRemovePurchaseCount", _purchaseCount);
             PlayerPrefs.Save();
+
+            SoundManager.Instance.PlayPurchaseSound();
 
             PurchaseSuccess.gameObject.SetActive(true); // 구매 완료 텍스트 활성화
             AdRemovePackageObject.SetActive(false); // 광고 제거 패키지 오브젝트 비활성화
@@ -148,12 +162,16 @@ public class ShopManager : MonoBehaviour
     // 던전 패키지 구매 눌렀을 시
     void OnClickDungeonPackagePurchaseButton()
     {
+        SoundManager.Instance.PlayEnterSound();
+
         if (GameManager.Instance.Gold < 300000)
         {
             PopUpTitleText.text = "보유 골드가 부족합니다!";
         }
         else
         {
+            SoundManager.Instance.PlayPurchaseSound();
+
             GameManager.Instance.MinusGold(300000);
             PopUpTitleText.text = "구매가 완료되었습니다.";
         }
@@ -164,11 +182,15 @@ public class ShopManager : MonoBehaviour
 
     void OnClickCancelButton()
     {
+        SoundManager.Instance.PlayCancelSound();
+
         PopUp.SetActive(false); // 구매 팝업 비활성화
     }
 
     void OnClickOkButton()
     {
+        SoundManager.Instance.PlayEnterSound();
+
         PopUp.SetActive(false); // 구매 팝업 비활성화
     }
     #endregion
